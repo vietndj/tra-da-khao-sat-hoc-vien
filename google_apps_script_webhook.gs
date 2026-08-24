@@ -1,11 +1,13 @@
 /**
  * =========================================================================
  * GOOGLE APPS SCRIPT WEBHOOK: HỨNG DỮ LIỆU KHẢO SÁT & ẢNH HỌC VIÊN ANH VIỆT (VIETMAC)
+ * Kết nối trực tiếp Google Sheet + Google Drive + Bot Telegram NOVA-CORE
  * =========================================================================
  */
 
-const TELEGRAM_BOT_TOKEN = "7953251433:AAGkI2t-lQv-X2yS8z58vI1KjW0y4FfV_hQ"; 
-const TELEGRAM_CHAT_ID = "6190978939"; // Chat ID anh Việt
+// Cấu hình Bot Telegram NOVA-CORE của anh Việt
+const TELEGRAM_BOT_TOKEN = "8964853536:AAHuRNm_hY-YQtveBD1HlmthN4I5xpVzM8U"; 
+const TELEGRAM_CHAT_ID = "2050406425"; // Chat ID anh Việt
 
 function doPost(e) {
   const lock = LockService.getScriptLock();
@@ -28,7 +30,7 @@ function doPost(e) {
         "Hành Trình Biết Đến & Xem Video",
         "Góp Ý Thẳng Thắn & Lời Nhắn",
         "Số Lượng Ảnh Kỷ Niệm",
-        "Link Thư Mục Ảnh (Drive)"
+        "Link Thư Mục Ảnh (Google Drive)"
       ];
       sheet.appendRow(headers);
       sheet.getRange(1, 1, 1, headers.length)
@@ -54,13 +56,13 @@ function doPost(e) {
     const responseId = "KS-" + Utilities.formatDate(new Date(), "GMT+7", "yyyyMMdd") + "-" + ("000" + lastRow).slice(-3);
     const timestamp = Utilities.formatDate(new Date(), "GMT+7", "dd/MM/yyyy HH:mm:ss");
     
-    // Xử lý lưu ảnh vào thư mục Google Drive (nếu có ảnh đính kèm)
+    // Xử lý tự động tạo thư mục trên Google Drive và lưu ảnh gốc
     let driveFolderUrl = "";
     const photoCount = data.photoCount || (data.photos ? data.photos.length : 0);
     
     if (data.photos && data.photos.length > 0) {
       try {
-        const folderName = `Anh_Hoc_Vien_${data.fullName || "Khach"}_${Utilities.formatDate(new Date(), "GMT+7", "yyyyMMdd_HHmmss")}`;
+        const folderName = `Anh_Hoc_Vien_${(data.fullName || "HocVien").replace(/\s+/g, "_")}_${Utilities.formatDate(new Date(), "GMT+7", "yyyyMMdd_HHmmss")}`;
         const folder = DriveApp.createFolder(folderName);
         driveFolderUrl = folder.getUrl();
         
@@ -87,22 +89,21 @@ function doPost(e) {
       data.channelLink || "",
       data.journeyStory || data.impressedVideo || "",
       data.feedbackAll || data.personalMessage || "",
-      photoCount,
-      driveFolderUrl || (photoCount > 0 ? "Đã lưu ảnh trong payload" : "Không có ảnh")
+      photoCount > 0 ? (photoCount + " ảnh") : "0 ảnh",
+      driveFolderUrl || (photoCount > 0 ? "Đã lưu trong hệ thống" : "Không có ảnh")
     ];
     
     sheet.appendRow(row);
     
-    // Gửi thông báo qua Telegram
-    if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
-      sendTelegramAlert(data, timestamp, photoCount, driveFolderUrl);
-    }
+    // Gửi thông báo tức thì qua Telegram NOVA-CORE cho anh Việt
+    sendTelegramAlert(data, timestamp, photoCount, driveFolderUrl);
     
     return ContentService.createTextOutput(JSON.stringify({
       status: "success",
-      message: "Gửi khảo sát thành công! Em cảm ơn anh/chị rất nhiều.",
+      message: "Đã lưu vĩnh cửu vào Google Sheet thành công!",
       responseId: responseId,
-      photoCount: photoCount
+      photoCount: photoCount,
+      driveUrl: driveFolderUrl
     })).setMimeType(ContentService.MimeType.JSON);
     
   } catch (error) {
@@ -117,23 +118,49 @@ function doPost(e) {
 }
 
 function doGet(e) {
-  return ContentService.createTextOutput(JSON.stringify({
-    status: "ok",
-    message: "VietMac Survey Webhook is live & ready!"
-  })).setMimeType(ContentService.MimeType.JSON);
+  // Trả về dữ liệu JSON của toàn bộ Google Sheet để web đọc realtime
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = ss.getSheetByName("Dữ Liệu Khảo Sát");
+    if (!sheet) {
+      return ContentService.createTextOutput(JSON.stringify({ status: "empty", data: [] })).setMimeType(ContentService.MimeType.JSON);
+    }
+    const rows = sheet.getDataRange().getValues();
+    if (rows.length <= 1) {
+      return ContentService.createTextOutput(JSON.stringify({ status: "empty", data: [] })).setMimeType(ContentService.MimeType.JSON);
+    }
+    const headers = rows[0];
+    const data = [];
+    for (let i = 1; i < rows.length; i++) {
+      const obj = {};
+      headers.forEach((h, colIdx) => {
+        obj[h] = rows[i][colIdx];
+      });
+      data.push(obj);
+    }
+    return ContentService.createTextOutput(JSON.stringify({ status: "success", data: data })).setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: "error", error: err.toString() })).setMimeType(ContentService.MimeType.JSON);
+  }
 }
 
 function sendTelegramAlert(data, timestamp, photoCount, driveFolderUrl) {
   try {
-    let text = `☕ *HỌC VIÊN VỪA GỬI CHIA SẺ TRÀ ĐÁ!*\n\n` +
-      `👤 *Họ tên:* ${data.fullName || "Ẩn danh"}\n` +
-      `📞 *Zalo:* ${data.phone || "Chưa có"}\n` +
-      `💼 *Mảng KD & AI:* ${data.profession ? data.profession.substring(0, 150) + "..." : "Không rõ"}\n` +
-      `🌐 *Link Kênh:* \n${data.channelLink || "Chưa gửi"}\n\n` +
-      `🧭 *Hành trình xem video:* ${data.journeyStory ? data.journeyStory.substring(0, 150) + "..." : "Không rõ"}\n` +
-      `📝 *Góp ý & Nhắn nhủ:* ${data.feedbackAll || "Không có"}\n` +
-      `📸 *Ảnh kỷ niệm:* ${photoCount} ảnh ${driveFolderUrl ? `\n🔗 Link Drive: ${driveFolderUrl}` : ""}\n\n` +
-      `⏰ _${timestamp}_`;
+    const rawLinks = (data.channelLink || '').split('\n').filter(Boolean).map(l => "🔗 " + l).join('\n');
+    
+    const text = 
+      `☕ <b>HỌC VIÊN VỪA GỬI PHẢN HỒI TRÀ ĐÁ!</b>\n` +
+      `━━━━━━━━━━━━━━━━━━━━\n` +
+      `👤 <b>Họ tên:</b> <b>${data.fullName || "Ẩn danh"}</b>\n` +
+      `📞 <b>Số Zalo:</b> <a href="https://zalo.me/${data.phone}"><b>${data.phone || "Chưa có"}</b></a>\n` +
+      `🎬 <b>Khóa học:</b> ${data.course || "Khóa Offline"}\n\n` +
+      `💼 <b>Mảng Kinh Doanh & Định Hướng AI:</b>\n${data.profession || "Chưa chia sẻ"}\n\n` +
+      (rawLinks ? `🌐 <b>Link Kênh / Profile:</b>\n${rawLinks}\n\n` : '') +
+      `📍 <b>Hành trình biết đến:</b>\n<i>"${data.journeyStory || data.impressedVideo || "Không có"}"</i>\n\n` +
+      `💬 <b>Góp ý & Lời nhắn:</b>\n${data.feedbackAll || "Không có"}\n\n` +
+      `📸 <b>Ảnh kỷ niệm:</b> <b>${photoCount} ảnh</b> ${driveFolderUrl ? `\n📁 <b>Link Drive:</b> <a href="${driveFolderUrl}">Mở thư mục ảnh</a>` : ""}\n` +
+      `━━━━━━━━━━━━━━━━━━━━\n` +
+      `⏰ <i>${timestamp}</i>`;
 
     const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
     UrlFetchApp.fetch(url, {
@@ -142,7 +169,8 @@ function sendTelegramAlert(data, timestamp, photoCount, driveFolderUrl) {
       payload: JSON.stringify({
         chat_id: TELEGRAM_CHAT_ID,
         text: text,
-        parse_mode: "Markdown"
+        parse_mode: "HTML",
+        disable_web_page_preview: false
       }),
       muteHttpExceptions: true
     });

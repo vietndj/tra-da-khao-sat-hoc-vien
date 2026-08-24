@@ -72,13 +72,16 @@
 
       <!-- Action Buttons -->
       <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
-        <button onclick="exportLiveExcel()" class="flex-1 lg:flex-none flex items-center justify-center gap-2 py-3 px-5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm transition shadow-lg shadow-emerald-600/20 active:scale-95">
+        <a href="https://docs.google.com/spreadsheets/d/1IhJbansUgKT86TJ7Rq5cXEy7GGqaYOnmgqT6wQUEYxY/edit" target="_blank" class="flex-1 lg:flex-none flex items-center justify-center gap-2 py-3 px-5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs sm:text-sm transition shadow-lg shadow-emerald-600/25 active:scale-95">
           <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
-          <span>Xuất File Excel (.xlsx) Mới Nhất</span>
+          <span>Mở Google Sheet (Drive)</span>
+        </a>
+        <button onclick="exportLiveExcel()" class="flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold text-xs sm:text-sm transition active:scale-95">
+          <i data-lucide="download" class="w-4 h-4 text-emerald-400"></i>
+          <span>Tải file (.xlsx)</span>
         </button>
-        <button onclick="fetchLiveSubmissions()" class="flex items-center justify-center gap-1.5 py-3 px-4 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs sm:text-sm transition active:scale-95">
+        <button onclick="fetchLiveSubmissions()" class="flex items-center justify-center gap-1.5 py-3 px-3.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs sm:text-sm transition active:scale-95" title="Làm mới dữ liệu">
           <i data-lucide="refresh-cw" class="w-4 h-4"></i>
-          <span>Làm mới</span>
         </button>
         <a href="/" class="flex items-center justify-center gap-1.5 py-3 px-4 rounded-2xl bg-slate-900 hover:bg-slate-800 text-amber-300 font-medium text-xs sm:text-sm border border-amber-500/30 transition">
           <i data-lucide="arrow-left" class="w-4 h-4"></i>
