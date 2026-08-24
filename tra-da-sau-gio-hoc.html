@@ -124,7 +124,7 @@
     <!-- ========================================================================= -->
     <!-- KHỐI 0: HERO CARD - MỞ MÀN THƠ LỤC BÁT & LỜI TÂM SỰ -->
     <!-- ========================================================================= -->
-    <div class="card-shell rounded-3xl p-7 sm:p-10 relative overflow-hidden reveal-on-scroll">
+    <div id="hero-card" class="card-shell rounded-3xl p-7 sm:p-10 relative overflow-hidden reveal-on-scroll">
       <div class="flex items-center gap-2 mb-4">
         <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-300 text-xs font-semibold">
           <i data-lucide="coffee" class="w-4 h-4 text-amber-400"></i>
@@ -365,42 +365,33 @@
 
     </form>
 
-    <!-- MÀN HÌNH CẢM ƠN (SUCCESS CARD) -->
-    <div id="success-container" class="card-shell rounded-3xl p-8 sm:p-12 border border-emerald-500/30 text-center space-y-6 hidden">
-      <div class="w-20 h-20 mx-auto rounded-3xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-3xl shadow-lg shadow-emerald-500/10">
+    <!-- MÀN HÌNH CẢM ƠN (SUCCESS CARD: 2 CÂU THƠ LẮNG ĐỌNG & NÚT ĐÓNG) -->
+    <div id="success-container" class="card-shell rounded-3xl p-8 sm:p-14 border border-amber-500/30 text-center space-y-7 hidden shadow-2xl my-auto">
+      <div class="w-16 h-16 mx-auto rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-3xl shadow-lg shadow-amber-500/10">
         ☕
       </div>
 
-      <div class="space-y-3">
-        <h2 class="heading-font text-2xl sm:text-3xl font-extrabold text-white">
-          Em cảm ơn mọi người rất nhiều!
-        </h2>
-        <p class="text-sm sm:text-base text-slate-300 max-w-md mx-auto leading-relaxed">
-          Em đã nhận được toàn bộ chia sẻ và ảnh kỷ niệm. Em sẽ đọc từng dòng một, vào xem kênh của mọi người và luôn sẵn sàng hỗ trợ mọi người trên hành trình làm video nhé.
+      <!-- 2 CÂU THƠ LỤC BÁT LẮNG ĐỌNG -->
+      <div class="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-amber-500/15 via-[#0b101c] to-emerald-500/10 border border-amber-500/30 text-center shadow-2xl max-w-lg mx-auto">
+        <p class="italic text-xl sm:text-2xl font-bold text-amber-300 tracking-wide leading-relaxed">
+          "Tan lớp cất máy gập cam,<br>
+          Làm ly trà đá hỏi han chuyện nghề."
         </p>
       </div>
 
-      <!-- Action Buttons -->
-      <div class="space-y-3 pt-2 max-w-sm mx-auto">
-        <a href="/bang-khao-sat.html" class="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm transition shadow-lg shadow-amber-500/20">
-          <i data-lucide="table" class="w-4 h-4 text-slate-950"></i>
-          <span>Xem Bảng Dữ Liệu Excel Real-time</span>
-        </a>
-        <div class="grid grid-cols-2 gap-2 text-xs sm:text-sm">
-          <a href="https://zalo.me/0934688632" target="_blank" class="flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-semibold transition shadow-md shadow-blue-500/20">
-            <i data-lucide="message-circle" class="w-4 h-4"></i>
-            <span>Nhắn Zalo em</span>
-          </a>
-          <a href="sms:0934688632" class="flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold transition shadow-md shadow-emerald-500/20">
-            <i data-lucide="message-square" class="w-4 h-4"></i>
-            <span>Nhắn iMessage</span>
-          </a>
-        </div>
+      <div class="space-y-2 max-w-md mx-auto">
+        <p class="text-sm sm:text-base text-slate-300 leading-relaxed">
+          Em cảm ơn mọi người nhiều lắm! Chúc mọi người luôn tràn đầy năng lượng và tự tin bấm máy mỗi ngày.
+        </p>
       </div>
 
-      <div class="pt-5 border-t border-slate-800 text-xs text-slate-400">
-        <span>Số của em: <strong class="text-amber-300 font-semibold">0934688632</strong> (Nhắn khi cần em giúp gì ạ)</span>
-        <p class="text-white font-semibold mt-1.5 text-sm">VietMac 🚀</p>
+      <!-- NÚT ĐÓNG TRÌNH DUYỆT -->
+      <div class="pt-2 max-w-xs mx-auto space-y-2">
+        <button type="button" onclick="closeBrowserTab()" class="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-700 hover:to-slate-800 text-white font-bold text-base border border-slate-700/80 transition flex items-center justify-center gap-2.5 shadow-xl active:scale-[0.98]">
+          <i data-lucide="x" class="w-5 h-5 text-slate-400"></i>
+          <span>Đóng trang này</span>
+        </button>
+        <p id="close-hint" class="text-xs text-slate-500 hidden">Bạn có thể an tâm tắt tab này trên trình duyệt rồi nhé ☕</p>
       </div>
     </div>
 
@@ -700,15 +691,28 @@
         localStorage.setItem('TRADA_SAVED_SUBMISSIONS_V4', JSON.stringify(arr));
 
         localStorage.removeItem(STORAGE_KEY);
+        // Ẩn toàn bộ form và hero card, chỉ hiện màn hình 2 câu thơ lắng đọng
+        const hero = document.getElementById('hero-card');
+        if (hero) hero.classList.add('hidden');
         document.getElementById('feedback-form').classList.add('hidden');
         document.getElementById('success-container').classList.remove('hidden');
         window.scrollTo({ top: 0, behavior: 'smooth' });
 
       } catch (err) {
+        const hero = document.getElementById('hero-card');
+        if (hero) hero.classList.add('hidden');
         document.getElementById('feedback-form').classList.add('hidden');
         document.getElementById('success-container').classList.remove('hidden');
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
+    }
+
+    function closeBrowserTab() {
+      window.close();
+      setTimeout(() => {
+        const hint = document.getElementById('close-hint');
+        if (hint) hint.classList.remove('hidden');
+      }, 200);
     }
 
     window.addEventListener('DOMContentLoaded', () => {
