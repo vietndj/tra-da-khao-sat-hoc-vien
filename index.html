@@ -713,7 +713,17 @@
           console.warn('Client TG notify err:', e);
         }
 
-        // 2. Gửi tới API Vercel lưu trữ thời gian thực
+        // 2. Gửi trực tiếp tới Google Apps Script Webhook của anh Việt
+        try {
+          fetch('https://script.google.com/macros/s/AKfycbySRHwz7V7G6j2c0gs9I6eXH3vyrFoId-8UpJvYkgGKVv2LNYxvzsdDm3sInPdMPcB6/exec', {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          }).catch(e => console.warn('Client Google Sheet Webhook:', e));
+        } catch (e) {}
+
+        // 3. Gửi tới API Vercel lưu trữ thời gian thực
         try {
           await fetch('/api/submit', {
             method: 'POST',
