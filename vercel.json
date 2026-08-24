@@ -1,21 +1,10 @@
 {
   "version": 2,
-  "routes": [
-    {
-      "src": "/tra-da-sau-gio-hoc",
-      "dest": "/tra-da-sau-gio-hoc.html"
-    },
-    {
-      "src": "/tra-da",
-      "dest": "/tra-da-sau-gio-hoc.html"
-    },
-    {
-      "src": "/anh-viet-hoi-moi-nguoi",
-      "dest": "/anh-viet-hoi-moi-nguoi.html"
-    },
-    {
-      "src": "/",
-      "dest": "/tra-da-sau-gio-hoc.html"
-    }
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/tra-da", "destination": "/index.html" },
+    { "source": "/tra-da-sau-gio-hoc", "destination": "/index.html" },
+    { "source": "/bang-khao-sat", "destination": "/bang-khao-sat.html" },
+    { "source": "/excel", "destination": "/bang-khao-sat.html" }
   ]
 }

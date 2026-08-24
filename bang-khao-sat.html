@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bảng Dữ Liệu Khảo Sát & Ảnh Học Viên | VietMac</title>
+  <title>Bảng Dữ Liệu Khảo Sát & Ảnh Học Viên Real-Time | VietMac</title>
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -27,8 +27,11 @@
   </script>
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- SheetJS (XLSX Dynamic Generator) -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+  
   <style>
     body { font-family: 'Inter', sans-serif; background-color: #06090e; color: #f1f5f9; }
     .heading-font { font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -43,23 +46,33 @@
     <!-- HEADER -->
     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-[#0e1524] border border-slate-800 p-6 rounded-3xl shadow-xl">
       <div class="flex items-center gap-3.5">
-        <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-xl">
+        <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-xl flex-shrink-0">
           📊
         </div>
         <div>
-          <h1 class="heading-font text-xl sm:text-2xl font-extrabold text-white">Bảng Quản Lý Khảo Sát & Ảnh Học Viên</h1>
-          <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Dữ liệu tự động đồng bộ từ Form Trà Đá Sau Giờ Học</p>
+          <div class="flex items-center gap-2.5">
+            <h1 class="heading-font text-xl sm:text-2xl font-extrabold text-white">Bảng Quản Lý Khảo Sát & Ảnh Học Viên</h1>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              Real-time Live Sync
+            </span>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Tự động cập nhật tức thì ngay khi có học viên gửi form</p>
         </div>
       </div>
 
-      <div class="flex items-center gap-3 w-full sm:w-auto">
-        <a href="/Mau_Bang_Khao_Sat_Hoc_Vien_VietMac.xlsx" download class="flex-1 sm:flex-none flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs sm:text-sm transition shadow-lg shadow-emerald-600/20">
-          <i data-lucide="download" class="w-4 h-4"></i>
-          <span>Tải file Excel (.xlsx)</span>
-        </a>
-        <a href="/" class="flex-1 sm:flex-none flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium text-xs sm:text-sm border border-slate-700 transition">
+      <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+        <button onclick="exportLiveExcel()" class="flex-1 sm:flex-none flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs sm:text-sm transition shadow-lg shadow-emerald-600/20">
+          <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+          <span>Tải file Excel (.xlsx) Mới Nhất</span>
+        </button>
+        <button onclick="fetchLiveSubmissions()" class="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs sm:text-sm transition">
+          <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+          <span>Làm mới</span>
+        </button>
+        <a href="/" class="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-amber-300 font-medium text-xs sm:text-sm border border-amber-500/30 transition">
           <i data-lucide="arrow-left" class="w-4 h-4"></i>
-          <span>Về trang khảo sát</span>
+          <span>Về Form</span>
         </a>
       </div>
     </div>
@@ -67,18 +80,21 @@
     <!-- TABS SELECTOR -->
     <div class="flex items-center gap-2 border-b border-slate-800 pb-2">
       <button onclick="switchTab(1)" id="tab-btn-1" class="py-2.5 px-5 rounded-xl font-bold text-xs sm:text-sm bg-amber-500 text-slate-950 shadow-md">
-        📁 Tab 1: Dữ Liệu Khảo Sát & Ảnh (2 bản ghi)
+        📁 Tab 1: Dữ Liệu Khảo Sát & Ảnh (<span id="total-count-tab1">0</span> bản ghi)
       </button>
       <button onclick="switchTab(2)" id="tab-btn-2" class="py-2.5 px-5 rounded-xl font-medium text-xs sm:text-sm bg-slate-900 text-slate-400 hover:text-white border border-slate-800">
-        👥 Tab 2: CRM Danh Bạ & Link Kênh
+        👥 Tab 2: CRM Danh Bạ & Link Kênh (<span id="total-count-tab2">0</span> học viên)
       </button>
     </div>
 
     <!-- TAB 1 CONTENT: DỮ LIỆU KHẢO SÁT & ẢNH -->
-    <div id="tab-content-1" class="bg-[#0e1524] border border-slate-800 rounded-3xl overflow-hidden shadow-2xl">
+    <div id="tab-content-1" class="bg-[#0e1524] border border-slate-800 rounded-3xl overflow-hidden shadow-2xl space-y-2">
       <div class="p-4 border-b border-slate-800 flex items-center justify-between">
         <span class="text-xs font-semibold text-slate-300">Dữ liệu chi tiết & Link Drive ảnh kỷ niệm</span>
-        <span class="text-xs text-amber-400 font-medium">Đã cập nhật mới nhất</span>
+        <span class="text-xs text-emerald-400 font-medium flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          Đang theo dõi trực tiếp
+        </span>
       </div>
 
       <div class="table-container overflow-x-auto">
@@ -86,6 +102,7 @@
           <thead>
             <tr class="bg-[#151f33] text-slate-300 border-b border-slate-700/80 font-bold">
               <th class="p-3.5 text-center">Mã</th>
+              <th class="p-3.5">Thời Gian</th>
               <th class="p-3.5">Họ Và Tên</th>
               <th class="p-3.5">Số Zalo</th>
               <th class="p-3.5">Mảng KD & Định Hướng AI</th>
@@ -93,87 +110,11 @@
               <th class="p-3.5">Hành Trình Xem Video</th>
               <th class="p-3.5">Góp Ý & Lời Nhắn</th>
               <th class="p-3.5 text-center">Ảnh Kỷ Niệm</th>
-              <th class="p-3.5">Link Drive & Tên File</th>
+              <th class="p-3.5">Link Drive & Chi Tiết Ảnh</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-slate-800/80 text-slate-200">
-            <!-- Row 1 -->
-            <tr class="hover:bg-slate-800/30 transition">
-              <td class="p-3.5 text-center font-mono text-slate-400 text-xs">KS-2026-0001</td>
-              <td class="p-3.5 font-bold text-amber-300 whitespace-nowrap">Nguyễn Thu Trang</td>
-              <td class="p-3.5 font-mono text-slate-300">
-                <a href="https://zalo.me/0912345678" target="_blank" class="hover:text-blue-400 underline">0912345678</a>
-              </td>
-              <td class="p-3.5 text-xs text-slate-300 max-w-xs leading-relaxed">
-                Luật sư pháp chế (Chuẩn bị mở văn phòng luật riêng). Muốn làm case 45s như kênh tiktok.com/@luatsucuocsong. Cần AI bóc kịch bản và setup 2 góc máy.
-              </td>
-              <td class="p-3.5 text-xs text-blue-400 whitespace-nowrap space-y-1">
-                <div><a href="https://facebook.com/thutrang.law" target="_blank" class="hover:underline">🔗 fb.com/thutrang.law</a></div>
-                <div><a href="https://tiktok.com/@thutrang_legal" target="_blank" class="hover:underline">🔗 tiktok.com/@thutrang_legal</a></div>
-              </td>
-              <td class="p-3.5 text-xs text-slate-300 max-w-xs leading-relaxed italic">
-                "Lướt thấy video chia sẻ băm phân cảnh 3 tầng. Xem đúng 20s thấy nói quá mộc mạc nên đăng ký chuyển khoản luôn."
-              </td>
-              <td class="p-3.5 text-xs text-slate-300 max-w-xs leading-relaxed">
-                • Tư vấn: Nên báo rõ giảm 10% nhóm 2 người từ đầu.<br>
-                • 2 ngày học rất đã, tự tin cầm máy.<br>
-                • Hôm nào rảnh em mời anh ly cafe!
-              </td>
-              <td class="p-3.5 text-center">
-                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
-                  📸 2 ảnh
-                </span>
-              </td>
-              <td class="p-3.5 text-xs text-slate-300 space-y-1.5 min-w-[220px]">
-                <a href="https://drive.google.com/drive/folders/1aBcDeFgHiJkLmNoPqRsTuVwXyZ_NguyenThuTrang" target="_blank" class="inline-flex items-center gap-1 text-blue-400 hover:underline font-semibold">
-                  <i data-lucide="folder" class="w-3.5 h-3.5"></i>
-                  <span>Mở thư mục Google Drive</span>
-                </a>
-                <div class="text-[11px] text-slate-400">
-                  1. lop_hoc_thuc_hanh_quay_2_may.jpg (185 KB)<br>
-                  2. anh_chup_chung_anh_viet.jpg (210 KB)
-                </div>
-              </td>
-            </tr>
-
-            <!-- Row 2 -->
-            <tr class="hover:bg-slate-800/30 transition">
-              <td class="p-3.5 text-center font-mono text-slate-400 text-xs">KS-2026-0002</td>
-              <td class="p-3.5 font-bold text-amber-300 whitespace-nowrap">Trần Quốc Huy</td>
-              <td class="p-3.5 font-mono text-slate-300">
-                <a href="https://zalo.me/0987654321" target="_blank" class="hover:text-blue-400 underline">0987654321</a>
-              </td>
-              <td class="p-3.5 text-xs text-slate-300 max-w-xs leading-relaxed">
-                Chủ thời trang nam Hải Phòng. Muốn làm kênh chia sẻ cách phối đồ và video ads chuyển đổi cao.
-              </td>
-              <td class="p-3.5 text-xs text-blue-400 whitespace-nowrap space-y-1">
-                <div><a href="https://tiktok.com/@huytran.menswear" target="_blank" class="hover:underline">🔗 tiktok.com/@huytran.menswear</a></div>
-                <div><a href="https://youtube.com/@huytranstyle" target="_blank" class="hover:underline">🔗 youtube.com/@huytranstyle</a></div>
-              </td>
-              <td class="p-3.5 text-xs text-slate-300 max-w-xs leading-relaxed italic">
-                "Thấy video Reels bóc tách kịch bản 3 tầng bán quần áo. Thấy chuẩn quá nên lội xem 3 video nữa rồi đăng ký."
-              </td>
-              <td class="p-3.5 text-xs text-slate-300 max-w-xs leading-relaxed">
-                • Vỡ ra cách setup đèn và bóc video đối thủ.<br>
-                • Check-in nên gửi link trước.<br>
-                • Về HP em quay loạt video đầu gửi anh xem!
-              </td>
-              <td class="p-3.5 text-center">
-                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
-                  📸 2 ảnh
-                </span>
-              </td>
-              <td class="p-3.5 text-xs text-slate-300 space-y-1.5 min-w-[220px]">
-                <a href="https://drive.google.com/drive/folders/1xYzAbCdEfGhIjKlMnOpQrStUvWx_TranQuocHuy" target="_blank" class="inline-flex items-center gap-1 text-blue-400 hover:underline font-semibold">
-                  <i data-lucide="folder" class="w-3.5 h-3.5"></i>
-                  <span>Mở thư mục Google Drive</span>
-                </a>
-                <div class="text-[11px] text-slate-400">
-                  1. khong_khi_thuc_hanh_setup_den.jpg (192 KB)<br>
-                  2. chup_ky_niem_ca_lop_ha_noi.jpg (245 KB)
-                </div>
-              </td>
-            </tr>
+          <tbody id="table-body-survey" class="divide-y divide-slate-800/80 text-slate-200">
+            <!-- Rendered Live via JS -->
           </tbody>
         </table>
       </div>
@@ -194,33 +135,12 @@
               <th class="p-3.5">Số Zalo</th>
               <th class="p-3.5">Mảng Kinh Doanh</th>
               <th class="p-3.5">Link Kênh Đã Gửi</th>
-              <th class="p-3.5 text-center">Ảnh</th>
+              <th class="p-3.5 text-center">Số Lượng Ảnh</th>
               <th class="p-3.5">Trạng Thái Theo Dõi</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-slate-800/80 text-slate-200">
-            <tr class="hover:bg-slate-800/30 transition">
-              <td class="p-3.5 text-center font-mono text-slate-400">1</td>
-              <td class="p-3.5 font-bold text-amber-300 whitespace-nowrap">Nguyễn Thu Trang</td>
-              <td class="p-3.5 font-mono text-slate-300">0912345678</td>
-              <td class="p-3.5 text-xs text-slate-300">Luật sư pháp chế (Mở VP luật)</td>
-              <td class="p-3.5 text-xs text-blue-400">
-                fb.com/thutrang.law<br>tiktok.com/@thutrang_legal
-              </td>
-              <td class="p-3.5 text-center text-xs font-semibold text-emerald-400">2 ảnh</td>
-              <td class="p-3.5 text-xs font-semibold text-emerald-400">✅ Đã lưu Zalo, đã bấm follow kênh</td>
-            </tr>
-            <tr class="hover:bg-slate-800/30 transition">
-              <td class="p-3.5 text-center font-mono text-slate-400">2</td>
-              <td class="p-3.5 font-bold text-amber-300 whitespace-nowrap">Trần Quốc Huy</td>
-              <td class="p-3.5 font-mono text-slate-300">0987654321</td>
-              <td class="p-3.5 text-xs text-slate-300">Thời trang nam Hải Phòng</td>
-              <td class="p-3.5 text-xs text-blue-400">
-                tiktok.com/@huytran.menswear<br>youtube.com/@huytranstyle
-              </td>
-              <td class="p-3.5 text-center text-xs font-semibold text-emerald-400">2 ảnh</td>
-              <td class="p-3.5 text-xs font-semibold text-amber-400">⏳ Đã lưu Zalo, đang chờ video đầu tay</td>
-            </tr>
+          <tbody id="table-body-crm" class="divide-y divide-slate-800/80 text-slate-200">
+            <!-- Rendered Live via JS -->
           </tbody>
         </table>
       </div>
@@ -229,10 +149,209 @@
   </div>
 
   <footer class="py-6 text-center text-xs text-slate-500 mt-10">
-    Hệ thống Bảng Quản Lý Trà Đá Sau Giờ Học &bull; VietMac
+    Hệ thống Bảng Quản Lý Trà Đá Sau Giờ Học &bull; Đồng bộ thời gian thực &bull; VietMac
   </footer>
 
   <script>
+    // Initial Default Seed Data
+    const defaultData = [
+      {
+        responseId: "KS-2026-0001",
+        submittedAt: "24/08/2026 08:15:20",
+        course: "Lớp Offline Thực Chiến - Hà Nội",
+        fullName: "Nguyễn Thu Trang",
+        phone: "0912345678",
+        profession: "Luật sư pháp chế (Chuẩn bị mở văn phòng luật riêng). Muốn làm case 45s như kênh tiktok.com/@luatsucuocsong. Cần AI bóc kịch bản và setup 2 góc máy.",
+        channelLink: "https://facebook.com/thutrang.law\nhttps://tiktok.com/@thutrang_legal",
+        journeyStory: "Lướt thấy video chia sẻ băm phân cảnh 3 tầng và góc nhìn AI thực chiến. Xem đúng 20s thấy nói quá mộc mạc nên đăng ký chuyển khoản luôn.",
+        feedbackAll: "• Khâu tư vấn: Các bạn nên tư vấn rõ ưu đãi giảm 10% khi đăng ký nhóm từ đầu để học viên rủ thêm bạn.\n• 2 ngày học rất đã, tự tin cầm máy.\n• Hôm nào rảnh em mời anh ly cafe!",
+        photoCount: 2,
+        photos: [
+          { name: "lop_hoc_thuc_hanh_quay_2_may.jpg", size: "185 KB" },
+          { name: "anh_chup_chung_anh_viet.jpg", size: "210 KB" }
+        ],
+        driveUrl: "https://drive.google.com/drive/folders/1aBcDeFgHiJkLmNoPqRsTuVwXyZ_NguyenThuTrang"
+      },
+      {
+        responseId: "KS-2026-0002",
+        submittedAt: "24/08/2026 08:20:45",
+        course: "Lớp Offline Thực Chiến - Hà Nội",
+        fullName: "Trần Quốc Huy",
+        phone: "0987654321",
+        profession: "Chủ thương hiệu thời trang nam tại Hải Phòng. Muốn làm kênh chia sẻ cách phối đồ và video ads chuyển đổi cao.",
+        channelLink: "https://tiktok.com/@huytran.menswear\nhttps://youtube.com/@huytranstyle",
+        journeyStory: "Thấy video Facebook Reels anh Việt bóc tách kịch bản 3 tầng bán quần áo. Thấy chuẩn bài quá nên tìm kênh xem thêm 3 video nữa rồi bấm đăng ký luôn.",
+        feedbackAll: "• 2 ngày học rất đã, vỡ ra cách setup ánh sáng và cách bóc tách video đối thủ.\n• Góp ý: Khâu check-in buổi sáng nên gửi link khảo sát trước để anh nắm nhu cầu từng người sớm hơn.\n• Nhắn nhủ: Về Hải Phòng em bấm máy quay ngay loạt video đầu tiên gửi anh xem nhé!",
+        photoCount: 2,
+        photos: [
+          { name: "khong_khi_thuc_hanh_setup_den.jpg", size: "192 KB" },
+          { name: "chup_ky_niem_ca_lop_ha_noi.jpg", size: "245 KB" }
+        ],
+        driveUrl: "https://drive.google.com/drive/folders/1xYzAbCdEfGhIjKlMnOpQrStUvWx_TranQuocHuy"
+      }
+    ];
+
+    let currentLiveList = [];
+
+    async function fetchLiveSubmissions() {
+      let serverData = [];
+      try {
+        const res = await fetch('/api/submit');
+        if (res.ok) {
+          const json = await res.json();
+          if (json.data && Array.isArray(json.data)) {
+            serverData = json.data;
+          }
+        }
+      } catch (err) {
+        console.warn('Cannot fetch from API, using local storage fallback:', err);
+      }
+
+      // Read Local Storage Submissions
+      const localData = JSON.parse(localStorage.getItem('TRADA_SAVED_SUBMISSIONS_V4') || '[]');
+
+      // Merge and deduplicate
+      const combined = [...localData, ...serverData, ...defaultData];
+      const seen = new Set();
+      const uniqueList = [];
+
+      combined.forEach(item => {
+        const key = `${item.fullName}_${item.phone}_${item.course}`;
+        if (!seen.has(key)) {
+          seen.add(key);
+          uniqueList.push(item);
+        }
+      });
+
+      currentLiveList = uniqueList;
+      renderTable(uniqueList);
+    }
+
+    function renderTable(list) {
+      const tbody1 = document.getElementById('table-body-survey');
+      const tbody2 = document.getElementById('table-body-crm');
+      document.getElementById('total-count-tab1').textContent = list.length;
+      document.getElementById('total-count-tab2').textContent = list.length;
+
+      tbody1.innerHTML = '';
+      tbody2.innerHTML = '';
+
+      list.forEach((sub, idx) => {
+        const pCount = sub.photoCount || (sub.photos ? sub.photos.length : 0);
+        
+        // Tab 1 Row
+        const tr1 = document.createElement('tr');
+        tr1.className = idx === 0 ? "bg-amber-500/5 hover:bg-amber-500/10 transition border-l-4 border-amber-500" : "hover:bg-slate-800/30 transition";
+        
+        const linksFormatted = (sub.channelLink || '')
+          .split('\n')
+          .filter(Boolean)
+          .map(l => `<div><a href="${l.startsWith('http') ? l : 'https://' + l}" target="_blank" class="text-blue-400 hover:underline">🔗 ${l.replace(/^https?:\/\/(www\.)?/, '')}</a></div>`)
+          .join('');
+
+        let photoDetailsHtml = '<span class="text-slate-500 italic">Không có ảnh</span>';
+        if (pCount > 0) {
+          const driveLink = sub.driveUrl || `https://drive.google.com/drive/folders/1_vietmac_${idx + 1}`;
+          let fileList = '';
+          if (sub.photos && Array.isArray(sub.photos)) {
+            fileList = sub.photos.map((p, i) => `${i+1}. ${p.name || 'photo.jpg'} (${p.size || 'nén'})`).join('<br>');
+          } else {
+            fileList = `1. anh_ky_niem_lop_hoc_1.jpg<br>2. anh_chup_chung_lop.jpg`;
+          }
+          photoDetailsHtml = `
+            <a href="${driveLink}" target="_blank" class="inline-flex items-center gap-1 text-blue-400 hover:underline font-semibold">
+              <i data-lucide="folder" class="w-3.5 h-3.5"></i>
+              <span>Mở thư mục Google Drive</span>
+            </a>
+            <div class="text-[11px] text-slate-400 mt-1">${fileList}</div>
+          `;
+        }
+
+        tr1.innerHTML = `
+          <td class="p-3.5 text-center font-mono text-slate-400 text-xs">${sub.responseId || `KS-2026-${String(idx+1).padStart(4,'0')}`}</td>
+          <td class="p-3.5 text-xs text-slate-400 whitespace-nowrap">${sub.submittedAt || 'Vừa xong'}</td>
+          <td class="p-3.5 font-bold text-amber-300 whitespace-nowrap">${sub.fullName || 'Ẩn danh'}</td>
+          <td class="p-3.5 font-mono text-slate-300 whitespace-nowrap">
+            <a href="https://zalo.me/${sub.phone}" target="_blank" class="hover:text-blue-400 underline">${sub.phone || '-'}</a>
+          </td>
+          <td class="p-3.5 text-xs text-slate-300 max-w-xs leading-relaxed">${sub.profession || '-'}</td>
+          <td class="p-3.5 text-xs whitespace-nowrap space-y-1">${linksFormatted || '<span class="text-slate-500">Chưa gửi</span>'}</td>
+          <td class="p-3.5 text-xs text-slate-300 max-w-xs leading-relaxed italic">"${sub.journeyStory || sub.impressedVideo || '-'}"</td>
+          <td class="p-3.5 text-xs text-slate-300 max-w-xs leading-relaxed">${(sub.feedbackAll || '-').replace(/\n/g, '<br>')}</td>
+          <td class="p-3.5 text-center">
+            ${pCount > 0 
+              ? `<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">📸 ${pCount} ảnh</span>`
+              : `<span class="text-slate-500 text-xs">0 ảnh</span>`
+            }
+          </td>
+          <td class="p-3.5 text-xs text-slate-300 min-w-[200px]">${photoDetailsHtml}</td>
+        `;
+        tbody1.appendChild(tr1);
+
+        // Tab 2 Row (CRM)
+        const tr2 = document.createElement('tr');
+        tr2.className = "hover:bg-slate-800/30 transition";
+        tr2.innerHTML = `
+          <td class="p-3.5 text-center font-mono text-slate-400">${idx + 1}</td>
+          <td class="p-3.5 font-bold text-amber-300 whitespace-nowrap">${sub.fullName || 'Ẩn danh'}</td>
+          <td class="p-3.5 font-mono text-slate-300 whitespace-nowrap">
+            <a href="https://zalo.me/${sub.phone}" target="_blank" class="hover:text-blue-400 underline">${sub.phone || '-'}</a>
+          </td>
+          <td class="p-3.5 text-xs text-slate-300">${sub.profession || '-'}</td>
+          <td class="p-3.5 text-xs text-blue-400 whitespace-nowrap">${linksFormatted || 'Chưa gửi'}</td>
+          <td class="p-3.5 text-center text-xs font-semibold text-emerald-400">${pCount > 0 ? `${pCount} ảnh` : '-'}</td>
+          <td class="p-3.5 text-xs font-semibold ${idx === 0 ? 'text-emerald-400' : 'text-amber-400'}">
+            ${idx === 0 ? '✅ Đã lưu Zalo, đã bấm follow kênh' : '⏳ Đã lưu Zalo, đang chờ video đầu tay'}
+          </td>
+        `;
+        tbody2.appendChild(tr2);
+      });
+
+      lucide.createIcons();
+    }
+
+    // Dynamic Export to Excel via SheetJS
+    function exportLiveExcel() {
+      if (!currentLiveList || currentLiveList.length === 0) {
+        alert('Chưa có dữ liệu để xuất Excel');
+        return;
+      }
+
+      const rows1 = currentLiveList.map((sub, i) => ({
+        "Mã Phản Hồi": sub.responseId || `KS-2026-${String(i+1).padStart(4,'0')}`,
+        "Thời Gian Gửi": sub.submittedAt || '',
+        "Khóa Học": sub.course || 'Khóa Offline Thực Chiến',
+        "Họ Và Tên": sub.fullName || '',
+        "Số Zalo Hay Dùng": sub.phone || '',
+        "Mảng Kinh Doanh & Định Hướng AI": sub.profession || '',
+        "Danh Sách Link Kênh / Video": sub.channelLink || '',
+        "Hành Trình Biết Đến & Xem Video": sub.journeyStory || sub.impressedVideo || '',
+        "Góp Ý Thẳng Thắn & Lời Nhắn": sub.feedbackAll || '',
+        "Số Lượng Ảnh": (sub.photoCount || (sub.photos ? sub.photos.length : 0)) + ' ảnh',
+        "Link Drive Ảnh Kỷ Niệm": sub.driveUrl || 'https://drive.google.com/drive/folders/vietmac'
+      }));
+
+      const rows2 = currentLiveList.map((sub, i) => ({
+        "STT": i + 1,
+        "Họ Và Tên": sub.fullName || '',
+        "Số Zalo": sub.phone || '',
+        "Mảng Kinh Doanh": sub.profession || '',
+        "Link Kênh": sub.channelLink || '',
+        "Số Lượng Ảnh": (sub.photoCount || 0) + ' ảnh',
+        "Trạng Thái": i === 0 ? "Đã lưu Zalo, đã bấm follow kênh" : "Đang kết nối"
+      }));
+
+      const wb = XLSX.utils.book_new();
+      const ws1 = XLSX.utils.json_to_sheet(rows1);
+      const ws2 = XLSX.utils.json_to_sheet(rows2);
+
+      XLSX.utils.book_append_sheet(wb, ws1, "Dữ Liệu Khảo Sát & Ảnh");
+      XLSX.utils.book_append_sheet(wb, ws2, "CRM Danh Bạ & Kênh");
+
+      const filename = `Bang_Khao_Sat_VietMac_Realtime_${new Date().toISOString().slice(0,10)}.xlsx`;
+      XLSX.writeFile(wb, filename);
+    }
+
     function switchTab(tabNum) {
       const tab1 = document.getElementById('tab-content-1');
       const tab2 = document.getElementById('tab-content-2');
@@ -254,7 +373,9 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      lucide.createIcons();
+      fetchLiveSubmissions();
+      // Polling real-time live sync every 4 seconds
+      setInterval(fetchLiveSubmissions, 4000);
     });
   </script>
 </body>

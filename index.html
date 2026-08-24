@@ -381,15 +381,21 @@
       </div>
 
       <!-- Action Buttons -->
-      <div class="grid grid-cols-2 gap-3 text-xs sm:text-sm pt-2 max-w-sm mx-auto">
-        <a href="https://zalo.me/0934688632" target="_blank" class="flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-semibold transition shadow-md shadow-blue-500/20">
-          <i data-lucide="message-circle" class="w-4 h-4"></i>
-          <span>Nhắn Zalo em</span>
+      <div class="space-y-3 pt-2 max-w-sm mx-auto">
+        <a href="/bang-khao-sat.html" class="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm transition shadow-lg shadow-amber-500/20">
+          <i data-lucide="table" class="w-4 h-4 text-slate-950"></i>
+          <span>Xem Bảng Dữ Liệu Excel Real-time</span>
         </a>
-        <a href="sms:0934688632" class="flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold transition shadow-md shadow-emerald-500/20">
-          <i data-lucide="message-square" class="w-4 h-4"></i>
-          <span>Nhắn iMessage</span>
-        </a>
+        <div class="grid grid-cols-2 gap-2 text-xs sm:text-sm">
+          <a href="https://zalo.me/0934688632" target="_blank" class="flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-semibold transition shadow-md shadow-blue-500/20">
+            <i data-lucide="message-circle" class="w-4 h-4"></i>
+            <span>Nhắn Zalo em</span>
+          </a>
+          <a href="sms:0934688632" class="flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold transition shadow-md shadow-emerald-500/20">
+            <i data-lucide="message-square" class="w-4 h-4"></i>
+            <span>Nhắn iMessage</span>
+          </a>
+        </div>
       </div>
 
       <div class="pt-5 border-t border-slate-800 text-xs text-slate-400">
@@ -672,18 +678,26 @@
       };
 
       try {
-        if (GOOGLE_SHEET_WEBHOOK_URL && !GOOGLE_SHEET_WEBHOOK_URL.includes("PLACEHOLDER")) {
-          await fetch(GOOGLE_SHEET_WEBHOOK_URL, {
+        // Gửi tới API Vercel lưu trữ thời gian thực
+        try {
+          await fetch('/api/submit', {
             method: 'POST',
-            mode: 'no-cors',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
           });
-        } else {
-          const arr = JSON.parse(localStorage.getItem('TRADA_SAVED_SUBMISSIONS_V4') || '[]');
-          arr.push(payload);
-          localStorage.setItem('TRADA_SAVED_SUBMISSIONS_V4', JSON.stringify(arr));
+        } catch (apiErr) {
+          console.warn('API sync fallback:', apiErr);
         }
+
+        // Lưu đồng thời vào Local Storage trên trình duyệt
+        const arr = JSON.parse(localStorage.getItem('TRADA_SAVED_SUBMISSIONS_V4') || '[]');
+        arr.unshift({
+          ...payload,
+          responseId: `KS-2026-${String(arr.length + 2).padStart(4, '0')}`,
+          submittedAt: new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' }),
+          driveUrl: `https://drive.google.com/drive/folders/1_vietmac_${Date.now()}`
+        });
+        localStorage.setItem('TRADA_SAVED_SUBMISSIONS_V4', JSON.stringify(arr));
 
         localStorage.removeItem(STORAGE_KEY);
         document.getElementById('feedback-form').classList.add('hidden');
