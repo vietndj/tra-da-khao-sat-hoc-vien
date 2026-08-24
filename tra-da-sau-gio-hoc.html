@@ -172,18 +172,21 @@
 
             <div>
               <label for="profession" class="block text-xs font-semibold text-slate-300 mb-1.5">
-                Nghề nghiệp hoặc mảng anh/chị đang kinh doanh <span class="text-amber-400">*</span>
+                Mảng kinh doanh & Định hướng làm video sắp tới với sản phẩm của mình <span class="text-amber-400">*</span>
+                <span class="text-slate-400 font-normal block text-[11px] leading-relaxed mt-0.5">
+                  Mọi người mô tả kỹ mảng kinh doanh, sản phẩm, và gửi kèm cả <strong>link kênh muốn làm theo hoặc kênh đối thủ</strong> nhé. Em coi đây là dữ liệu đầu vào nạp cho AI phân tích (xem đối thủ đang làm gì, họ làm video hay ở chỗ nào, mình muốn làm ra sao, đang vướng hay chưa biết xử lý góc nào...). Em phải nạp dữ liệu và tìm tòi dần dần thì mới phản hồi giải pháp sát nhất cho từng người được, nên mọi người cứ mô tả càng chi tiết càng tốt cho em nhé!
+                </span>
               </label>
-              <input type="text" id="profession" name="profession" required placeholder="VD: Luật sư pháp chế (mở cty luật), KD thời trang, BĐS, bác sĩ..." class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm input-focus" oninput="saveDraft()">
+              <textarea id="profession" name="profession" rows="4" required placeholder="VD: Em làm luật sư doanh nghiệp chuẩn bị mở văn phòng luật riêng. Muốn làm video ngắn dạng case thực tế như kênh tiktok.com/@kenhmau... Thấy họ làm hay ở chỗ hook mở đầu rất gãy gọn, nhưng em chưa biết xử lý góc quay và băm phân cảnh thế nào để không bị khô khan..." class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm input-focus" oninput="saveDraft()"></textarea>
             </div>
 
             <div>
               <label for="channelLink" class="block text-xs font-semibold text-slate-300 mb-1.5">
-                Link Kênh (TikTok / Facebook / YouTube / Page của anh/chị)
-                <span class="text-slate-400 font-normal block text-[11px]">Gửi link để em vào xem các video đầu tay anh/chị làm và bấm follow nhé</span>
+                Link Kênh hoặc Facebook hiện tại của mình (nếu đã có)
+                <span class="text-slate-400 font-normal block text-[11px]">Gửi link để em vào xem các video đầu tay mọi người làm và bấm follow nhé</span>
               </label>
               <div class="relative">
-                <input type="text" id="channelLink" name="channelLink" placeholder="https://tiktok.com/@kenh_cua_ban hoặc link FB..." class="w-full pl-9 pr-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm input-focus" oninput="saveDraft()">
+                <input type="text" id="channelLink" name="channelLink" placeholder="https://tiktok.com/@kenh_cua_ban hoặc link FB cá nhân..." class="w-full pl-9 pr-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm input-focus" oninput="saveDraft()">
                 <i data-lucide="link" class="w-4 h-4 text-slate-500 absolute left-3 top-3.5"></i>
               </div>
             </div>
