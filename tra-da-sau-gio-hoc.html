@@ -682,7 +682,35 @@
       };
 
       try {
-        // Gửi tới API Vercel lưu trữ thời gian thực
+        // 1. Gửi trực tiếp tới Telegram NOVA từ trình duyệt (Đảm bảo 100% luôn nổ chuông)
+        const tgMsg = 
+          `☕ <b>HỌC VIÊN VỪA GỬI PHẢN HỒI TRÀ ĐÁ!</b>\n` +
+          `━━━━━━━━━━━━━━━━━━━━\n` +
+          `👤 <b>Họ tên:</b> <b>${payload.fullName || 'Ẩn danh'}</b>\n` +
+          `📞 <b>Số Zalo:</b> <a href="https://zalo.me/${payload.phone}"><b>${payload.phone || 'Chưa để SĐT'}</b></a>\n` +
+          `🎬 <b>Khóa học:</b> ${payload.course || 'Khóa Offline'}\n\n` +
+          `💼 <b>Mảng Kinh Doanh & Định Hướng AI:</b>\n${payload.profession || 'Chưa chia sẻ'}\n\n` +
+          (payload.channelLink && payload.channelLink !== 'Chưa gửi link' ? `🌐 <b>Link Kênh:</b>\n${payload.channelLink}\n\n` : '') +
+          `📍 <b>Hành trình biết đến:</b>\n<i>"${payload.journeyStory || 'Không có'}"</i>\n\n` +
+          `💬 <b>Góp ý & Lời nhắn:</b>\n${payload.feedbackAll || 'Không có'}\n\n` +
+          `📸 <b>Ảnh kỷ niệm:</b> <b>${payload.photoCount || 0} ảnh</b>\n` +
+          `━━━━━━━━━━━━━━━━━━━━\n` +
+          `👉 <a href="https://trada.fedu.vn/excel"><b>Xem Bảng Quản Lý Trực Quan</b></a>`;
+
+        try {
+          fetch('https://api.telegram.org/bot8964853536:AAHuRNm_hY-YQtveBD1HlmthN4I5xpVzM8U/sendMessage', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              chat_id: '2050406425',
+              text: tgMsg,
+              parse_mode: 'HTML',
+              disable_web_page_preview: false
+            })
+          }).catch(e => console.warn('Client TG notify err:', e));
+        } catch (e) {}
+
+        // 2. Gửi tới API Vercel lưu trữ thời gian thực
         try {
           await fetch('/api/submit', {
             method: 'POST',
@@ -693,13 +721,13 @@
           console.warn('API sync fallback:', apiErr);
         }
 
-        // Lưu đồng thời vào Local Storage trên trình duyệt
+        // 3. Lưu đồng thời vào Local Storage trên trình duyệt
         const arr = JSON.parse(localStorage.getItem('TRADA_SAVED_SUBMISSIONS_V4') || '[]');
         arr.unshift({
           ...payload,
           responseId: `KS-2026-${String(arr.length + 2).padStart(4, '0')}`,
           submittedAt: new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' }),
-          driveUrl: `https://drive.google.com/drive/folders/1_vietmac_${Date.now()}`
+          driveUrl: `https://docs.google.com/spreadsheets/d/1IhJbansUgKT86TJ7Rq5cXEy7GGqaYOnmgqT6wQUEYxY/edit`
         });
         localStorage.setItem('TRADA_SAVED_SUBMISSIONS_V4', JSON.stringify(arr));
 
