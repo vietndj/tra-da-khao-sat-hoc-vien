@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Trà Đá Sau Giờ Học | Tan Lớp Ngồi Lại Nói Chuyện Thật ☕🎬</title>
-  <meta name="description" content="Tan lớp cất máy gập cam, làm ly trà đá hỏi han chuyện nghề. Em Việt ngồi lại lắng nghe góp ý chân thành từ anh chị em học viên.">
+  <meta name="description" content="Tan lớp cất máy gập cam, làm ly trà đá hỏi han chuyện nghề. Em ngồi lại lắng nghe góp ý chân thành từ mọi người.">
 
   <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%22><text y=%2226%22 font-size=%2226%22>☕</text></svg>">
@@ -20,9 +20,11 @@
             brand: {
               amber: '#f59e0b',
               emerald: '#10b981',
-              dark: '#090d16',
-              card: '#161f30',
-              border: '#243248'
+              dark: '#070b12',
+              card: '#121927',
+              cardHover: '#182235',
+              border: '#1f2d42',
+              input: '#0d131f'
             }
           },
           fontFamily: {
@@ -43,294 +45,339 @@
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #090d16;
-      color: #f8fafc;
+      background-color: #070b12;
+      color: #f1f5f9;
       -webkit-tap-highlight-color: transparent;
     }
     .heading-font {
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
-    .glass-card {
-      background: rgba(22, 31, 48, 0.88);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+    /* Auto expand textarea styling */
+    textarea {
+      font-size: 15px !important;
+      line-height: 1.6 !important;
     }
-    .input-focus {
-      transition: all 0.2s ease;
+    @media (max-width: 640px) {
+      input, textarea {
+        font-size: 16px !important; /* Prevent iOS zoom */
+      }
     }
-    .input-focus:focus {
-      border-color: #f59e0b;
-      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+    .card-shell {
+      background-color: #121927;
+      border: 1px solid #1f2d42;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .card-shell:focus-within {
+      border-color: rgba(245, 158, 11, 0.4);
+      box-shadow: 0 0 20px -5px rgba(245, 158, 11, 0.15);
     }
   </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-amber-500 selection:text-slate-950 relative overflow-x-hidden">
 
-  <!-- Background subtle warm glow -->
-  <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-amber-500/10 rounded-full blur-[140px] pointer-events-none -z-10"></div>
+  <!-- Background subtle warm ambient lighting -->
+  <div class="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[400px] bg-gradient-to-b from-amber-500/10 via-amber-500/5 to-transparent blur-[120px] pointer-events-none -z-10"></div>
 
-  <!-- HEADER -->
-  <header class="sticky top-0 z-40 bg-[#090d16]/90 backdrop-blur-md border-b border-slate-800/80 px-4 py-3">
-    <div class="max-w-xl mx-auto flex items-center justify-between">
+  <!-- TOP HEADER -->
+  <header class="sticky top-0 z-40 bg-[#070b12]/95 backdrop-blur-md border-b border-slate-800/80 px-4 sm:px-6 py-3.5">
+    <div class="max-w-3xl mx-auto flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-300 flex items-center justify-center text-slate-950 font-bold text-sm shadow-md shadow-amber-500/20">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-300 flex items-center justify-center text-slate-950 font-bold text-base shadow-lg shadow-amber-500/20 flex-shrink-0">
           ☕
         </div>
         <div>
-          <h1 class="font-bold text-sm text-slate-100 leading-none">Trà Đá Sau Giờ Học</h1>
-          <p id="course-display" class="text-xs text-amber-400/90 mt-1 cursor-pointer flex items-center gap-1 hover:underline" onclick="openCourseSelector()">
+          <h1 class="font-bold text-sm sm:text-base text-white leading-tight">Trà Đá Sau Giờ Học</h1>
+          <p id="course-display" class="text-xs text-amber-400 mt-0.5 cursor-pointer flex items-center gap-1 hover:underline" onclick="openCourseSelector()">
             <span id="course-name-text">Khóa Offline Thực Chiến</span>
-            <i data-lucide="chevron-down" class="w-3 h-3"></i>
+            <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>
           </p>
         </div>
       </div>
       <div class="text-right">
-        <span class="text-xs text-slate-400 font-medium">Việt x Học viên</span>
+        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">
+          Nói chuyện thật
+        </span>
       </div>
     </div>
   </header>
 
-  <!-- MAIN FORM -->
-  <main class="flex-1 max-w-xl w-full mx-auto p-4 sm:p-6 my-auto">
-    
-    <div id="survey-container" class="glass-card rounded-3xl p-6 sm:p-8 border border-slate-800 shadow-2xl space-y-7">
+  <!-- MAIN CONTAINER (FLUID RESPONSIVE CO GIÃN THEO MÀN HÌNH) -->
+  <main class="flex-1 max-w-3xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-6">
 
-      <!-- MỞ MÀN THƠ LỤC BÁT & LỜI TÂM SỰ -->
-      <div class="space-y-4 border-b border-slate-800/80 pb-6">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs font-medium">
-          <i data-lucide="coffee" class="w-3.5 h-3.5 text-amber-400"></i>
+    <!-- KHỐI 0: HERO CARD - MỞ MÀN THƠ LỤC BÁT & LỜI TÂM SỰ -->
+    <div class="card-shell rounded-3xl p-6 sm:p-8 relative overflow-hidden shadow-2xl">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs font-medium">
+          <i data-lucide="coffee" class="w-3.5 h-3.5"></i>
           <span>Tan lớp nhưng chưa tan chuyện</span>
-        </div>
-
-        <h2 class="heading-font text-2xl sm:text-3xl font-extrabold text-white leading-tight">
-          Trà đá sau giờ học: <br class="hidden sm:inline">
-          <span class="bg-gradient-to-r from-amber-400 via-amber-200 to-emerald-300 bg-clip-text text-transparent">Tan lớp ngồi lại nói chuyện thật</span>
-        </h2>
-
-        <!-- KHUNG THƠ LỤC BÁT -->
-        <div class="p-4 rounded-2xl bg-gradient-to-r from-amber-500/15 via-slate-900 to-emerald-500/10 border border-amber-500/30 text-center my-3 shadow-lg shadow-amber-500/5">
-          <p class="italic text-base sm:text-lg font-bold text-amber-300 tracking-wide leading-relaxed">
-            "Tan lớp cất máy gập cam,<br>
-            Làm ly trà đá hỏi han chuyện nghề."
-          </p>
-        </div>
-
-        <div class="space-y-3 text-slate-300 text-sm leading-relaxed">
-          <p>
-            2 ngày vừa qua được trực tiếp đứng lớp, cùng trao đổi và vỡ ra từng góc quay, từng dòng kịch bản với anh chị em là khoảng thời gian em thực sự rất trân trọng.
-          </p>
-          <p>
-            Khóa học vừa xong, em làm trang này để ngồi lại lắng nghe thật lòng từ mọi người: từ lúc thấy video của em, khâu tư vấn đăng ký, cho đến 2 ngày học trên lớp. Có chỗ nào em làm chưa khéo, chưa trọn vẹn, mọi người cứ nói thẳng để em tự sửa mình và làm tốt hơn cho các lớp sau nhé!
-          </p>
-        </div>
+        </span>
       </div>
 
-      <!-- FORM FIELDS -->
-      <form id="feedback-form" onsubmit="handleFormSubmit(event)" class="space-y-6">
+      <h2 class="heading-font text-2xl sm:text-3xl font-extrabold text-white leading-tight mb-4">
+        Trà đá sau giờ học: <br class="hidden sm:inline">
+        <span class="bg-gradient-to-r from-amber-400 via-amber-200 to-emerald-300 bg-clip-text text-transparent">Tan lớp ngồi lại nói chuyện thật</span>
+      </h2>
 
-        <!-- 1. THÔNG TIN & KÊNH CỦA BẠN -->
-        <div class="space-y-4">
-          <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
-            <i data-lucide="user-check" class="w-4 h-4"></i>
-            <span>1. Thông tin để em tiện liên hệ & vào xem kênh của anh/chị</span>
-          </h3>
-
-          <div class="space-y-3">
-            <div>
-              <label for="fullName" class="block text-xs font-semibold text-slate-300 mb-1.5">
-                Họ và tên của anh/chị <span class="text-amber-400">*</span>
-              </label>
-              <input type="text" id="fullName" name="fullName" required placeholder="Họ và tên" class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm input-focus" oninput="saveDraft()">
-            </div>
-
-            <div>
-              <label for="phone" class="block text-xs font-semibold text-slate-300 mb-1.5">
-                Số Zalo mọi người hay dùng <span class="text-amber-400">*</span>
-                <span class="text-slate-400 font-normal block text-[11px]">Để em lưu vào máy, tiện gửi tài liệu mới và nhắn tin trao đổi</span>
-              </label>
-              <input type="tel" id="phone" name="phone" required placeholder="Nhập số Zalo bạn hay dùng" class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm input-focus" oninput="saveDraft()">
-
-              <!-- NÚT KẾT NỐI ZALO & IMESSAGE CỦA ANH VIỆT -->
-              <div class="mt-2.5 p-3 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-2">
-                <div class="flex items-center justify-between text-[11px] text-slate-400">
-                  <span>Số của em Việt: <strong class="text-amber-300 font-semibold">0934688632</strong></span>
-                  <span class="text-amber-300/90 font-medium">Nhắn khi cần em giúp gì ạ</span>
-                </div>
-                <div class="grid grid-cols-2 gap-2 text-xs">
-                  <a href="https://zalo.me/0934688632" target="_blank" class="flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 text-blue-300 font-medium transition">
-                    <i data-lucide="message-circle" class="w-3.5 h-3.5 text-blue-400"></i>
-                    <span>Kết nối Zalo</span>
-                  </a>
-                  <a href="sms:0934688632" class="flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/30 text-emerald-300 font-medium transition">
-                    <i data-lucide="message-square" class="w-3.5 h-3.5 text-emerald-400"></i>
-                    <span>Nhắn iMessage</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <label for="profession" class="block text-xs font-semibold text-slate-300 mb-1.5">
-                Mảng kinh doanh & Định hướng làm video sắp tới với sản phẩm của mình <span class="text-amber-400">*</span>
-                <span class="text-slate-400 font-normal block text-[11px] leading-relaxed mt-0.5">
-                  Mọi người mô tả kỹ mảng kinh doanh, sản phẩm, và gửi kèm cả <strong>link kênh muốn làm theo hoặc kênh đối thủ</strong> nhé. Em coi đây là dữ liệu đầu vào nạp cho AI phân tích (xem đối thủ đang làm gì, họ làm video hay ở chỗ nào, mình muốn làm ra sao, đang vướng hay chưa biết xử lý góc nào...). Em phải nạp dữ liệu và tìm tòi dần dần thì mới phản hồi giải pháp sát nhất cho từng người được, nên mọi người cứ mô tả càng chi tiết càng tốt cho em nhé!
-                </span>
-              </label>
-              <textarea id="profession" name="profession" rows="4" required placeholder="VD: Em làm luật sư doanh nghiệp chuẩn bị mở văn phòng luật riêng. Muốn làm video ngắn dạng case thực tế như kênh tiktok.com/@kenhmau... Thấy họ làm hay ở chỗ hook mở đầu rất gãy gọn, nhưng em chưa biết xử lý góc quay và băm phân cảnh thế nào để không bị khô khan..." class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm input-focus" oninput="saveDraft()"></textarea>
-            </div>
-
-            <div>
-              <label class="block text-xs font-semibold text-slate-300 mb-1.5">
-                Link video gần đây, kênh TikTok / YouTube, Facebook cá nhân hoặc kênh truyền thông của mình
-                <span class="text-slate-400 font-normal block text-[11px] leading-relaxed mt-0.5">
-                  Mọi người cứ gửi link video vừa làm gần đây, kênh TikTok, YouTube, Facebook cá nhân hay Fanpage truyền thông nhé. Để em vào xem và hiểu sản phẩm hơn, hiểu cách làm của mọi người hơn. Nó là một dạng dữ liệu trực quan giúp mình đỡ phải mô tả bằng lời ạ! Và em lưu thẳng vào danh bạ, mỗi lần bấm xem kênh là nhớ ra mọi người ngay luôn.
-                </span>
-              </label>
-
-              <div id="channel-links-wrapper" class="space-y-2">
-                <div class="channel-link-row flex items-center gap-2">
-                  <div class="relative flex-1">
-                    <input type="text" name="channelLink[]" placeholder="Dán link kênh / video / Facebook..." class="channel-link-input w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white placeholder-slate-500 outline-none text-xs sm:text-sm input-focus" oninput="saveDraft()">
-                    <i data-lucide="link" class="w-4 h-4 text-slate-500 absolute left-3 top-3"></i>
-                  </div>
-                </div>
-              </div>
-
-              <button type="button" onclick="addChannelLinkInput()" class="mt-2.5 inline-flex items-center gap-1.5 py-1.5 px-3 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-300 font-medium text-xs transition">
-                <i data-lucide="plus" class="w-3.5 h-3.5"></i>
-                <span>+ Thêm link khác (Video / Kênh / FB)</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- 2. HÀNH TRÌNH TỪ LÚC THẤY VIDEO ĐẾN KHI RA QUYẾT ĐỊNH -->
-        <div class="space-y-4 pt-4 border-t border-slate-800/80">
-          <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
-            <i data-lucide="compass" class="w-4 h-4"></i>
-            <span>2. Thế mọi người biết đến em qua hành trình thế nào ạ?</span>
-          </h3>
-
-          <div class="space-y-3">
-            <!-- CHAT BUBBLE MỒI CHUYỆN HÀNH TRÌNH -->
-            <div class="p-4 rounded-2xl bg-gradient-to-r from-amber-500/10 via-slate-900 to-slate-900/90 border border-amber-500/20 text-slate-300 text-xs sm:text-sm leading-relaxed space-y-2">
-              <div class="flex items-center gap-2 text-amber-300 font-semibold text-xs">
-                <i data-lucide="message-circle" class="w-4 h-4 text-amber-400 flex-shrink-0"></i>
-                <span>Em Việt tò mò muốn hỏi thật lòng:</span>
-              </div>
-              <p class="text-slate-300 leading-relaxed italic">
-                "Thế mọi người biết đến em qua hành trình thế nào ạ? Là tự nhiên lướt thấy một video ngẫu nhiên, hay thấy video quảng cáo? Xem quảng cáo xong rồi mới vào kênh lội xem thêm các video khác, hay nhắn tin tư vấn luôn? Có người bảo tư vấn xong còn phải lên mạng search tên em xem ông này làm ăn thế nào, có bị fake hay phốt gì không rồi mới dám đăng ký...
-              </p>
-              <p class="text-slate-400 text-[11px] leading-relaxed pt-1">
-                💡 <em>Chính em cũng đang mù tịt về hành trình này, chỉ biết tự nhiên được gặp và ngồi cùng mọi người ở lớp thôi. Mọi người kể lại chi tiết hành trình từ lúc thấy video đến khi ra quyết định cho em nghe với nhé!"</em>
-              </p>
-            </div>
-
-            <div>
-              <textarea id="impressedVideo" name="impressedVideo" rows="4" required placeholder="Kể cho em nghe hành trình của anh/chị: bắt đầu từ video nào, lướt thấy ở đâu, chi tiết nào làm anh/chị ấn tượng và ra quyết định chuyển khoản đăng ký nhé..." class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm input-focus" oninput="saveDraft()"></textarea>
-            </div>
-          </div>
-        </div>
-
-        <!-- 3. GÓP Ý KHÂU TƯ VẤN, BÁO GIÁ & MARKETING -->
-        <div class="space-y-4 pt-4 border-t border-slate-800/80">
-          <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
-            <i data-lucide="help-circle" class="w-4 h-4"></i>
-            <span>3. Lúc đăng ký & tư vấn, có chỗ nào làm anh/chị lấn cấn không?</span>
-          </h3>
-
-          <div>
-            <label for="feedbackMarketing" class="block text-xs font-semibold text-slate-300 mb-1.5">
-              Khâu tư vấn, báo giá, chính sách ưu đãi có chỗ nào chưa rõ ràng không?
-              <span class="text-slate-400 font-normal block text-[11px]">(Ví dụ: có học viên bảo lúc hỏi giá 3tr thì các bạn tư vấn lại quên không nói vụ <em>giảm 10% khi đăng ký nhóm từ 2 người</em>, nếu biết sớm đã rủ bạn bè đi cùng. Anh/chị thấy khâu này cần sửa gì để rõ ràng và tiện hơn cho học viên?)</span>
-            </label>
-            <textarea id="feedbackMarketing" name="feedbackMarketing" rows="3" placeholder="Góp ý thẳng thắn khâu tư vấn / báo giá / ưu đãi cho em nhé..." class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm input-focus" oninput="saveDraft()"></textarea>
-          </div>
-        </div>
-
-        <!-- 4. GÓP Ý 2 NGÀY TRỰC TIẾP TRÊN LỚP -->
-        <div class="space-y-4 pt-4 border-t border-slate-800/80">
-          <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
-            <i data-lucide="message-square-heart" class="w-4 h-4"></i>
-            <span>4. Trong 2 ngày học trên lớp, em cần làm tốt hơn điều gì?</span>
-          </h3>
-
-          <div class="space-y-3">
-            <div>
-              <label for="bestValue" class="block text-xs font-semibold text-slate-300 mb-1.5">
-                Điều anh/chị thấy tâm đắc và vỡ ra nhiều giá trị nhất sau 2 ngày? <span class="text-amber-400">*</span>
-              </label>
-              <textarea id="bestValue" name="bestValue" rows="2" required placeholder="VD: Tự tin cầm máy, tư duy bóc phân cảnh 3 tầng, ứng dụng AI đa ngành, định hướng marketing rõ ràng..." class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm input-focus" oninput="saveDraft()"></textarea>
-            </div>
-
-            <div>
-              <label for="feedbackClass" class="block text-xs font-semibold text-slate-300 mb-1.5">
-                Những điểm em cần khắc phục để các khóa sau trọn vẹn hơn:
-                <span class="text-slate-400 font-normal block text-[11px]">(Ví dụ: Khâu check-in vào lớp cần chặt chẽ hơn, gửi link khảo sát nhu cầu trước buổi học, hỏi han các bạn vắng/về sớm, dành 10p cuối nói rõ về khóa nâng cao...)</span>
-              </label>
-              <textarea id="feedbackClass" name="feedbackClass" rows="3" placeholder="Em lắng nghe từng góp ý của anh/chị để hoàn thiện hơn..." class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm input-focus" oninput="saveDraft()"></textarea>
-            </div>
-          </div>
-        </div>
-
-        <!-- 5. LỜI NHẮN NHỦ RIÊNG -->
-        <div class="space-y-4 pt-4 border-t border-slate-800/80">
-          <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
-            <i data-lucide="send" class="w-4 h-4"></i>
-            <span>5. Lời nhắn riêng gửi cho em Việt</span>
-          </h3>
-
-          <div>
-            <textarea id="personalMessage" name="personalMessage" rows="2" placeholder="Có điều gì muốn nhắn nhủ, chia sẻ thêm hoặc hẹn hôm nào offline cafe không anh/chị..." class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm input-focus" oninput="saveDraft()"></textarea>
-          </div>
-        </div>
-
-        <!-- Hidden input -->
-        <input type="hidden" id="course" name="course" value="Khóa Offline Thực Chiến">
-
-        <!-- SUBMIT BUTTON -->
-        <div class="pt-2">
-          <button type="submit" id="btn-submit" class="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-base shadow-xl shadow-amber-500/25 flex items-center justify-center gap-2 transition duration-200 active:scale-[0.98]">
-            <span id="btn-submit-text">Gửi chia sẻ cho em Việt</span>
-            <i data-lucide="send" class="w-4 h-4 text-slate-950"></i>
-          </button>
-        </div>
-
-      </form>
-
-    </div>
-
-    <!-- MÀN HÌNH CẢM ƠN (SUCCESS CARD) -->
-    <div id="success-container" class="glass-card rounded-3xl p-6 sm:p-8 border border-emerald-500/30 text-center space-y-5 hidden">
-      <div class="w-16 h-16 mx-auto rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-2xl shadow-lg shadow-emerald-500/10">
-        ☕
-      </div>
-
-      <div class="space-y-2">
-        <h2 class="heading-font text-2xl sm:text-3xl font-extrabold text-white">
-          Em cảm ơn anh/chị rất nhiều!
-        </h2>
-        <p class="text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
-          Em đã nhận được toàn bộ chia sẻ này. Em sẽ đọc từng dòng một, vào xem kênh của anh/chị và luôn sẵn sàng hỗ trợ anh/chị trên hành trình làm video nhé.
+      <!-- THƠ LỤC BÁT NỔI BẬT -->
+      <div class="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-amber-500/15 via-slate-900/90 to-emerald-500/10 border border-amber-500/30 text-center my-4">
+        <p class="italic text-base sm:text-lg font-bold text-amber-300 tracking-wide leading-relaxed">
+          "Tan lớp cất máy gập cam,<br>
+          Làm ly trà đá hỏi han chuyện nghề."
         </p>
       </div>
 
-      <!-- Quick Action Buttons -->
-      <div class="grid grid-cols-2 gap-2 text-xs pt-1 max-w-xs mx-auto">
-        <a href="https://zalo.me/0934688632" target="_blank" class="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold transition shadow-md shadow-blue-500/20">
+      <div class="space-y-3 text-slate-300 text-sm sm:text-base leading-relaxed">
+        <p>
+          2 ngày vừa qua được trực tiếp đứng lớp, cùng trao đổi và vỡ ra từng góc quay, từng dòng kịch bản với mọi người là khoảng thời gian em thực sự rất trân trọng.
+        </p>
+        <p>
+          Khóa học vừa xong, em làm trang này để ngồi lại lắng nghe thật lòng từ mọi người: từ lúc thấy video của em, khâu tư vấn đăng ký, cho đến 2 ngày học trên lớp. Có chỗ nào em làm chưa khéo, chưa trọn vẹn, mọi người cứ nói thẳng để em tự sửa mình và làm tốt hơn cho các lớp sau nhé!
+        </p>
+      </div>
+    </div>
+
+    <!-- FORM NỘI DUNG -->
+    <form id="feedback-form" onsubmit="handleFormSubmit(event)" class="space-y-6">
+
+      <!-- ========================================================================= -->
+      <!-- KHỐI 1: THÔNG TIN & LINK KÊNH -->
+      <!-- ========================================================================= -->
+      <div class="card-shell rounded-3xl p-6 sm:p-8 space-y-6">
+        <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
+          <div class="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center font-bold text-sm">
+            1
+          </div>
+          <div>
+            <h3 class="font-bold text-base sm:text-lg text-white">Thông tin liên hệ & Kênh của mình</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Để em lưu lại và tiện theo dõi sản phẩm mọi người làm</p>
+          </div>
+        </div>
+
+        <!-- Họ tên -->
+        <div class="space-y-2">
+          <label for="fullName" class="block text-sm font-semibold text-slate-200">
+            Họ và tên của mình <span class="text-amber-400">*</span>
+          </label>
+          <input type="text" id="fullName" name="fullName" required placeholder="Nhập họ và tên..." class="w-full px-4 py-3.5 rounded-2xl bg-[#0d131f] border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm sm:text-base focus:border-amber-500 transition" oninput="saveDraft()">
+        </div>
+
+        <!-- Số Zalo & Action Buttons -->
+        <div class="space-y-2.5">
+          <label for="phone" class="block text-sm font-semibold text-slate-200">
+            Số Zalo mọi người hay dùng <span class="text-amber-400">*</span>
+            <span class="text-slate-400 font-normal block text-xs mt-0.5">Để em lưu vào máy, tiện gửi tài liệu mới và nhắn tin trao đổi</span>
+          </label>
+          <input type="tel" id="phone" name="phone" required placeholder="Nhập số Zalo hay dùng..." class="w-full px-4 py-3.5 rounded-2xl bg-[#0d131f] border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm sm:text-base focus:border-amber-500 transition" oninput="saveDraft()">
+
+          <!-- Khối kết nối Zalo & iMessage -->
+          <div class="p-3.5 sm:p-4 rounded-2xl bg-[#0d131f]/90 border border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div class="text-xs text-slate-300">
+              <span>Số của em: <strong class="text-amber-300 font-bold text-sm">0934688632</strong></span>
+              <span class="block text-slate-400 text-[11px] mt-0.5">Nhắn khi cần em giúp gì ạ</span>
+            </div>
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+              <a href="https://zalo.me/0934688632" target="_blank" class="flex-1 sm:flex-none flex items-center justify-center gap-1.5 py-2 px-3.5 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 text-blue-300 font-medium text-xs transition">
+                <i data-lucide="message-circle" class="w-3.5 h-3.5 text-blue-400"></i>
+                <span>Kết nối Zalo</span>
+              </a>
+              <a href="sms:0934688632" class="flex-1 sm:flex-none flex items-center justify-center gap-1.5 py-2 px-3.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/30 text-emerald-300 font-medium text-xs transition">
+                <i data-lucide="message-square" class="w-3.5 h-3.5 text-emerald-400"></i>
+                <span>Nhắn iMessage</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mảng kinh doanh & định hướng làm sắp tới -->
+        <div class="space-y-2">
+          <label for="profession" class="block text-sm font-semibold text-slate-200">
+            Mảng kinh doanh & Định hướng làm video sắp tới với sản phẩm của mình <span class="text-amber-400">*</span>
+            <span class="text-slate-400 font-normal block text-xs leading-relaxed mt-1">
+              Mọi người mô tả kỹ mảng kinh doanh, sản phẩm, và gửi kèm cả <strong>link kênh muốn làm theo hoặc kênh đối thủ</strong> nhé. Em coi đây là dữ liệu đầu vào nạp cho AI phân tích (xem đối thủ đang làm gì, họ làm video hay ở chỗ nào, mình muốn làm ra sao, đang vướng hay chưa biết xử lý góc nào...). Em phải nạp dữ liệu và tìm tòi dần dần thì mới phản hồi giải pháp sát nhất cho từng người được, nên mọi người cứ mô tả càng chi tiết càng tốt cho em nhé!
+            </span>
+          </label>
+          <textarea id="profession" name="profession" rows="4" required placeholder="VD: Em làm luật sư doanh nghiệp chuẩn bị mở văn phòng luật riêng. Muốn làm video ngắn dạng case thực tế như kênh tiktok.com/@kenhmau... Thấy họ làm hay ở chỗ hook mở đầu rất gãy gọn, nhưng em chưa biết xử lý góc quay và băm phân cảnh thế nào để không bị khô khan..." class="w-full p-4 rounded-2xl bg-[#0d131f] border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm sm:text-base focus:border-amber-500 transition leading-relaxed" oninput="saveDraft()"></textarea>
+        </div>
+
+        <!-- Danh sách link kênh động -->
+        <div class="space-y-2.5">
+          <label class="block text-sm font-semibold text-slate-200">
+            Link video gần đây, kênh TikTok / YouTube, Facebook cá nhân hoặc kênh truyền thông của mình
+            <span class="text-slate-400 font-normal block text-xs leading-relaxed mt-1">
+              Mọi người cứ gửi link video vừa làm gần đây, kênh TikTok, YouTube, Facebook cá nhân hay Fanpage truyền thông nhé. Để em vào xem và hiểu sản phẩm hơn, hiểu cách làm của mọi người hơn. Nó là một dạng dữ liệu trực quan giúp mình đỡ phải mô tả bằng lời ạ! Và em lưu thẳng vào danh bạ, mỗi lần bấm xem kênh là nhớ ra mọi người ngay luôn.
+            </span>
+          </label>
+
+          <div id="channel-links-wrapper" class="space-y-2.5">
+            <div class="channel-link-row flex items-center gap-2">
+              <div class="relative flex-1">
+                <input type="text" name="channelLink[]" placeholder="Dán link kênh / video / Facebook..." class="channel-link-input w-full pl-10 pr-4 py-3 rounded-2xl bg-[#0d131f] border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm focus:border-amber-500 transition" oninput="saveDraft()">
+                <i data-lucide="link" class="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5"></i>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" onclick="addChannelLinkInput()" class="inline-flex items-center gap-2 py-2 px-4 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-300 font-medium text-xs sm:text-sm transition">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            <span>+ Thêm link khác (Video / Kênh / Facebook)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ========================================================================= -->
+      <!-- KHỐI 2: HÀNH TRÌNH BIẾT ĐẾN & MUA HÀNG -->
+      <!-- ========================================================================= -->
+      <div class="card-shell rounded-3xl p-6 sm:p-8 space-y-5">
+        <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
+          <div class="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center font-bold text-sm">
+            2
+          </div>
+          <div>
+            <h3 class="font-bold text-base sm:text-lg text-white">Thế mọi người biết đến em qua hành trình thế nào ạ?</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Bóc tách hành trình từ lúc thấy video đến khi ra quyết định</p>
+          </div>
+        </div>
+
+        <!-- Chat Bubble mồi chuyện -->
+        <div class="p-4 sm:p-5 rounded-2xl bg-[#0d131f] border border-amber-500/20 text-slate-300 text-sm leading-relaxed space-y-2">
+          <div class="flex items-center gap-2 text-amber-300 font-semibold text-xs sm:text-sm">
+            <i data-lucide="message-circle" class="w-4 h-4 text-amber-400 flex-shrink-0"></i>
+            <span>Em tò mò muốn hỏi thật lòng:</span>
+          </div>
+          <p class="italic text-slate-300 leading-relaxed">
+            "Thế mọi người biết đến em qua hành trình thế nào ạ? Là tự nhiên lướt thấy một video ngẫu nhiên, hay thấy video quảng cáo? Xem quảng cáo xong rồi mới vào kênh lội xem thêm các video khác, hay nhắn tin tư vấn luôn? Có người bảo tư vấn xong còn phải lên mạng search tên em xem ông này làm ăn thế nào, có bị fake hay phốt gì không rồi mới dám đăng ký...
+          </p>
+          <p class="text-slate-400 text-xs leading-relaxed pt-1">
+            💡 <em>Chính em cũng đang mù tịt về hành trình này, chỉ biết tự nhiên được gặp và ngồi cùng mọi người ở lớp thôi. Mọi người kể lại chi tiết hành trình từ lúc thấy video đến khi ra quyết định cho em nghe với nhé!"</em>
+          </p>
+        </div>
+
+        <div class="space-y-2">
+          <textarea id="impressedVideo" name="impressedVideo" rows="4" required placeholder="Kể cho em nghe hành trình của mình: bắt đầu từ video nào, lướt thấy ở đâu, chi tiết nào làm mình ấn tượng và ra quyết định chuyển khoản đăng ký nhé..." class="w-full p-4 rounded-2xl bg-[#0d131f] border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm sm:text-base focus:border-amber-500 transition leading-relaxed" oninput="saveDraft()"></textarea>
+        </div>
+      </div>
+
+      <!-- ========================================================================= -->
+      <!-- KHỐI 3: GÓP Ý KHÂU TƯ VẤN, BÁO GIÁ & MARKETING -->
+      <!-- ========================================================================= -->
+      <div class="card-shell rounded-3xl p-6 sm:p-8 space-y-4">
+        <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
+          <div class="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center font-bold text-sm">
+            3
+          </div>
+          <div>
+            <h3 class="font-bold text-base sm:text-lg text-white">Lúc đăng ký & tư vấn, có chỗ nào làm mình lấn cấn không?</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Góp ý khâu tư vấn giá, ưu đãi và chăm sóc</p>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <label for="feedbackMarketing" class="block text-xs sm:text-sm font-semibold text-slate-200 leading-relaxed">
+            Khâu tư vấn, báo giá, chính sách ưu đãi có chỗ nào chưa rõ ràng không?
+            <span class="text-slate-400 font-normal block text-xs leading-relaxed mt-1">
+              (Ví dụ: có học viên bảo lúc hỏi giá 3tr thì các bạn tư vấn lại quên không nói vụ <em>giảm 10% khi đăng ký nhóm từ 2 người</em>, nếu biết sớm đã rủ bạn bè đi cùng. Mọi người thấy khâu này cần sửa gì để rõ ràng và tiện hơn cho học viên?)
+            </span>
+          </label>
+          <textarea id="feedbackMarketing" name="feedbackMarketing" rows="3" placeholder="Góp ý thẳng thắn khâu tư vấn / báo giá / ưu đãi cho em nhé..." class="w-full p-4 rounded-2xl bg-[#0d131f] border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm sm:text-base focus:border-amber-500 transition leading-relaxed" oninput="saveDraft()"></textarea>
+        </div>
+      </div>
+
+      <!-- ========================================================================= -->
+      <!-- KHỐI 4: GÓP Ý 2 NGÀY TRỰC TIẾP TRÊN LỚP -->
+      <!-- ========================================================================= -->
+      <div class="card-shell rounded-3xl p-6 sm:p-8 space-y-5">
+        <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
+          <div class="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center font-bold text-sm">
+            4
+          </div>
+          <div>
+            <h3 class="font-bold text-base sm:text-lg text-white">Trong 2 ngày học trên lớp, em cần làm tốt hơn điều gì?</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Lắng nghe để em tự hoàn thiện mình cho các khóa sau</p>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <div class="space-y-2">
+            <label for="bestValue" class="block text-sm font-semibold text-slate-200">
+              Điều mình thấy tâm đắc và vỡ ra nhiều giá trị nhất sau 2 ngày? <span class="text-amber-400">*</span>
+            </label>
+            <textarea id="bestValue" name="bestValue" rows="3" required placeholder="VD: Tự tin cầm máy, tư duy bóc phân cảnh 3 tầng, ứng dụng AI đa ngành, định hướng marketing rõ ràng..." class="w-full p-4 rounded-2xl bg-[#0d131f] border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm sm:text-base focus:border-amber-500 transition leading-relaxed" oninput="saveDraft()"></textarea>
+          </div>
+
+          <div class="space-y-2">
+            <label for="feedbackClass" class="block text-sm font-semibold text-slate-200">
+              Những điểm em cần khắc phục để các khóa sau trọn vẹn hơn:
+              <span class="text-slate-400 font-normal block text-xs leading-relaxed mt-1">
+                (Ví dụ: Khâu check-in vào lớp cần chặt chẽ hơn, gửi link khảo sát nhu cầu trước buổi học, hỏi han các bạn vắng/về sớm, dành 10p cuối nói rõ về khóa nâng cao...)
+              </span>
+            </label>
+            <textarea id="feedbackClass" name="feedbackClass" rows="3" placeholder="Em lắng nghe từng góp ý để hoàn thiện hơn..." class="w-full p-4 rounded-2xl bg-[#0d131f] border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm sm:text-base focus:border-amber-500 transition leading-relaxed" oninput="saveDraft()"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================================================= -->
+      <!-- KHỐI 5: LỜI NHẮN NHỦ RIÊNG -->
+      <!-- ========================================================================= -->
+      <div class="card-shell rounded-3xl p-6 sm:p-8 space-y-4">
+        <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
+          <div class="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center font-bold text-sm">
+            5
+          </div>
+          <div>
+            <h3 class="font-bold text-base sm:text-lg text-white">Lời nhắn riêng gửi cho em</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Tâm sự riêng hoặc hẹn ngày cafe</p>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <textarea id="personalMessage" name="personalMessage" rows="2" placeholder="Có điều gì muốn nhắn nhủ, chia sẻ thêm hoặc hẹn hôm nào cafe không ạ..." class="w-full p-4 rounded-2xl bg-[#0d131f] border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm sm:text-base focus:border-amber-500 transition leading-relaxed" oninput="saveDraft()"></textarea>
+        </div>
+      </div>
+
+      <!-- Hidden Course Input -->
+      <input type="hidden" id="course" name="course" value="Khóa Offline Thực Chiến">
+
+      <!-- SUBMIT BUTTON -->
+      <div class="pt-2">
+        <button type="submit" id="btn-submit" class="w-full py-4 sm:py-5 px-6 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-base sm:text-lg shadow-xl shadow-amber-500/25 flex items-center justify-center gap-2.5 transition duration-200 active:scale-[0.98]">
+          <span id="btn-submit-text">Gửi chia sẻ cho em</span>
+          <i data-lucide="send" class="w-5 h-5 text-slate-950"></i>
+        </button>
+      </div>
+
+    </form>
+
+    <!-- MÀN HÌNH CẢM ƠN (SUCCESS CARD) -->
+    <div id="success-container" class="card-shell rounded-3xl p-8 sm:p-10 border border-emerald-500/30 text-center space-y-6 hidden">
+      <div class="w-20 h-20 mx-auto rounded-3xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-3xl shadow-lg shadow-emerald-500/10">
+        ☕
+      </div>
+
+      <div class="space-y-3">
+        <h2 class="heading-font text-2xl sm:text-3xl font-extrabold text-white">
+          Em cảm ơn mọi người rất nhiều!
+        </h2>
+        <p class="text-sm sm:text-base text-slate-300 max-w-md mx-auto leading-relaxed">
+          Em đã nhận được toàn bộ chia sẻ này. Em sẽ đọc từng dòng một, vào xem kênh của mọi người và luôn sẵn sàng hỗ trợ mọi người trên hành trình làm video nhé.
+        </p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="grid grid-cols-2 gap-3 text-xs sm:text-sm pt-2 max-w-sm mx-auto">
+        <a href="https://zalo.me/0934688632" target="_blank" class="flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-semibold transition shadow-md shadow-blue-500/20">
           <i data-lucide="message-circle" class="w-4 h-4"></i>
-          <span>Nhắn Zalo em Việt</span>
+          <span>Nhắn Zalo em</span>
         </a>
-        <a href="sms:0934688632" class="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold transition shadow-md shadow-emerald-500/20">
+        <a href="sms:0934688632" class="flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold transition shadow-md shadow-emerald-500/20">
           <i data-lucide="message-square" class="w-4 h-4"></i>
           <span>Nhắn iMessage</span>
         </a>
       </div>
 
-      <div class="pt-3 border-t border-slate-800 text-xs text-slate-400">
-        <span>Số em Việt: <strong class="text-amber-300 font-semibold">0934688632</strong> (Nhắn khi cần em giúp gì ạ)</span>
-        <p class="text-white font-semibold mt-1">Em Việt (VietMac) 🚀</p>
+      <div class="pt-4 border-t border-slate-800 text-xs text-slate-400">
+        <span>Số của em: <strong class="text-amber-300 font-semibold">0934688632</strong> (Nhắn khi cần em giúp gì ạ)</span>
+        <p class="text-white font-semibold mt-1.5 text-sm">VietMac 🚀</p>
       </div>
     </div>
 
@@ -338,24 +385,24 @@
 
   <!-- MODAL CHỌN KHÓA HỌC -->
   <div id="course-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
-    <div class="glass-card rounded-3xl p-6 max-w-sm w-full border border-slate-700 shadow-2xl space-y-4">
+    <div class="card-shell rounded-3xl p-6 max-w-sm w-full shadow-2xl space-y-4">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-        <h4 class="font-bold text-sm text-white">Chọn khóa anh/chị vừa học</h4>
-        <button type="button" onclick="closeCourseSelector()" class="text-slate-400 hover:text-white">
-          <i data-lucide="x" class="w-4 h-4"></i>
+        <h4 class="font-bold text-sm sm:text-base text-white">Chọn khóa mình vừa học</h4>
+        <button type="button" onclick="closeCourseSelector()" class="text-slate-400 hover:text-white p-1">
+          <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
-      <div class="space-y-2 text-xs">
-        <button type="button" onclick="selectCourse('Lớp Offline Thực Chiến - Hà Nội')" class="w-full text-left p-3 rounded-xl bg-slate-900 hover:bg-amber-500/10 border border-slate-800 text-slate-200">
+      <div class="space-y-2 text-xs sm:text-sm">
+        <button type="button" onclick="selectCourse('Lớp Offline Thực Chiến - Hà Nội')" class="w-full text-left p-3.5 rounded-2xl bg-[#0d131f] hover:bg-amber-500/10 border border-slate-800 text-slate-200">
           🎬 Lớp Offline Thực Chiến - Hà Nội
         </button>
-        <button type="button" onclick="selectCourse('Lớp Offline Thực Chiến - Sài Gòn')" class="w-full text-left p-3 rounded-xl bg-slate-900 hover:bg-amber-500/10 border border-slate-800 text-slate-200">
+        <button type="button" onclick="selectCourse('Lớp Offline Thực Chiến - Sài Gòn')" class="w-full text-left p-3.5 rounded-2xl bg-[#0d131f] hover:bg-amber-500/10 border border-slate-800 text-slate-200">
           🌴 Lớp Offline Thực Chiến - Sài Gòn
         </button>
-        <button type="button" onclick="selectCourse('Lớp Offline Thực Chiến - Hải Phòng')" class="w-full text-left p-3 rounded-xl bg-slate-900 hover:bg-amber-500/10 border border-slate-800 text-slate-200">
+        <button type="button" onclick="selectCourse('Lớp Offline Thực Chiến - Hải Phòng')" class="w-full text-left p-3.5 rounded-2xl bg-[#0d131f] hover:bg-amber-500/10 border border-slate-800 text-slate-200">
           ⚓ Lớp Offline Thực Chiến - Hải Phòng
         </button>
-        <button type="button" onclick="selectCourse('Lớp Online Video Masterclass')" class="w-full text-left p-3 rounded-xl bg-slate-900 hover:bg-amber-500/10 border border-slate-800 text-slate-200">
+        <button type="button" onclick="selectCourse('Lớp Online Video Masterclass')" class="w-full text-left p-3.5 rounded-2xl bg-[#0d131f] hover:bg-amber-500/10 border border-slate-800 text-slate-200">
           💻 Lớp Online Video Masterclass
         </button>
       </div>
@@ -363,27 +410,27 @@
   </div>
 
   <!-- FOOTER -->
-  <footer class="py-4 text-center text-xs text-slate-500 border-t border-slate-800/60">
-    <div class="max-w-xl mx-auto px-4">
-      Tự động lưu nháp &bull; Em Việt trực tiếp đọc và phản hồi
+  <footer class="py-6 text-center text-xs text-slate-500 border-t border-slate-800/60 mt-10">
+    <div class="max-w-3xl mx-auto px-4">
+      Tự động lưu nháp &bull; Em trực tiếp đọc và phản hồi
     </div>
   </footer>
 
   <!-- JS LOGIC -->
   <script>
     const GOOGLE_SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbz_SURVEY_VIETMAC_PLACEHOLDER/exec";
-    const STORAGE_KEY = "TRADA_GENUINE_FEEDBACK_DRAFT_V2";
+    const STORAGE_KEY = "TRADA_FEEDBACK_RESPONSIVE_V3";
 
     function addChannelLinkInput(value = '') {
       const wrapper = document.getElementById('channel-links-wrapper');
       const row = document.createElement('div');
-      row.className = 'channel-link-row flex items-center gap-2 animate-fade-in';
+      row.className = 'channel-link-row flex items-center gap-2';
       row.innerHTML = `
         <div class="relative flex-1">
-          <input type="text" name="channelLink[]" value="${value.replace(/"/g, '&quot;')}" placeholder="Dán thêm link kênh / video / FB khác..." class="channel-link-input w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white placeholder-slate-500 outline-none text-xs sm:text-sm input-focus" oninput="saveDraft()">
-          <i data-lucide="link" class="w-4 h-4 text-slate-500 absolute left-3 top-3"></i>
+          <input type="text" name="channelLink[]" value="${value.replace(/"/g, '&quot;')}" placeholder="Dán thêm link kênh / video / FB khác..." class="channel-link-input w-full pl-10 pr-4 py-3 rounded-2xl bg-[#0d131f] border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm focus:border-amber-500 transition" oninput="saveDraft()">
+          <i data-lucide="link" class="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5"></i>
         </div>
-        <button type="button" onclick="removeChannelLinkInput(this)" class="p-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 transition flex-shrink-0" title="Xóa link này">
+        <button type="button" onclick="removeChannelLinkInput(this)" class="p-3 rounded-2xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 transition flex-shrink-0" title="Xóa link này">
           <i data-lucide="trash-2" class="w-4 h-4"></i>
         </button>
       `;
@@ -411,7 +458,6 @@
         phone: document.getElementById('phone').value,
         profession: document.getElementById('profession').value,
         channelLinks: getAllChannelLinks(),
-        source: (document.querySelector('input[name="source"]:checked') || {}).value || '',
         impressedVideo: document.getElementById('impressedVideo').value,
         feedbackMarketing: document.getElementById('feedbackMarketing').value,
         bestValue: document.getElementById('bestValue').value,
@@ -435,13 +481,8 @@
         if (d.bestValue) document.getElementById('bestValue').value = d.bestValue;
         if (d.feedbackClass) document.getElementById('feedbackClass').value = d.feedbackClass;
         if (d.personalMessage) document.getElementById('personalMessage').value = d.personalMessage;
-        if (d.source) {
-          const radio = document.querySelector(`input[name="source"][value="${d.source}"]`);
-          if (radio) radio.checked = true;
-        }
         if (d.course) setCourse(d.course);
 
-        // Khôi phục danh sách link kênh
         if (d.channelLinks && Array.isArray(d.channelLinks) && d.channelLinks.length > 0) {
           const firstInput = document.querySelector('.channel-link-input');
           if (firstInput) firstInput.value = d.channelLinks[0];
@@ -487,7 +528,7 @@
       const btn = document.getElementById('btn-submit');
       const btnText = document.getElementById('btn-submit-text');
       btn.disabled = true;
-      btnText.textContent = 'Đang gửi cho em Việt...';
+      btnText.textContent = 'Đang gửi cho em...';
 
       const allLinks = getAllChannelLinks().join('\n');
 
@@ -514,18 +555,18 @@
             body: JSON.stringify(payload)
           });
         } else {
-          const arr = JSON.parse(localStorage.getItem('TRADA_SAVED_SUBMISSIONS') || '[]');
+          const arr = JSON.parse(localStorage.getItem('TRADA_SAVED_SUBMISSIONS_V3') || '[]');
           arr.push(payload);
-          localStorage.setItem('TRADA_SAVED_SUBMISSIONS', JSON.stringify(arr));
+          localStorage.setItem('TRADA_SAVED_SUBMISSIONS_V3', JSON.stringify(arr));
         }
 
         localStorage.removeItem(STORAGE_KEY);
-        document.getElementById('survey-container').classList.add('hidden');
+        document.getElementById('feedback-form').classList.add('hidden');
         document.getElementById('success-container').classList.remove('hidden');
         window.scrollTo({ top: 0, behavior: 'smooth' });
 
       } catch (err) {
-        document.getElementById('survey-container').classList.add('hidden');
+        document.getElementById('feedback-form').classList.add('hidden');
         document.getElementById('success-container').classList.remove('hidden');
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
