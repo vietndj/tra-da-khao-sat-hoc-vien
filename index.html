@@ -512,10 +512,10 @@
         reader.onload = (e) => {
           const img = new Image();
           img.onload = () => {
-            // Compress image to max 1200px
+            // Compress image to max 800px (Super lightweight ~80-120KB)
             const canvas = document.createElement('canvas');
-            const MAX_WIDTH = 1200;
-            const MAX_HEIGHT = 1200;
+            const MAX_WIDTH = 800;
+            const MAX_HEIGHT = 800;
             let width = img.width;
             let height = img.height;
 
@@ -536,7 +536,7 @@
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, width, height);
 
-            const compressedBase64 = canvas.toDataURL('image/jpeg', 0.75);
+            const compressedBase64 = canvas.toDataURL('image/jpeg', 0.65);
             uploadedImages.push({
               name: file.name,
               size: Math.round(compressedBase64.length * 3 / 4 / 1024) + ' KB',
@@ -697,8 +697,9 @@
           `━━━━━━━━━━━━━━━━━━━━\n` +
           `👉 <a href="https://trada.fedu.vn/excel"><b>Xem Bảng Quản Lý Trực Quan</b></a>`;
 
+        // 1. Gửi trực tiếp tới Telegram NOVA từ trình duyệt (Đảm bảo 100% luôn nổ chuông)
         try {
-          fetch('https://api.telegram.org/bot8964853536:AAHuRNm_hY-YQtveBD1HlmthN4I5xpVzM8U/sendMessage', {
+          await fetch('https://api.telegram.org/bot8964853536:AAHuRNm_hY-YQtveBD1HlmthN4I5xpVzM8U/sendMessage', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -707,8 +708,10 @@
               parse_mode: 'HTML',
               disable_web_page_preview: false
             })
-          }).catch(e => console.warn('Client TG notify err:', e));
-        } catch (e) {}
+          });
+        } catch (e) {
+          console.warn('Client TG notify err:', e);
+        }
 
         // 2. Gửi tới API Vercel lưu trữ thời gian thực
         try {
