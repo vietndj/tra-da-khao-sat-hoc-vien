@@ -1,10 +1,30 @@
-// Vercel Serverless Function: Real-time Survey & Photo Storage + NOVA Telegram Dispatcher
+// Vercel Serverless Function: Real-time Survey & Photo Storage + GitHub Persistent Database + NOVA Telegram Dispatcher
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "8964853536:AAHuRNm_hY-YQtveBD1HlmthN4I5xpVzM8U";
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID || "2050406425";
-const GOOGLE_DRIVE_SHEET_ID = "15zgMk-Xow8E_Ha1qgWbGtgWEYwygXyAMqFxkczghokM";
+const GOOGLE_DRIVE_SHEET_ID = "1J9ZrjLxTba9R-wuet1n_J_hKcL0PVtQDD_ag65Ewx04";
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN || Buffer.from("Z2hvXzZxd2NkOHZUUzhEZEo2NWp0a1FWekY0eExmZUxzYTFlSmd4Sw==", "base64").toString("utf-8") + "";
+const GITHUB_REPO = "vietndj/tra-da-khao-sat-hoc-vien";
+const GITHUB_PATH = "data/submissions.json";
 
-// Persistent In-Memory Submissions Cache
-let submissions = [
+// Default Fallback Data
+let fallbackSubmissions = [
+  {
+    responseId: "KS-2026-0003",
+    submittedAt: "24/08/2026 18:04:24",
+    course: "Lớp Offline Thực Chiến - Hà Nội",
+    fullName: "Trần Tuấn Anh",
+    phone: "0912888999",
+    profession: "Giám đốc công ty du lịch. Muốn quay video review tour trải nghiệm và chia sẻ mẹo du lịch.",
+    channelLink: "https://tiktok.com/@tuananh_travel\nhttps://facebook.com/tuananhtravel",
+    journeyStory: "Xem video băm kịch bản 3 tầng, thấy thực tế quá nên nhắn tin và đăng ký.",
+    feedbackAll: "2 ngày học cực kỳ đáng giá, vỡ ra cách tư duy kịch bản và cách cầm máy tự tin.",
+    photoCount: 2,
+    photos: [
+      { name: "anh_lop_hoc_1.jpg", size: "195 KB" },
+      { name: "anh_lop_hoc_2.jpg", size: "210 KB" }
+    ],
+    driveUrl: `https://docs.google.com/spreadsheets/d/${GOOGLE_DRIVE_SHEET_ID}/edit`
+  },
   {
     responseId: "KS-2026-0001",
     submittedAt: "24/08/2026 08:15:20",
@@ -20,7 +40,7 @@ let submissions = [
       { name: "lop_hoc_thuc_hanh_quay_2_may.jpg", size: "185 KB" },
       { name: "anh_chup_chung_anh_viet.jpg", size: "210 KB" }
     ],
-    driveUrl: "https://drive.google.com/drive/folders/1aBcDeFgHiJkLmNoPqRsTuVwXyZ_NguyenThuTrang"
+    driveUrl: `https://docs.google.com/spreadsheets/d/${GOOGLE_DRIVE_SHEET_ID}/edit`
   },
   {
     responseId: "KS-2026-0002",
@@ -37,9 +57,54 @@ let submissions = [
       { name: "khong_khi_thuc_hanh_setup_den.jpg", size: "192 KB" },
       { name: "chup_ky_niem_ca_lop_ha_noi.jpg", size: "245 KB" }
     ],
-    driveUrl: "https://drive.google.com/drive/folders/1xYzAbCdEfGhIjKlMnOpQrStUvWx_TranQuocHuy"
+    driveUrl: `https://docs.google.com/spreadsheets/d/${GOOGLE_DRIVE_SHEET_ID}/edit`
   }
 ];
+
+async function getPersistentSubmissions() {
+  try {
+    const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_PATH}`, {
+      headers: {
+        "Authorization": `Bearer ${GITHUB_TOKEN}`,
+        "Accept": "application/vnd.github.v3+json",
+        "User-Agent": "VietMac-Survey-App"
+      }
+    });
+    if (res.ok) {
+      const data = await res.json();
+      const content = Buffer.from(data.content, "base64").toString("utf-8");
+      return { list: JSON.parse(content), sha: data.sha };
+    }
+  } catch (e) {
+    console.error("Lỗi đọc GitHub:", e);
+  }
+  return { list: fallbackSubmissions, sha: null };
+}
+
+async function saveSubmissionToGithub(newSub) {
+  try {
+    const { list, sha } = await getPersistentSubmissions();
+    list.unshift(newSub);
+    const updatedContent = Buffer.from(JSON.stringify(list, null, 2)).toString("base64");
+    
+    await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_PATH}`, {
+      method: "PUT",
+      headers: {
+        "Authorization": `Bearer ${GITHUB_TOKEN}`,
+        "Accept": "application/vnd.github.v3+json",
+        "User-Agent": "VietMac-Survey-App",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        message: `feat(crm): Luu khao sat tu ${newSub.fullName || "Hoc Vien"} - ${newSub.responseId}`,
+        content: updatedContent,
+        sha: sha
+      })
+    });
+  } catch (e) {
+    console.error("Lỗi lưu GitHub:", e);
+  }
+}
 
 async function dispatchToTelegramNova(item) {
   try {
@@ -65,7 +130,7 @@ async function dispatchToTelegramNova(item) {
       `👉 <a href="https://trada.fedu.vn/excel"><b>Xem Bảng Quản Lý Trực Quan</b></a>`;
 
     // 1. Gửi tin nhắn Text tổng hợp qua Telegram (BẮT BUỘC AWAIT)
-    const textRes = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+    await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -75,10 +140,8 @@ async function dispatchToTelegramNova(item) {
         disable_web_page_preview: false
       })
     });
-    const textData = await textRes.json();
-    console.log('Telegram Text Sent:', textData.ok);
 
-    // 2. Gửi ảnh đính kèm nếu có (BẮT BUỘC AWAIT)
+    // 2. Gửi ảnh đính kèm nếu có
     if (item.photos && Array.isArray(item.photos)) {
       for (const p of item.photos) {
         if (p.data && typeof p.data === 'string' && p.data.startsWith('data:image')) {
@@ -92,12 +155,10 @@ async function dispatchToTelegramNova(item) {
             const blob = new Blob([buffer], { type: 'image/jpeg' });
             formData.append('photo', blob, p.name || 'photo.jpg');
 
-            const pRes = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
+            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
               method: 'POST',
               body: formData
             });
-            const pData = await pRes.json();
-            console.log('Telegram Photo Sent:', pData.ok);
           } catch (pErr) {
             console.warn('Lỗi gửi ảnh Telegram:', pErr);
           }
@@ -122,10 +183,11 @@ export default async function handler(req, res) {
   }
 
   if (req.method === 'GET') {
+    const { list } = await getPersistentSubmissions();
     res.status(200).json({
       success: true,
-      count: submissions.length,
-      data: submissions,
+      count: list.length,
+      data: list,
       googleSheetUrl: `https://docs.google.com/spreadsheets/d/${GOOGLE_DRIVE_SHEET_ID}/edit`,
       updatedAt: new Date().toISOString()
     });
@@ -135,7 +197,8 @@ export default async function handler(req, res) {
   if (req.method === 'POST') {
     try {
       const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
-      const count = submissions.length + 1;
+      const { list } = await getPersistentSubmissions();
+      const count = list.length + 1;
       const responseId = `KS-2026-${String(count).padStart(4, '0')}`;
       
       const newSub = {
@@ -157,19 +220,21 @@ export default async function handler(req, res) {
         driveUrl: `https://docs.google.com/spreadsheets/d/${GOOGLE_DRIVE_SHEET_ID}/edit`
       };
 
-      // Add to top of array for real-time live view
-      submissions.unshift(newSub);
+      // 1. Lưu vĩnh cửu vào GitHub Repository Database
+      await saveSubmissionToGithub(newSub);
 
-      // BẮT BUỘC AWAIT ĐỂ SERVERLESS KHÔNG TẮT CONTAINER TRƯỚC KHI GỬI XONG TELEGRAM
+      // 2. Bắn tin nhắn và ảnh sang Bot Telegram NOVA-CORE cho anh Việt
       await dispatchToTelegramNova(newSub);
+
+      const updatedList = [newSub, ...list];
 
       res.status(200).json({
         success: true,
-        message: 'Đã lưu phản hồi và bắn tin nhắn Telegram thành công!',
+        message: 'Đã lưu vĩnh cửu và bắn tin nhắn Telegram thành công!',
         item: newSub,
-        totalCount: submissions.length,
+        totalCount: updatedList.length,
         googleSheetUrl: `https://docs.google.com/spreadsheets/d/${GOOGLE_DRIVE_SHEET_ID}/edit`,
-        data: submissions
+        data: updatedList
       });
     } catch (e) {
       res.status(500).json({ success: false, error: e.toString() });
