@@ -258,80 +258,29 @@
       </div>
 
       <!-- ========================================================================= -->
-      <!-- KHỐI 3: GÓP Ý KHÂU TƯ VẤN, BÁO GIÁ & MARKETING -->
+      <!-- KHỐI 3: GÓP Ý THẲNG THẮN ĐỂ EM TỰ SỬA MÌNH & LỜI NHẮN RIÊNG -->
       <!-- ========================================================================= -->
-      <div class="card-shell rounded-3xl p-6 sm:p-8 space-y-4">
+      <div class="card-shell rounded-3xl p-6 sm:p-8 space-y-5">
         <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
           <div class="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center font-bold text-sm">
             3
           </div>
           <div>
-            <h3 class="font-bold text-base sm:text-lg text-white">Lúc đăng ký & tư vấn, có chỗ nào làm mình lấn cấn không?</h3>
-            <p class="text-xs text-slate-400 mt-0.5">Góp ý khâu tư vấn giá, ưu đãi và chăm sóc</p>
+            <h3 class="font-bold text-base sm:text-lg text-white">Góp ý thật lòng & Lời nhắn gửi riêng cho em</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Từ khâu tư vấn, 2 ngày ở lớp đến bất kỳ điều gì em cần làm tốt hơn</p>
           </div>
         </div>
 
-        <div class="space-y-2">
-          <label for="feedbackMarketing" class="block text-xs sm:text-sm font-semibold text-slate-200 leading-relaxed">
-            Khâu tư vấn, báo giá, chính sách ưu đãi có chỗ nào chưa rõ ràng không?
-            <span class="text-slate-400 font-normal block text-xs leading-relaxed mt-1">
-              (Ví dụ: có học viên bảo lúc hỏi giá 3tr thì các bạn tư vấn lại quên không nói vụ <em>giảm 10% khi đăng ký nhóm từ 2 người</em>, nếu biết sớm đã rủ bạn bè đi cùng. Mọi người thấy khâu này cần sửa gì để rõ ràng và tiện hơn cho học viên?)
+        <div class="space-y-3">
+          <label for="feedbackAll" class="block text-sm font-semibold text-slate-200 leading-relaxed">
+            Mọi người chia sẻ thẳng thắn tất cả những điều cần em hoàn thiện nhé: <span class="text-amber-400">*</span>
+            <span class="text-slate-400 font-normal block text-xs leading-relaxed mt-1.5 space-y-1">
+              <span>• <strong>Khâu tư vấn & báo giá:</strong> Có chỗ nào chưa rõ ràng (như ưu đãi nhóm 2 người giảm 10%...)?</span><br>
+              <span>• <strong>2 ngày học trên lớp:</strong> Điều tâm đắc nhất, nhịp giảng, bài tập, khâu check-in, hay điều em cần khắc phục?</span><br>
+              <span>• <strong>Lời nhắn riêng:</strong> Tâm sự hoặc hẹn hôm nào ngồi cafe cùng em...</span>
             </span>
           </label>
-          <textarea id="feedbackMarketing" name="feedbackMarketing" rows="3" placeholder="Góp ý thẳng thắn khâu tư vấn / báo giá / ưu đãi cho em nhé..." class="w-full p-4 rounded-2xl bg-[#0d131f] border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm sm:text-base focus:border-amber-500 transition leading-relaxed" oninput="saveDraft()"></textarea>
-        </div>
-      </div>
-
-      <!-- ========================================================================= -->
-      <!-- KHỐI 4: GÓP Ý 2 NGÀY TRỰC TIẾP TRÊN LỚP -->
-      <!-- ========================================================================= -->
-      <div class="card-shell rounded-3xl p-6 sm:p-8 space-y-5">
-        <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
-          <div class="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center font-bold text-sm">
-            4
-          </div>
-          <div>
-            <h3 class="font-bold text-base sm:text-lg text-white">Trong 2 ngày học trên lớp, em cần làm tốt hơn điều gì?</h3>
-            <p class="text-xs text-slate-400 mt-0.5">Lắng nghe để em tự hoàn thiện mình cho các khóa sau</p>
-          </div>
-        </div>
-
-        <div class="space-y-4">
-          <div class="space-y-2">
-            <label for="bestValue" class="block text-sm font-semibold text-slate-200">
-              Điều mình thấy tâm đắc và vỡ ra nhiều giá trị nhất sau 2 ngày? <span class="text-amber-400">*</span>
-            </label>
-            <textarea id="bestValue" name="bestValue" rows="3" required placeholder="VD: Tự tin cầm máy, tư duy bóc phân cảnh 3 tầng, ứng dụng AI đa ngành, định hướng marketing rõ ràng..." class="w-full p-4 rounded-2xl bg-[#0d131f] border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm sm:text-base focus:border-amber-500 transition leading-relaxed" oninput="saveDraft()"></textarea>
-          </div>
-
-          <div class="space-y-2">
-            <label for="feedbackClass" class="block text-sm font-semibold text-slate-200">
-              Những điểm em cần khắc phục để các khóa sau trọn vẹn hơn:
-              <span class="text-slate-400 font-normal block text-xs leading-relaxed mt-1">
-                (Ví dụ: Khâu check-in vào lớp cần chặt chẽ hơn, gửi link khảo sát nhu cầu trước buổi học, hỏi han các bạn vắng/về sớm, dành 10p cuối nói rõ về khóa nâng cao...)
-              </span>
-            </label>
-            <textarea id="feedbackClass" name="feedbackClass" rows="3" placeholder="Em lắng nghe từng góp ý để hoàn thiện hơn..." class="w-full p-4 rounded-2xl bg-[#0d131f] border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm sm:text-base focus:border-amber-500 transition leading-relaxed" oninput="saveDraft()"></textarea>
-          </div>
-        </div>
-      </div>
-
-      <!-- ========================================================================= -->
-      <!-- KHỐI 5: LỜI NHẮN NHỦ RIÊNG -->
-      <!-- ========================================================================= -->
-      <div class="card-shell rounded-3xl p-6 sm:p-8 space-y-4">
-        <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
-          <div class="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center font-bold text-sm">
-            5
-          </div>
-          <div>
-            <h3 class="font-bold text-base sm:text-lg text-white">Lời nhắn riêng gửi cho em</h3>
-            <p class="text-xs text-slate-400 mt-0.5">Tâm sự riêng hoặc hẹn ngày cafe</p>
-          </div>
-        </div>
-
-        <div class="space-y-2">
-          <textarea id="personalMessage" name="personalMessage" rows="2" placeholder="Có điều gì muốn nhắn nhủ, chia sẻ thêm hoặc hẹn hôm nào cafe không ạ..." class="w-full p-4 rounded-2xl bg-[#0d131f] border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm sm:text-base focus:border-amber-500 transition leading-relaxed" oninput="saveDraft()"></textarea>
+          <textarea id="feedbackAll" name="feedbackAll" rows="5" required placeholder="Mọi người cứ gõ tự nhiên và thoải mái tất cả những gì muốn nhắn nhủ hoặc góp ý để em tự sửa mình nhé..." class="w-full p-4 rounded-2xl bg-[#0d131f] border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm sm:text-base focus:border-amber-500 transition leading-relaxed" oninput="saveDraft()"></textarea>
         </div>
       </div>
 
@@ -459,10 +408,7 @@
         profession: document.getElementById('profession').value,
         channelLinks: getAllChannelLinks(),
         impressedVideo: document.getElementById('impressedVideo').value,
-        feedbackMarketing: document.getElementById('feedbackMarketing').value,
-        bestValue: document.getElementById('bestValue').value,
-        feedbackClass: document.getElementById('feedbackClass').value,
-        personalMessage: document.getElementById('personalMessage').value,
+        feedbackAll: document.getElementById('feedbackAll').value,
         course: document.getElementById('course').value
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
@@ -477,10 +423,7 @@
         if (d.phone) document.getElementById('phone').value = d.phone;
         if (d.profession) document.getElementById('profession').value = d.profession;
         if (d.impressedVideo) document.getElementById('impressedVideo').value = d.impressedVideo;
-        if (d.feedbackMarketing) document.getElementById('feedbackMarketing').value = d.feedbackMarketing;
-        if (d.bestValue) document.getElementById('bestValue').value = d.bestValue;
-        if (d.feedbackClass) document.getElementById('feedbackClass').value = d.feedbackClass;
-        if (d.personalMessage) document.getElementById('personalMessage').value = d.personalMessage;
+        if (d.feedbackAll) document.getElementById('feedbackAll').value = d.feedbackAll;
         if (d.course) setCourse(d.course);
 
         if (d.channelLinks && Array.isArray(d.channelLinks) && d.channelLinks.length > 0) {
@@ -539,10 +482,7 @@
         profession: document.getElementById('profession').value.trim(),
         channelLink: allLinks || 'Chưa gửi link',
         journeyStory: document.getElementById('impressedVideo').value.trim(),
-        feedbackMarketing: document.getElementById('feedbackMarketing').value.trim() || 'Không có góp ý',
-        bestValue: document.getElementById('bestValue').value.trim(),
-        feedbackClass: document.getElementById('feedbackClass').value.trim() || 'Không có góp ý',
-        personalMessage: document.getElementById('personalMessage').value.trim(),
+        feedbackAll: document.getElementById('feedbackAll').value.trim(),
         submittedAt: new Date().toISOString()
       };
 
