@@ -181,14 +181,26 @@
             </div>
 
             <div>
-              <label for="channelLink" class="block text-xs font-semibold text-slate-300 mb-1.5">
-                Link Kênh hoặc Facebook hiện tại của mình (nếu đã có)
-                <span class="text-slate-400 font-normal block text-[11px]">Gửi link để em vào xem các video đầu tay mọi người làm và bấm follow nhé</span>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5">
+                Link video gần đây, kênh TikTok / YouTube, Facebook cá nhân hoặc kênh truyền thông của mình
+                <span class="text-slate-400 font-normal block text-[11px] leading-relaxed mt-0.5">
+                  Mọi người cứ gửi link video vừa làm gần đây, kênh TikTok, YouTube, Facebook cá nhân hay Fanpage truyền thông nhé. Để em vào xem và hiểu sản phẩm hơn, hiểu cách làm của mọi người hơn. Nó là một dạng dữ liệu trực quan giúp mình đỡ phải mô tả bằng lời ạ! Và em lưu thẳng vào danh bạ, mỗi lần bấm xem kênh là nhớ ra mọi người ngay luôn.
+                </span>
               </label>
-              <div class="relative">
-                <input type="text" id="channelLink" name="channelLink" placeholder="https://tiktok.com/@kenh_cua_ban hoặc link FB cá nhân..." class="w-full pl-9 pr-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm input-focus" oninput="saveDraft()">
-                <i data-lucide="link" class="w-4 h-4 text-slate-500 absolute left-3 top-3.5"></i>
+
+              <div id="channel-links-wrapper" class="space-y-2">
+                <div class="channel-link-row flex items-center gap-2">
+                  <div class="relative flex-1">
+                    <input type="text" name="channelLink[]" placeholder="Dán link kênh / video / Facebook..." class="channel-link-input w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white placeholder-slate-500 outline-none text-xs sm:text-sm input-focus" oninput="saveDraft()">
+                    <i data-lucide="link" class="w-4 h-4 text-slate-500 absolute left-3 top-3"></i>
+                  </div>
+                </div>
               </div>
+
+              <button type="button" onclick="addChannelLinkInput()" class="mt-2.5 inline-flex items-center gap-1.5 py-1.5 px-3 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-300 font-medium text-xs transition">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                <span>+ Thêm link khác (Video / Kênh / FB)</span>
+              </button>
             </div>
           </div>
         </div>
@@ -376,12 +388,43 @@
     const GOOGLE_SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbz_SURVEY_VIETMAC_PLACEHOLDER/exec";
     const STORAGE_KEY = "TRADA_GENUINE_FEEDBACK_DRAFT_V2";
 
+    function addChannelLinkInput(value = '') {
+      const wrapper = document.getElementById('channel-links-wrapper');
+      const row = document.createElement('div');
+      row.className = 'channel-link-row flex items-center gap-2 animate-fade-in';
+      row.innerHTML = `
+        <div class="relative flex-1">
+          <input type="text" name="channelLink[]" value="${value.replace(/"/g, '&quot;')}" placeholder="Dán thêm link kênh / video / FB khác..." class="channel-link-input w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white placeholder-slate-500 outline-none text-xs sm:text-sm input-focus" oninput="saveDraft()">
+          <i data-lucide="link" class="w-4 h-4 text-slate-500 absolute left-3 top-3"></i>
+        </div>
+        <button type="button" onclick="removeChannelLinkInput(this)" class="p-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 transition flex-shrink-0" title="Xóa link này">
+          <i data-lucide="trash-2" class="w-4 h-4"></i>
+        </button>
+      `;
+      wrapper.appendChild(row);
+      lucide.createIcons();
+    }
+
+    function removeChannelLinkInput(btn) {
+      const row = btn.closest('.channel-link-row');
+      if (row) {
+        row.remove();
+        saveDraft();
+      }
+    }
+
+    function getAllChannelLinks() {
+      const inputs = document.querySelectorAll('.channel-link-input');
+      const links = Array.from(inputs).map(inp => inp.value.trim()).filter(Boolean);
+      return links;
+    }
+
     function saveDraft() {
       const data = {
         fullName: document.getElementById('fullName').value,
         phone: document.getElementById('phone').value,
         profession: document.getElementById('profession').value,
-        channelLink: document.getElementById('channelLink').value,
+        channelLinks: getAllChannelLinks(),
         source: (document.querySelector('input[name="source"]:checked') || {}).value || '',
         impressedVideo: document.getElementById('impressedVideo').value,
         feedbackMarketing: document.getElementById('feedbackMarketing').value,
@@ -401,7 +444,6 @@
         if (d.fullName) document.getElementById('fullName').value = d.fullName;
         if (d.phone) document.getElementById('phone').value = d.phone;
         if (d.profession) document.getElementById('profession').value = d.profession;
-        if (d.channelLink) document.getElementById('channelLink').value = d.channelLink;
         if (d.impressedVideo) document.getElementById('impressedVideo').value = d.impressedVideo;
         if (d.feedbackMarketing) document.getElementById('feedbackMarketing').value = d.feedbackMarketing;
         if (d.bestValue) document.getElementById('bestValue').value = d.bestValue;
@@ -412,6 +454,15 @@
           if (radio) radio.checked = true;
         }
         if (d.course) setCourse(d.course);
+
+        // Khôi phục danh sách link kênh
+        if (d.channelLinks && Array.isArray(d.channelLinks) && d.channelLinks.length > 0) {
+          const firstInput = document.querySelector('.channel-link-input');
+          if (firstInput) firstInput.value = d.channelLinks[0];
+          for (let i = 1; i < d.channelLinks.length; i++) {
+            addChannelLinkInput(d.channelLinks[i]);
+          }
+        }
       } catch (e) {}
     }
 
@@ -452,12 +503,14 @@
       btn.disabled = true;
       btnText.textContent = 'Đang gửi cho em Việt...';
 
+      const allLinks = getAllChannelLinks().join('\n');
+
       const payload = {
         course: document.getElementById('course').value,
         fullName: document.getElementById('fullName').value.trim(),
         phone: document.getElementById('phone').value.trim(),
         profession: document.getElementById('profession').value.trim(),
-        channelLink: document.getElementById('channelLink').value.trim(),
+        channelLink: allLinks || 'Chưa gửi link',
         source: (document.querySelector('input[name="source"]:checked') || {}).value || 'Không rõ',
         impressedVideo: document.getElementById('impressedVideo').value.trim(),
         feedbackMarketing: document.getElementById('feedbackMarketing').value.trim() || 'Không có góp ý',
