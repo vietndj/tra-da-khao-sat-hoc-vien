@@ -1,5 +1,24 @@
 [
   {
+    "responseId": "KS-2026-0004",
+    "submittedAt": "24/08/2026 18:19:40",
+    "course": "Lớp Offline Thực Chiến - Hà Nội",
+    "fullName": "Lê Minh Đức (Test Lưu Trữ Vĩnh Cửu)",
+    "phone": "0909112233",
+    "profession": "Kinh doanh bất động sản. Cần AI bóc kịch bản bối cảnh căn hộ.",
+    "channelLink": "https://tiktok.com/@duc.batdongsan",
+    "journeyStory": "Xem video bóc 3 tầng trên Reels.",
+    "feedbackAll": "Tuyệt vời, vỡ ra nhiều góc quay.",
+    "photoCount": 1,
+    "photos": [
+      {
+        "name": "anh_test.jpg",
+        "size": "85 KB"
+      }
+    ],
+    "driveUrl": "https://docs.google.com/spreadsheets/d/1J9ZrjLxTba9R-wuet1n_J_hKcL0PVtQDD_ag65Ewx04/edit"
+  },
+  {
     "responseId": "KS-2026-0003",
     "submittedAt": "24/08/2026 18:04:24",
     "course": "Lớp Offline Thực Chiến - Hà Nội",
@@ -11,8 +30,14 @@
     "feedbackAll": "2 ngày học cực kỳ đáng giá, vỡ ra cách tư duy kịch bản và cách cầm máy tự tin.",
     "photoCount": 2,
     "photos": [
-      { "name": "anh_lop_hoc_1.jpg", "size": "195 KB" },
-      { "name": "anh_lop_hoc_2.jpg", "size": "210 KB" }
+      {
+        "name": "anh_lop_hoc_1.jpg",
+        "size": "195 KB"
+      },
+      {
+        "name": "anh_lop_hoc_2.jpg",
+        "size": "210 KB"
+      }
     ],
     "driveUrl": "https://docs.google.com/spreadsheets/d/1J9ZrjLxTba9R-wuet1n_J_hKcL0PVtQDD_ag65Ewx04/edit"
   },
@@ -28,8 +53,14 @@
     "feedbackAll": "• Khâu tư vấn: Các bạn nên báo rõ giảm 10% nhóm 2 người từ đầu.\n• 2 ngày học rất đã, tự tin cầm máy.\n• Hôm nào rảnh em mời anh ly cafe!",
     "photoCount": 2,
     "photos": [
-      { "name": "lop_hoc_thuc_hanh_quay_2_may.jpg", "size": "185 KB" },
-      { "name": "anh_chup_chung_anh_viet.jpg", "size": "210 KB" }
+      {
+        "name": "lop_hoc_thuc_hanh_quay_2_may.jpg",
+        "size": "185 KB"
+      },
+      {
+        "name": "anh_chup_chung_anh_viet.jpg",
+        "size": "210 KB"
+      }
     ],
     "driveUrl": "https://docs.google.com/spreadsheets/d/1J9ZrjLxTba9R-wuet1n_J_hKcL0PVtQDD_ag65Ewx04/edit"
   },
@@ -45,8 +76,14 @@
     "feedbackAll": "• 2 ngày học rất đã, vỡ ra cách setup ánh sáng và cách bóc video đối thủ.\n• Góp ý: Khâu check-in buổi sáng nên gửi link khảo sát trước để anh nắm nhu cầu từng người sớm hơn.\n• Về Hải Phòng em quay loạt video đầu gửi anh xem nhé!",
     "photoCount": 2,
     "photos": [
-      { "name": "khong_khi_thuc_hanh_setup_den.jpg", "size": "192 KB" },
-      { "name": "chup_ky_niem_ca_lop_ha_noi.jpg", "size": "245 KB" }
+      {
+        "name": "khong_khi_thuc_hanh_setup_den.jpg",
+        "size": "192 KB"
+      },
+      {
+        "name": "chup_ky_niem_ca_lop_ha_noi.jpg",
+        "size": "245 KB"
+      }
     ],
     "driveUrl": "https://docs.google.com/spreadsheets/d/1J9ZrjLxTba9R-wuet1n_J_hKcL0PVtQDD_ag65Ewx04/edit"
   }
