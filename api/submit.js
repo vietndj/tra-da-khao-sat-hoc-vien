@@ -1,4 +1,7 @@
-// Vercel Serverless Function: Real-time Survey & Photo Storage Endpoint
+// Vercel Serverless Function: Real-time Survey & Photo Storage + NOVA Telegram Dispatcher
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "8964853536:AAHuRNm_hY-YQtveBD1HlmthN4I5xpVzM8U";
+const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID || "2050406425";
+
 let submissions = [
   {
     responseId: "KS-2026-0001",
@@ -18,6 +21,69 @@ let submissions = [
     driveUrl: "https://drive.google.com/drive/folders/1aBcDeFgHiJkLmNoPqRsTuVwXyZ_NguyenThuTrang"
   }
 ];
+
+async function dispatchToTelegramNova(item) {
+  try {
+    const rawLinks = (item.channelLink || '')
+      .split('\n')
+      .filter(Boolean)
+      .map(l => `🔗 <a href="${l.startsWith('http') ? l : 'https://' + l}">${l.replace(/^https?:\/\/(www\.)?/, '')}</a>`)
+      .join('\n');
+
+    const msg = 
+      `☕ <b>HỌC VIÊN VỪA GỬI PHẢN HỒI TRÀ ĐÁ!</b>\n` +
+      `━━━━━━━━━━━━━━━━━━━━\n` +
+      `👤 <b>Họ tên:</b> <b>${item.fullName || 'Ẩn danh'}</b>\n` +
+      `📞 <b>Số Zalo:</b> <a href="https://zalo.me/${item.phone}"><b>${item.phone || 'Chưa để SĐT'}</b></a>\n` +
+      `🎬 <b>Khóa học:</b> ${item.course || 'Khóa Offline'}\n\n` +
+      `💼 <b>Mảng Kinh Doanh & Định Hướng AI:</b>\n${item.profession || 'Chưa chia sẻ'}\n\n` +
+      (rawLinks ? `🌐 <b>Link Kênh / Profile:</b>\n${rawLinks}\n\n` : '') +
+      `📍 <b>Hành trình biết đến:</b>\n<i>"${item.journeyStory || 'Không có'}"</i>\n\n` +
+      `💬 <b>Góp ý & Lời nhắn:</b>\n${item.feedbackAll || 'Không có'}\n\n` +
+      `📸 <b>Ảnh kỷ niệm:</b> <b>${item.photoCount || 0} ảnh</b>\n` +
+      `━━━━━━━━━━━━━━━━━━━━\n` +
+      `👉 <a href="https://trada.fedu.vn/excel"><b>Bấm để xem Bảng Quản Lý Trực Quan</b></a>`;
+
+    // 1. Gửi tin nhắn Text tổng hợp
+    await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: TELEGRAM_CHAT_ID,
+        text: msg,
+        parse_mode: 'HTML',
+        disable_web_page_preview: false
+      })
+    });
+
+    // 2. Gửi ảnh đính kèm nếu có
+    if (item.photos && Array.isArray(item.photos)) {
+      for (const p of item.photos) {
+        if (p.data && p.data.startsWith('data:image')) {
+          try {
+            const base64Data = p.data.split(',')[1];
+            const buffer = Buffer.from(base64Data, 'base64');
+            
+            const formData = new FormData();
+            formData.append('chat_id', TELEGRAM_CHAT_ID);
+            formData.append('caption', `📸 Ảnh kỷ niệm: ${item.fullName} (${p.name || 'Ảnh đính kèm'})`);
+            const blob = new Blob([buffer], { type: 'image/jpeg' });
+            formData.append('photo', blob, p.name || 'photo.jpg');
+
+            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
+              method: 'POST',
+              body: formData
+            });
+          } catch (pErr) {
+            console.warn('Lỗi gửi ảnh Telegram:', pErr);
+          }
+        }
+      }
+    }
+  } catch (err) {
+    console.error('Lỗi dispatch Telegram NOVA:', err);
+  }
+}
 
 export default async function handler(req, res) {
   // Set CORS headers
@@ -60,7 +126,8 @@ export default async function handler(req, res) {
         photoCount: body.photoCount || (body.photos ? body.photos.length : 0),
         photos: (body.photos || []).map((p, i) => ({
           name: p.name || `photo_${i + 1}.jpg`,
-          size: p.size || 'Ảnh đính kèm'
+          size: p.size || 'Ảnh đính kèm',
+          data: p.data || null
         })),
         driveUrl: `https://drive.google.com/drive/folders/1_vietmac_${Date.now()}`
       };
@@ -68,9 +135,12 @@ export default async function handler(req, res) {
       // Add to top of array for real-time live view
       submissions.unshift(newSub);
 
+      // ASYNC BẮN TIN NHẮN VỀ BOT TELEGRAM NOVA-CORE CHO ANH VIỆT
+      dispatchToTelegramNova(newSub).catch(e => console.error('Nova dispatch err:', e));
+
       res.status(200).json({
         success: true,
-        message: 'Đã lưu phản hồi thành công!',
+        message: 'Đã lưu phản hồi và bắn tin nhắn Telegram thành công!',
         item: newSub,
         totalCount: submissions.length,
         data: submissions
