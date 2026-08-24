@@ -1,35 +1,20 @@
 /**
  * =========================================================================
- * GOOGLE APPS SCRIPT WEBHOOK: HỨNG DỮ LIỆU KHẢO SÁT HỌC VIÊN ANH VIỆT (VIETMAC)
- * =========================================================================
- * 
- * HƯỚNG DẪN CÀI ĐẶT 1 LẦN (DÙNG MÃI MÃI CHO MỌI KHÓA HỌC):
- * 1. Mở Google Sheet (Tạo mới hoặc dùng file Mau_Bang_Khao_Sat_Hoc_Vien_VietMac).
- * 2. Trên thanh menu, chọn: Tiện ích mở rộng (Extensions) -> Apps Script.
- * 3. Xóa hết code cũ, dán toàn bộ đoạn code bên dưới vào.
- * 4. Bấm "Triển khai" (Deploy) -> "Tùy chọn triển khai mới" (New deployment).
- * 5. Chọn loại: "Ứng dụng web" (Web App).
- *    - Mô tả: "Webhook Khao Sat Hoc Vien"
- *    - Thực thi dưới dạng (Execute as): "Tôi" (Me)
- *    - Ai có quyền truy cập (Who has access): "Bất kỳ ai" (Anyone - Không cần đăng nhập)
- * 6. Bấm "Triển khai", cấp quyền truy cập của Google.
- * 7. Copy "URL Ứng dụng web" (Web App URL) và dán vào biến `GOOGLE_SHEET_WEBHOOK_URL` trong file `anh-viet-hoi-moi-nguoi.html`.
+ * GOOGLE APPS SCRIPT WEBHOOK: HỨNG DỮ LIỆU KHẢO SÁT & ẢNH HỌC VIÊN ANH VIỆT (VIETMAC)
  * =========================================================================
  */
 
-// CẤU HÌNH TÙY CHỌN BẮN THÔNG BÁO TELEGRAM (NẾU CÓ)
-const TELEGRAM_BOT_TOKEN = "7953251433:AAGkI2t-lQv-X2yS8z58vI1KjW0y4FfV_hQ"; // Hoặc để trống nếu không dùng
-const TELEGRAM_CHAT_ID = "6190978939"; // Chat ID của anh Việt
+const TELEGRAM_BOT_TOKEN = "7953251433:AAGkI2t-lQv-X2yS8z58vI1KjW0y4FfV_hQ"; 
+const TELEGRAM_CHAT_ID = "6190978939"; // Chat ID anh Việt
 
 function doPost(e) {
   const lock = LockService.getScriptLock();
-  lock.tryLock(10000); // Tránh ghi đè khi nhiều học viên nộp cùng lúc
+  lock.tryLock(15000);
   
   try {
     const ss = SpreadsheetApp.getActiveSpreadsheet();
     let sheet = ss.getSheetByName("Dữ Liệu Khảo Sát");
     
-    // Nếu chưa có sheet, tự động tạo sheet và thêm tiêu đề đẹp
     if (!sheet) {
       sheet = ss.insertSheet("Dữ Liệu Khảo Sát");
       const headers = [
@@ -37,17 +22,13 @@ function doPost(e) {
         "Thời Gian Gửi",
         "Khóa Học",
         "Họ Và Tên",
-        "Số Điện Thoại / Zalo",
-        "Nghề Nghiệp / Dự Án",
-        "Link Kênh / Profile",
-        "Nguồn Biết Đến",
-        "Video Ấn Tượng Nhất",
-        "Điều Tâm Đắc Nhất",
-        "Góp Ý Vận Hành & Lớp Học",
-        "Điểm Đánh Giá (1-10)",
-        "Nhu Cầu Khóa Nâng Cao",
-        "Kênh Liên Hệ Ưu Tiên",
-        "Lời Nhắn Nhủ Riêng"
+        "Số Zalo Hay Dùng",
+        "Mảng Kinh Doanh & Định Hướng AI",
+        "Link Kênh / Video / FB",
+        "Hành Trình Biết Đến & Xem Video",
+        "Góp Ý Thẳng Thắn & Lời Nhắn",
+        "Số Lượng Ảnh Kỷ Niệm",
+        "Link Thư Mục Ảnh (Drive)"
       ];
       sheet.appendRow(headers);
       sheet.getRange(1, 1, 1, headers.length)
@@ -69,40 +50,59 @@ function doPost(e) {
       data = e.parameter || {};
     }
     
-    // Sinh mã phản hồi tự động
     const lastRow = sheet.getLastRow();
     const responseId = "KS-" + Utilities.formatDate(new Date(), "GMT+7", "yyyyMMdd") + "-" + ("000" + lastRow).slice(-3);
     const timestamp = Utilities.formatDate(new Date(), "GMT+7", "dd/MM/yyyy HH:mm:ss");
     
+    // Xử lý lưu ảnh vào thư mục Google Drive (nếu có ảnh đính kèm)
+    let driveFolderUrl = "";
+    const photoCount = data.photoCount || (data.photos ? data.photos.length : 0);
+    
+    if (data.photos && data.photos.length > 0) {
+      try {
+        const folderName = `Anh_Hoc_Vien_${data.fullName || "Khach"}_${Utilities.formatDate(new Date(), "GMT+7", "yyyyMMdd_HHmmss")}`;
+        const folder = DriveApp.createFolder(folderName);
+        driveFolderUrl = folder.getUrl();
+        
+        data.photos.forEach((photo, idx) => {
+          if (photo.data && photo.data.includes("base64,")) {
+            const base64Data = photo.data.split("base64,")[1];
+            const decoded = Utilities.base64Decode(base64Data);
+            const blob = Utilities.newBlob(decoded, "image/jpeg", photo.name || `photo_${idx + 1}.jpg`);
+            folder.createFile(blob);
+          }
+        });
+      } catch (err) {
+        driveFolderUrl = "Lỗi lưu ảnh Drive: " + err.toString();
+      }
+    }
+    
     const row = [
       responseId,
       timestamp,
-      data.course || "Offline Thực Chiến",
+      data.course || "Khóa Offline Thực Chiến",
       data.fullName || "",
       data.phone || "",
       data.profession || "",
       data.channelLink || "",
-      data.source || "",
-      data.impressedVideo || "",
-      data.bestValue || "",
-      data.feedbackOperation || "",
-      data.rating || 10,
-      data.advancedNeeds || "",
-      data.contactPreference || "Zalo",
-      data.personalMessage || ""
+      data.journeyStory || data.impressedVideo || "",
+      data.feedbackAll || data.personalMessage || "",
+      photoCount,
+      driveFolderUrl || (photoCount > 0 ? "Đã lưu ảnh trong payload" : "Không có ảnh")
     ];
     
     sheet.appendRow(row);
     
-    // Tự động gửi thông báo qua Telegram cho anh Việt (nếu cấu hình)
-    if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID && !TELEGRAM_BOT_TOKEN.includes("...")) {
-      sendTelegramAlert(data, timestamp);
+    // Gửi thông báo qua Telegram
+    if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
+      sendTelegramAlert(data, timestamp, photoCount, driveFolderUrl);
     }
     
     return ContentService.createTextOutput(JSON.stringify({
       status: "success",
-      message: "Gửi khảo sát thành công! Cảm ơn bạn rất nhiều.",
-      responseId: responseId
+      message: "Gửi khảo sát thành công! Em cảm ơn anh/chị rất nhiều.",
+      responseId: responseId,
+      photoCount: photoCount
     })).setMimeType(ContentService.MimeType.JSON);
     
   } catch (error) {
@@ -123,19 +123,16 @@ function doGet(e) {
   })).setMimeType(ContentService.MimeType.JSON);
 }
 
-function sendTelegramAlert(data, timestamp) {
+function sendTelegramAlert(data, timestamp, photoCount, driveFolderUrl) {
   try {
-    const text = `🎉 *HỌC VIÊN VỪA GỬI KHẢO SÁT MỚI!*\n\n` +
-      `👤 *Học viên:* ${data.fullName || "Ẩn danh"}\n` +
-      `📞 *SĐT/Zalo:* ${data.phone || "Chưa có"}\n` +
-      `💼 *Nghề nghiệp:* ${data.profession || "Không rõ"}\n` +
-      `🌐 *Link Kênh:* ${data.channelLink || "Chưa gửi"}\n` +
-      `🎯 *Nguồn:* ${data.source || "Tự biết"}\n` +
-      `⭐ *Đánh giá:* ${data.rating || 10}/10 sao\n` +
-      `💡 *Tâm đắc:* ${data.bestValue || "Tuyệt vời"}\n` +
-      `📝 *Góp ý vận hành:* ${data.feedbackOperation || "Không có"}\n` +
-      `🚀 *Quan tâm nâng cao:* ${data.advancedNeeds || "Chưa chọn"}\n` +
-      `💌 *Nhắn nhủ:* "${data.personalMessage || ""}"\n\n` +
+    let text = `☕ *HỌC VIÊN VỪA GỬI CHIA SẺ TRÀ ĐÁ!*\n\n` +
+      `👤 *Họ tên:* ${data.fullName || "Ẩn danh"}\n` +
+      `📞 *Zalo:* ${data.phone || "Chưa có"}\n` +
+      `💼 *Mảng KD & AI:* ${data.profession ? data.profession.substring(0, 150) + "..." : "Không rõ"}\n` +
+      `🌐 *Link Kênh:* \n${data.channelLink || "Chưa gửi"}\n\n` +
+      `🧭 *Hành trình xem video:* ${data.journeyStory ? data.journeyStory.substring(0, 150) + "..." : "Không rõ"}\n` +
+      `📝 *Góp ý & Nhắn nhủ:* ${data.feedbackAll || "Không có"}\n` +
+      `📸 *Ảnh kỷ niệm:* ${photoCount} ảnh ${driveFolderUrl ? `\n🔗 Link Drive: ${driveFolderUrl}` : ""}\n\n` +
       `⏰ _${timestamp}_`;
 
     const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;

@@ -20,11 +20,11 @@
             brand: {
               amber: '#f59e0b',
               emerald: '#10b981',
-              dark: '#070b12',
-              card: '#121927',
-              cardHover: '#182235',
-              border: '#1f2d42',
-              input: '#0d131f'
+              dark: '#06090e',
+              card: '#0e1524',
+              cardHover: '#131c30',
+              border: '#1a263c',
+              input: '#090e17'
             }
           },
           fontFamily: {
@@ -45,88 +45,107 @@
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #070b12;
+      background-color: #06090e;
       color: #f1f5f9;
       -webkit-tap-highlight-color: transparent;
     }
     .heading-font {
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
-    /* Auto expand textarea styling */
-    textarea {
+    
+    /* Scroll Reveal Animation Styling */
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+    .reveal-on-scroll.is-revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* High-end Card Styling with Ambient Glow */
+    .card-shell {
+      background: radial-gradient(120% 120% at 50% 0%, #111a2e 0%, #0a101d 100%);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    }
+    .card-shell:focus-within {
+      border-color: rgba(245, 158, 11, 0.45);
+      box-shadow: 0 24px 50px -12px rgba(245, 158, 11, 0.12);
+    }
+
+    /* Spacious Typography and Inputs */
+    input, textarea {
       font-size: 15px !important;
-      line-height: 1.6 !important;
+      line-height: 1.65 !important;
     }
     @media (max-width: 640px) {
       input, textarea {
         font-size: 16px !important; /* Prevent iOS zoom */
       }
     }
-    .card-shell {
-      background-color: #121927;
-      border: 1px solid #1f2d42;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .card-shell:focus-within {
-      border-color: rgba(245, 158, 11, 0.4);
-      box-shadow: 0 0 20px -5px rgba(245, 158, 11, 0.15);
-    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-amber-500 selection:text-slate-950 relative overflow-x-hidden">
 
-  <!-- Background subtle warm ambient lighting -->
-  <div class="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[400px] bg-gradient-to-b from-amber-500/10 via-amber-500/5 to-transparent blur-[120px] pointer-events-none -z-10"></div>
+  <!-- Background Ambient Lights -->
+  <div class="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[450px] bg-gradient-to-b from-amber-500/10 via-amber-500/5 to-transparent blur-[140px] pointer-events-none -z-10"></div>
+  <div class="fixed bottom-0 right-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-[160px] pointer-events-none -z-10"></div>
 
   <!-- TOP HEADER -->
-  <header class="sticky top-0 z-40 bg-[#070b12]/95 backdrop-blur-md border-b border-slate-800/80 px-4 sm:px-6 py-3.5">
+  <header class="sticky top-0 z-40 bg-[#06090e]/90 backdrop-blur-xl border-b border-slate-800/80 px-4 sm:px-8 py-4">
     <div class="max-w-3xl mx-auto flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-300 flex items-center justify-center text-slate-950 font-bold text-base shadow-lg shadow-amber-500/20 flex-shrink-0">
+      <div class="flex items-center gap-3.5">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-300 flex items-center justify-center text-slate-950 font-bold text-lg shadow-lg shadow-amber-500/20 flex-shrink-0">
           ☕
         </div>
         <div>
-          <h1 class="font-bold text-sm sm:text-base text-white leading-tight">Trà Đá Sau Giờ Học</h1>
-          <p id="course-display" class="text-xs text-amber-400 mt-0.5 cursor-pointer flex items-center gap-1 hover:underline" onclick="openCourseSelector()">
+          <h1 class="font-bold text-base text-white leading-tight">Trà Đá Sau Giờ Học</h1>
+          <p id="course-display" class="text-xs text-amber-400 font-medium mt-0.5 cursor-pointer flex items-center gap-1 hover:underline" onclick="openCourseSelector()">
             <span id="course-name-text">Khóa Offline Thực Chiến</span>
             <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>
           </p>
         </div>
       </div>
       <div class="text-right">
-        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-slate-900 text-slate-300 border border-slate-700/80">
           Nói chuyện thật
         </span>
       </div>
     </div>
   </header>
 
-  <!-- MAIN CONTAINER (FLUID RESPONSIVE CO GIÃN THEO MÀN HÌNH) -->
-  <main class="flex-1 max-w-3xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-6">
+  <!-- MAIN CONTAINER (THOÁNG ĐÃNG, RỘNG RÃI, DỄ ĐỌC) -->
+  <main class="flex-1 max-w-3xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-8 sm:space-y-10">
 
+    <!-- ========================================================================= -->
     <!-- KHỐI 0: HERO CARD - MỞ MÀN THƠ LỤC BÁT & LỜI TÂM SỰ -->
-    <div class="card-shell rounded-3xl p-6 sm:p-8 relative overflow-hidden shadow-2xl">
-      <div class="flex items-center gap-2 mb-3">
-        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs font-medium">
-          <i data-lucide="coffee" class="w-3.5 h-3.5"></i>
+    <!-- ========================================================================= -->
+    <div class="card-shell rounded-3xl p-7 sm:p-10 relative overflow-hidden reveal-on-scroll">
+      <div class="flex items-center gap-2 mb-4">
+        <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-300 text-xs font-semibold">
+          <i data-lucide="coffee" class="w-4 h-4 text-amber-400"></i>
           <span>Tan lớp nhưng chưa tan chuyện</span>
         </span>
       </div>
 
-      <h2 class="heading-font text-2xl sm:text-3xl font-extrabold text-white leading-tight mb-4">
+      <h2 class="heading-font text-2xl sm:text-4xl font-extrabold text-white leading-tight mb-5">
         Trà đá sau giờ học: <br class="hidden sm:inline">
         <span class="bg-gradient-to-r from-amber-400 via-amber-200 to-emerald-300 bg-clip-text text-transparent">Tan lớp ngồi lại nói chuyện thật</span>
       </h2>
 
       <!-- THƠ LỤC BÁT NỔI BẬT -->
-      <div class="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-amber-500/15 via-slate-900/90 to-emerald-500/10 border border-amber-500/30 text-center my-4">
-        <p class="italic text-base sm:text-lg font-bold text-amber-300 tracking-wide leading-relaxed">
+      <div class="p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-amber-500/15 via-[#0b101c] to-emerald-500/10 border border-amber-500/30 text-center my-6 shadow-lg shadow-amber-500/5">
+        <p class="italic text-lg sm:text-xl font-bold text-amber-300 tracking-wide leading-relaxed">
           "Tan lớp cất máy gập cam,<br>
           Làm ly trà đá hỏi han chuyện nghề."
         </p>
       </div>
 
-      <div class="space-y-3 text-slate-300 text-sm sm:text-base leading-relaxed">
+      <div class="space-y-4 text-slate-300 text-sm sm:text-base leading-relaxed">
         <p>
           2 ngày vừa qua được trực tiếp đứng lớp, cùng trao đổi và vỡ ra từng góc quay, từng dòng kịch bản với mọi người là khoảng thời gian em thực sự rất trân trọng.
         </p>
@@ -137,51 +156,51 @@
     </div>
 
     <!-- FORM NỘI DUNG -->
-    <form id="feedback-form" onsubmit="handleFormSubmit(event)" class="space-y-6">
+    <form id="feedback-form" onsubmit="handleFormSubmit(event)" class="space-y-8 sm:space-y-10">
 
       <!-- ========================================================================= -->
       <!-- KHỐI 1: THÔNG TIN & LINK KÊNH -->
       <!-- ========================================================================= -->
-      <div class="card-shell rounded-3xl p-6 sm:p-8 space-y-6">
-        <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
-          <div class="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center font-bold text-sm">
+      <div class="card-shell rounded-3xl p-7 sm:p-10 space-y-7 reveal-on-scroll">
+        <div class="flex items-center gap-3.5 border-b border-slate-800 pb-5">
+          <div class="w-9 h-9 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center font-bold text-base flex-shrink-0">
             1
           </div>
           <div>
-            <h3 class="font-bold text-base sm:text-lg text-white">Thông tin liên hệ & Kênh của mình</h3>
-            <p class="text-xs text-slate-400 mt-0.5">Để em lưu lại và tiện theo dõi sản phẩm mọi người làm</p>
+            <h3 class="font-bold text-lg sm:text-xl text-white">Thông tin liên hệ & Kênh của mình</h3>
+            <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Để em lưu lại và tiện theo dõi sản phẩm mọi người làm</p>
           </div>
         </div>
 
         <!-- Họ tên -->
-        <div class="space-y-2">
-          <label for="fullName" class="block text-sm font-semibold text-slate-200">
+        <div class="space-y-2.5">
+          <label for="fullName" class="block text-sm sm:text-base font-semibold text-slate-100">
             Họ và tên của mình <span class="text-amber-400">*</span>
           </label>
-          <input type="text" id="fullName" name="fullName" required placeholder="Nhập họ và tên..." class="w-full px-4 py-3.5 rounded-2xl bg-[#0d131f] border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm sm:text-base focus:border-amber-500 transition" oninput="saveDraft()">
+          <input type="text" id="fullName" name="fullName" required placeholder="Nhập họ và tên..." class="w-full px-4 sm:px-5 py-3.5 sm:py-4 rounded-2xl bg-[#090e17] border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm sm:text-base focus:border-amber-500 transition shadow-inner" oninput="saveDraft()">
         </div>
 
         <!-- Số Zalo & Action Buttons -->
-        <div class="space-y-2.5">
-          <label for="phone" class="block text-sm font-semibold text-slate-200">
+        <div class="space-y-3">
+          <label for="phone" class="block text-sm sm:text-base font-semibold text-slate-100">
             Số Zalo mọi người hay dùng <span class="text-amber-400">*</span>
-            <span class="text-slate-400 font-normal block text-xs mt-0.5">Để em lưu vào máy, tiện gửi tài liệu mới và nhắn tin trao đổi</span>
+            <span class="text-slate-400 font-normal block text-xs sm:text-sm mt-1">Để em lưu vào máy, tiện gửi tài liệu mới và nhắn tin trao đổi</span>
           </label>
-          <input type="tel" id="phone" name="phone" required placeholder="Nhập số Zalo hay dùng..." class="w-full px-4 py-3.5 rounded-2xl bg-[#0d131f] border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm sm:text-base focus:border-amber-500 transition" oninput="saveDraft()">
+          <input type="tel" id="phone" name="phone" required placeholder="Nhập số Zalo hay dùng..." class="w-full px-4 sm:px-5 py-3.5 sm:py-4 rounded-2xl bg-[#090e17] border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm sm:text-base focus:border-amber-500 transition shadow-inner" oninput="saveDraft()">
 
-          <!-- Khối kết nối Zalo & iMessage -->
-          <div class="p-3.5 sm:p-4 rounded-2xl bg-[#0d131f]/90 border border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-            <div class="text-xs text-slate-300">
-              <span>Số của em: <strong class="text-amber-300 font-bold text-sm">0934688632</strong></span>
-              <span class="block text-slate-400 text-[11px] mt-0.5">Nhắn khi cần em giúp gì ạ</span>
+          <!-- Khối kết nối Zalo & iMessage của em -->
+          <div class="p-4 sm:p-5 rounded-2xl bg-[#090e17]/90 border border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5 mt-2">
+            <div class="text-xs sm:text-sm text-slate-300">
+              <span>Số của em: <strong class="text-amber-300 font-bold text-sm sm:text-base">0934688632</strong></span>
+              <span class="block text-amber-300/80 font-medium text-xs mt-0.5">Nhắn khi cần em giúp gì ạ</span>
             </div>
-            <div class="flex items-center gap-2 w-full sm:w-auto">
-              <a href="https://zalo.me/0934688632" target="_blank" class="flex-1 sm:flex-none flex items-center justify-center gap-1.5 py-2 px-3.5 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 text-blue-300 font-medium text-xs transition">
-                <i data-lucide="message-circle" class="w-3.5 h-3.5 text-blue-400"></i>
+            <div class="flex items-center gap-2.5 w-full sm:w-auto">
+              <a href="https://zalo.me/0934688632" target="_blank" class="flex-1 sm:flex-none flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 text-blue-300 font-semibold text-xs sm:text-sm transition">
+                <i data-lucide="message-circle" class="w-4 h-4 text-blue-400"></i>
                 <span>Kết nối Zalo</span>
               </a>
-              <a href="sms:0934688632" class="flex-1 sm:flex-none flex items-center justify-center gap-1.5 py-2 px-3.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/30 text-emerald-300 font-medium text-xs transition">
-                <i data-lucide="message-square" class="w-3.5 h-3.5 text-emerald-400"></i>
+              <a href="sms:0934688632" class="flex-1 sm:flex-none flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/30 text-emerald-300 font-semibold text-xs sm:text-sm transition">
+                <i data-lucide="message-square" class="w-4 h-4 text-emerald-400"></i>
                 <span>Nhắn iMessage</span>
               </a>
             </div>
@@ -189,35 +208,35 @@
         </div>
 
         <!-- Mảng kinh doanh & định hướng làm sắp tới -->
-        <div class="space-y-2">
-          <label for="profession" class="block text-sm font-semibold text-slate-200">
+        <div class="space-y-2.5">
+          <label for="profession" class="block text-sm sm:text-base font-semibold text-slate-100">
             Mảng kinh doanh & Định hướng làm video sắp tới với sản phẩm của mình <span class="text-amber-400">*</span>
-            <span class="text-slate-400 font-normal block text-xs leading-relaxed mt-1">
+            <span class="text-slate-400 font-normal block text-xs sm:text-sm leading-relaxed mt-1">
               Mọi người mô tả kỹ mảng kinh doanh, sản phẩm, và gửi kèm cả <strong>link kênh muốn làm theo hoặc kênh đối thủ</strong> nhé. Em coi đây là dữ liệu đầu vào nạp cho AI phân tích (xem đối thủ đang làm gì, họ làm video hay ở chỗ nào, mình muốn làm ra sao, đang vướng hay chưa biết xử lý góc nào...). Em phải nạp dữ liệu và tìm tòi dần dần thì mới phản hồi giải pháp sát nhất cho từng người được, nên mọi người cứ mô tả càng chi tiết càng tốt cho em nhé!
             </span>
           </label>
-          <textarea id="profession" name="profession" rows="4" required placeholder="VD: Em làm luật sư doanh nghiệp chuẩn bị mở văn phòng luật riêng. Muốn làm video ngắn dạng case thực tế như kênh tiktok.com/@kenhmau... Thấy họ làm hay ở chỗ hook mở đầu rất gãy gọn, nhưng em chưa biết xử lý góc quay và băm phân cảnh thế nào để không bị khô khan..." class="w-full p-4 rounded-2xl bg-[#0d131f] border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm sm:text-base focus:border-amber-500 transition leading-relaxed" oninput="saveDraft()"></textarea>
+          <textarea id="profession" name="profession" rows="4" required placeholder="VD: Em làm luật sư doanh nghiệp chuẩn bị mở văn phòng luật riêng. Muốn làm video ngắn dạng case thực tế như kênh tiktok.com/@kenhmau... Thấy họ làm hay ở chỗ hook mở đầu rất gãy gọn, nhưng em chưa biết xử lý góc quay và băm phân cảnh thế nào để không bị khô khan..." class="w-full p-4 sm:p-5 rounded-2xl bg-[#090e17] border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm sm:text-base focus:border-amber-500 transition leading-relaxed shadow-inner" oninput="saveDraft()"></textarea>
         </div>
 
         <!-- Danh sách link kênh động -->
-        <div class="space-y-2.5">
-          <label class="block text-sm font-semibold text-slate-200">
+        <div class="space-y-3">
+          <label class="block text-sm sm:text-base font-semibold text-slate-100">
             Link video gần đây, kênh TikTok / YouTube, Facebook cá nhân hoặc kênh truyền thông của mình
-            <span class="text-slate-400 font-normal block text-xs leading-relaxed mt-1">
+            <span class="text-slate-400 font-normal block text-xs sm:text-sm leading-relaxed mt-1">
               Mọi người cứ gửi link video vừa làm gần đây, kênh TikTok, YouTube, Facebook cá nhân hay Fanpage truyền thông nhé. Để em vào xem và hiểu sản phẩm hơn, hiểu cách làm của mọi người hơn. Nó là một dạng dữ liệu trực quan giúp mình đỡ phải mô tả bằng lời ạ! Và em lưu thẳng vào danh bạ, mỗi lần bấm xem kênh là nhớ ra mọi người ngay luôn.
             </span>
           </label>
 
-          <div id="channel-links-wrapper" class="space-y-2.5">
-            <div class="channel-link-row flex items-center gap-2">
+          <div id="channel-links-wrapper" class="space-y-3">
+            <div class="channel-link-row flex items-center gap-2.5">
               <div class="relative flex-1">
-                <input type="text" name="channelLink[]" placeholder="Dán link kênh / video / Facebook..." class="channel-link-input w-full pl-10 pr-4 py-3 rounded-2xl bg-[#0d131f] border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm focus:border-amber-500 transition" oninput="saveDraft()">
-                <i data-lucide="link" class="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5"></i>
+                <input type="text" name="channelLink[]" placeholder="Dán link kênh / video / Facebook..." class="channel-link-input w-full pl-11 pr-4 py-3.5 rounded-2xl bg-[#090e17] border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm sm:text-base focus:border-amber-500 transition shadow-inner" oninput="saveDraft()">
+                <i data-lucide="link" class="w-4 h-4 text-slate-500 absolute left-4 top-4"></i>
               </div>
             </div>
           </div>
 
-          <button type="button" onclick="addChannelLinkInput()" class="inline-flex items-center gap-2 py-2 px-4 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-300 font-medium text-xs sm:text-sm transition">
+          <button type="button" onclick="addChannelLinkInput()" class="inline-flex items-center gap-2 py-2.5 px-4 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-300 font-semibold text-xs sm:text-sm transition">
             <i data-lucide="plus" class="w-4 h-4"></i>
             <span>+ Thêm link khác (Video / Kênh / Facebook)</span>
           </button>
@@ -227,60 +246,109 @@
       <!-- ========================================================================= -->
       <!-- KHỐI 2: HÀNH TRÌNH BIẾT ĐẾN & MUA HÀNG -->
       <!-- ========================================================================= -->
-      <div class="card-shell rounded-3xl p-6 sm:p-8 space-y-5">
-        <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
-          <div class="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center font-bold text-sm">
+      <div class="card-shell rounded-3xl p-7 sm:p-10 space-y-6 reveal-on-scroll">
+        <div class="flex items-center gap-3.5 border-b border-slate-800 pb-5">
+          <div class="w-9 h-9 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center font-bold text-base flex-shrink-0">
             2
           </div>
           <div>
-            <h3 class="font-bold text-base sm:text-lg text-white">Thế mọi người biết đến em qua hành trình thế nào ạ?</h3>
-            <p class="text-xs text-slate-400 mt-0.5">Bóc tách hành trình từ lúc thấy video đến khi ra quyết định</p>
+            <h3 class="font-bold text-lg sm:text-xl text-white">Thế mọi người biết đến em qua hành trình thế nào ạ?</h3>
+            <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Bóc tách hành trình từ lúc thấy video đến khi ra quyết định</p>
           </div>
         </div>
 
         <!-- Chat Bubble mồi chuyện -->
-        <div class="p-4 sm:p-5 rounded-2xl bg-[#0d131f] border border-amber-500/20 text-slate-300 text-sm leading-relaxed space-y-2">
-          <div class="flex items-center gap-2 text-amber-300 font-semibold text-xs sm:text-sm">
-            <i data-lucide="message-circle" class="w-4 h-4 text-amber-400 flex-shrink-0"></i>
+        <div class="p-5 sm:p-6 rounded-2xl bg-[#090e17] border border-amber-500/25 text-slate-300 text-sm sm:text-base leading-relaxed space-y-3 shadow-inner">
+          <div class="flex items-center gap-2 text-amber-300 font-semibold text-sm sm:text-base">
+            <i data-lucide="message-circle" class="w-4 h-4 sm:w-5 sm:h-5 text-amber-400 flex-shrink-0"></i>
             <span>Em tò mò muốn hỏi thật lòng:</span>
           </div>
           <p class="italic text-slate-300 leading-relaxed">
             "Thế mọi người biết đến em qua hành trình thế nào ạ? Là tự nhiên lướt thấy một video ngẫu nhiên, hay thấy video quảng cáo? Xem quảng cáo xong rồi mới vào kênh lội xem thêm các video khác, hay nhắn tin tư vấn luôn? Có người bảo tư vấn xong còn phải lên mạng search tên em xem ông này làm ăn thế nào, có bị fake hay phốt gì không rồi mới dám đăng ký...
           </p>
-          <p class="text-slate-400 text-xs leading-relaxed pt-1">
+          <p class="text-slate-400 text-xs sm:text-sm leading-relaxed pt-1 border-t border-slate-800">
             💡 <em>Chính em cũng đang mù tịt về hành trình này, chỉ biết tự nhiên được gặp và ngồi cùng mọi người ở lớp thôi. Mọi người kể lại chi tiết hành trình từ lúc thấy video đến khi ra quyết định cho em nghe với nhé!"</em>
           </p>
         </div>
 
-        <div class="space-y-2">
-          <textarea id="impressedVideo" name="impressedVideo" rows="4" required placeholder="Kể cho em nghe hành trình của mình: bắt đầu từ video nào, lướt thấy ở đâu, chi tiết nào làm mình ấn tượng và ra quyết định chuyển khoản đăng ký nhé..." class="w-full p-4 rounded-2xl bg-[#0d131f] border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm sm:text-base focus:border-amber-500 transition leading-relaxed" oninput="saveDraft()"></textarea>
+        <div class="space-y-2.5">
+          <textarea id="impressedVideo" name="impressedVideo" rows="4" required placeholder="Kể cho em nghe hành trình của mình: bắt đầu từ video nào, lướt thấy ở đâu, chi tiết nào làm mình ấn tượng và ra quyết định chuyển khoản đăng ký nhé..." class="w-full p-4 sm:p-5 rounded-2xl bg-[#090e17] border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm sm:text-base focus:border-amber-500 transition leading-relaxed shadow-inner" oninput="saveDraft()"></textarea>
         </div>
       </div>
 
       <!-- ========================================================================= -->
       <!-- KHỐI 3: GÓP Ý THẲNG THẮN ĐỂ EM TỰ SỬA MÌNH & LỜI NHẮN RIÊNG -->
       <!-- ========================================================================= -->
-      <div class="card-shell rounded-3xl p-6 sm:p-8 space-y-5">
-        <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
-          <div class="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center font-bold text-sm">
+      <div class="card-shell rounded-3xl p-7 sm:p-10 space-y-6 reveal-on-scroll">
+        <div class="flex items-center gap-3.5 border-b border-slate-800 pb-5">
+          <div class="w-9 h-9 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center font-bold text-base flex-shrink-0">
             3
           </div>
           <div>
-            <h3 class="font-bold text-base sm:text-lg text-white">Góp ý thật lòng & Lời nhắn gửi riêng cho em</h3>
-            <p class="text-xs text-slate-400 mt-0.5">Từ khâu tư vấn, 2 ngày ở lớp đến bất kỳ điều gì em cần làm tốt hơn</p>
+            <h3 class="font-bold text-lg sm:text-xl text-white">Góp ý thật lòng & Lời nhắn gửi riêng cho em</h3>
+            <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Từ khâu tư vấn, 2 ngày ở lớp đến bất kỳ điều gì em cần làm tốt hơn</p>
           </div>
         </div>
 
-        <div class="space-y-3">
-          <label for="feedbackAll" class="block text-sm font-semibold text-slate-200 leading-relaxed">
+        <div class="space-y-3.5">
+          <label for="feedbackAll" class="block text-sm sm:text-base font-semibold text-slate-100 leading-relaxed">
             Mọi người chia sẻ thẳng thắn tất cả những điều cần em hoàn thiện nhé: <span class="text-amber-400">*</span>
-            <span class="text-slate-400 font-normal block text-xs leading-relaxed mt-1.5 space-y-1">
+            <span class="text-slate-400 font-normal block text-xs sm:text-sm leading-relaxed mt-2 space-y-1">
               <span>• <strong>Khâu tư vấn & báo giá:</strong> Có chỗ nào chưa rõ ràng (như ưu đãi nhóm 2 người giảm 10%...)?</span><br>
               <span>• <strong>2 ngày học trên lớp:</strong> Điều tâm đắc nhất, nhịp giảng, bài tập, khâu check-in, hay điều em cần khắc phục?</span><br>
               <span>• <strong>Lời nhắn riêng:</strong> Tâm sự hoặc hẹn hôm nào ngồi cafe cùng em...</span>
             </span>
           </label>
-          <textarea id="feedbackAll" name="feedbackAll" rows="5" required placeholder="Mọi người cứ gõ tự nhiên và thoải mái tất cả những gì muốn nhắn nhủ hoặc góp ý để em tự sửa mình nhé..." class="w-full p-4 rounded-2xl bg-[#0d131f] border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm sm:text-base focus:border-amber-500 transition leading-relaxed" oninput="saveDraft()"></textarea>
+          <textarea id="feedbackAll" name="feedbackAll" rows="5" required placeholder="Mọi người cứ gõ tự nhiên và thoải mái tất cả những gì muốn nhắn nhủ hoặc góp ý để em tự sửa mình nhé..." class="w-full p-4 sm:p-5 rounded-2xl bg-[#090e17] border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm sm:text-base focus:border-amber-500 transition leading-relaxed shadow-inner" oninput="saveDraft()"></textarea>
+        </div>
+      </div>
+
+      <!-- ========================================================================= -->
+      <!-- KHỐI 4: GỬI TẶNG ẢNH KỶ NIỆM Ở LỚP HỌC (UPLOAD MULTIPLE IMAGES) -->
+      <!-- ========================================================================= -->
+      <div class="card-shell rounded-3xl p-7 sm:p-10 space-y-6 reveal-on-scroll">
+        <div class="flex items-center gap-3.5 border-b border-slate-800 pb-5">
+          <div class="w-9 h-9 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center font-bold text-base flex-shrink-0">
+            4
+          </div>
+          <div>
+            <h3 class="font-bold text-lg sm:text-xl text-white">Cho em xin mấy kiểu ảnh kỷ niệm ở lớp nhé 📸</h3>
+            <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Ảnh chụp ở chỗ học, lúc thực hành, hoặc ảnh chụp chung cùng nhau</p>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            Mọi người có chụp được ảnh nào ở chỗ học, lúc thực hành cầm máy quay, hay ảnh chụp chung cùng nhau thì gửi tặng em với nhé! Em lưu lại làm kỷ niệm và lưu vào hồ sơ học viên ạ.
+          </p>
+
+          <!-- VÙNG KÉO THẢ & NÚT CHỌN ẢNH -->
+          <div id="dropzone" onclick="document.getElementById('imageFileInput').click()" class="border-2 border-dashed border-slate-700 hover:border-amber-500/70 bg-[#090e17]/80 hover:bg-[#090e17] rounded-3xl p-6 sm:p-8 text-center cursor-pointer transition duration-200 group">
+            <input type="file" id="imageFileInput" multiple accept="image/*" class="hidden" onchange="handleImageFiles(this.files)">
+            
+            <div class="w-14 h-14 mx-auto rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 group-hover:scale-110 transition duration-200 shadow-lg shadow-amber-500/10 mb-3">
+              <i data-lucide="image-plus" class="w-7 h-7"></i>
+            </div>
+            <div class="space-y-1">
+              <p class="text-sm sm:text-base font-bold text-white group-hover:text-amber-300 transition">
+                Bấm để chọn ảnh hoặc kéo thả ảnh vào đây
+              </p>
+              <p class="text-xs text-slate-400">
+                Có thể chọn nhiều ảnh cùng lúc (JPG, PNG, HEIC) &bull; Tự động nén siêu nhẹ
+              </p>
+            </div>
+          </div>
+
+          <!-- DANH SÁCH PREVIEW ẢNH ĐÃ CHỌN -->
+          <div id="image-preview-wrapper" class="space-y-2 hidden">
+            <div class="flex items-center justify-between text-xs text-slate-400 px-1">
+              <span id="image-count-text" class="font-semibold text-amber-300">Đã chọn 0 ảnh</span>
+              <button type="button" onclick="clearAllImages()" class="text-rose-400 hover:underline">Xóa tất cả ảnh</button>
+            </div>
+            <div id="image-preview-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
         </div>
       </div>
 
@@ -288,8 +356,8 @@
       <input type="hidden" id="course" name="course" value="Khóa Offline Thực Chiến">
 
       <!-- SUBMIT BUTTON -->
-      <div class="pt-2">
-        <button type="submit" id="btn-submit" class="w-full py-4 sm:py-5 px-6 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-base sm:text-lg shadow-xl shadow-amber-500/25 flex items-center justify-center gap-2.5 transition duration-200 active:scale-[0.98]">
+      <div class="pt-4 reveal-on-scroll">
+        <button type="submit" id="btn-submit" class="w-full py-4 sm:py-5 px-6 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-base sm:text-lg shadow-xl shadow-amber-500/25 flex items-center justify-center gap-3 transition duration-200 active:scale-[0.98]">
           <span id="btn-submit-text">Gửi chia sẻ cho em</span>
           <i data-lucide="send" class="w-5 h-5 text-slate-950"></i>
         </button>
@@ -298,7 +366,7 @@
     </form>
 
     <!-- MÀN HÌNH CẢM ƠN (SUCCESS CARD) -->
-    <div id="success-container" class="card-shell rounded-3xl p-8 sm:p-10 border border-emerald-500/30 text-center space-y-6 hidden">
+    <div id="success-container" class="card-shell rounded-3xl p-8 sm:p-12 border border-emerald-500/30 text-center space-y-6 hidden">
       <div class="w-20 h-20 mx-auto rounded-3xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-3xl shadow-lg shadow-emerald-500/10">
         ☕
       </div>
@@ -308,7 +376,7 @@
           Em cảm ơn mọi người rất nhiều!
         </h2>
         <p class="text-sm sm:text-base text-slate-300 max-w-md mx-auto leading-relaxed">
-          Em đã nhận được toàn bộ chia sẻ này. Em sẽ đọc từng dòng một, vào xem kênh của mọi người và luôn sẵn sàng hỗ trợ mọi người trên hành trình làm video nhé.
+          Em đã nhận được toàn bộ chia sẻ và ảnh kỷ niệm. Em sẽ đọc từng dòng một, vào xem kênh của mọi người và luôn sẵn sàng hỗ trợ mọi người trên hành trình làm video nhé.
         </p>
       </div>
 
@@ -324,7 +392,7 @@
         </a>
       </div>
 
-      <div class="pt-4 border-t border-slate-800 text-xs text-slate-400">
+      <div class="pt-5 border-t border-slate-800 text-xs text-slate-400">
         <span>Số của em: <strong class="text-amber-300 font-semibold">0934688632</strong> (Nhắn khi cần em giúp gì ạ)</span>
         <p class="text-white font-semibold mt-1.5 text-sm">VietMac 🚀</p>
       </div>
@@ -334,7 +402,7 @@
 
   <!-- MODAL CHỌN KHÓA HỌC -->
   <div id="course-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
-    <div class="card-shell rounded-3xl p-6 max-w-sm w-full shadow-2xl space-y-4">
+    <div class="card-shell rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl space-y-4">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3">
         <h4 class="font-bold text-sm sm:text-base text-white">Chọn khóa mình vừa học</h4>
         <button type="button" onclick="closeCourseSelector()" class="text-slate-400 hover:text-white p-1">
@@ -342,16 +410,16 @@
         </button>
       </div>
       <div class="space-y-2 text-xs sm:text-sm">
-        <button type="button" onclick="selectCourse('Lớp Offline Thực Chiến - Hà Nội')" class="w-full text-left p-3.5 rounded-2xl bg-[#0d131f] hover:bg-amber-500/10 border border-slate-800 text-slate-200">
+        <button type="button" onclick="selectCourse('Lớp Offline Thực Chiến - Hà Nội')" class="w-full text-left p-3.5 rounded-2xl bg-[#090e17] hover:bg-amber-500/10 border border-slate-800 text-slate-200 transition">
           🎬 Lớp Offline Thực Chiến - Hà Nội
         </button>
-        <button type="button" onclick="selectCourse('Lớp Offline Thực Chiến - Sài Gòn')" class="w-full text-left p-3.5 rounded-2xl bg-[#0d131f] hover:bg-amber-500/10 border border-slate-800 text-slate-200">
+        <button type="button" onclick="selectCourse('Lớp Offline Thực Chiến - Sài Gòn')" class="w-full text-left p-3.5 rounded-2xl bg-[#090e17] hover:bg-amber-500/10 border border-slate-800 text-slate-200 transition">
           🌴 Lớp Offline Thực Chiến - Sài Gòn
         </button>
-        <button type="button" onclick="selectCourse('Lớp Offline Thực Chiến - Hải Phòng')" class="w-full text-left p-3.5 rounded-2xl bg-[#0d131f] hover:bg-amber-500/10 border border-slate-800 text-slate-200">
+        <button type="button" onclick="selectCourse('Lớp Offline Thực Chiến - Hải Phòng')" class="w-full text-left p-3.5 rounded-2xl bg-[#090e17] hover:bg-amber-500/10 border border-slate-800 text-slate-200 transition">
           ⚓ Lớp Offline Thực Chiến - Hải Phòng
         </button>
-        <button type="button" onclick="selectCourse('Lớp Online Video Masterclass')" class="w-full text-left p-3.5 rounded-2xl bg-[#0d131f] hover:bg-amber-500/10 border border-slate-800 text-slate-200">
+        <button type="button" onclick="selectCourse('Lớp Online Video Masterclass')" class="w-full text-left p-3.5 rounded-2xl bg-[#090e17] hover:bg-amber-500/10 border border-slate-800 text-slate-200 transition">
           💻 Lớp Online Video Masterclass
         </button>
       </div>
@@ -359,7 +427,7 @@
   </div>
 
   <!-- FOOTER -->
-  <footer class="py-6 text-center text-xs text-slate-500 border-t border-slate-800/60 mt-10">
+  <footer class="py-8 text-center text-xs text-slate-500 border-t border-slate-800/60 mt-12">
     <div class="max-w-3xl mx-auto px-4">
       Tự động lưu nháp &bull; Em trực tiếp đọc và phản hồi
     </div>
@@ -368,18 +436,40 @@
   <!-- JS LOGIC -->
   <script>
     const GOOGLE_SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbz_SURVEY_VIETMAC_PLACEHOLDER/exec";
-    const STORAGE_KEY = "TRADA_FEEDBACK_RESPONSIVE_V3";
+    const STORAGE_KEY = "TRADA_FEEDBACK_RESPONSIVE_V4";
 
+    // Danh sách ảnh đã chọn (Base64)
+    let uploadedImages = [];
+
+    // Scroll Reveal Engine
+    function initScrollReveal() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-revealed');
+          }
+        });
+      }, {
+        threshold: 0.08,
+        rootMargin: '0px 0px -40px 0px'
+      });
+
+      document.querySelectorAll('.reveal-on-scroll').forEach(el => {
+        observer.observe(el);
+      });
+    }
+
+    // Dynamic Links
     function addChannelLinkInput(value = '') {
       const wrapper = document.getElementById('channel-links-wrapper');
       const row = document.createElement('div');
-      row.className = 'channel-link-row flex items-center gap-2';
+      row.className = 'channel-link-row flex items-center gap-2.5';
       row.innerHTML = `
         <div class="relative flex-1">
-          <input type="text" name="channelLink[]" value="${value.replace(/"/g, '&quot;')}" placeholder="Dán thêm link kênh / video / FB khác..." class="channel-link-input w-full pl-10 pr-4 py-3 rounded-2xl bg-[#0d131f] border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm focus:border-amber-500 transition" oninput="saveDraft()">
-          <i data-lucide="link" class="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5"></i>
+          <input type="text" name="channelLink[]" value="${value.replace(/"/g, '&quot;')}" placeholder="Dán thêm link kênh / video / FB khác..." class="channel-link-input w-full pl-11 pr-4 py-3.5 rounded-2xl bg-[#090e17] border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm sm:text-base focus:border-amber-500 transition shadow-inner" oninput="saveDraft()">
+          <i data-lucide="link" class="w-4 h-4 text-slate-500 absolute left-4 top-4"></i>
         </div>
-        <button type="button" onclick="removeChannelLinkInput(this)" class="p-3 rounded-2xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 transition flex-shrink-0" title="Xóa link này">
+        <button type="button" onclick="removeChannelLinkInput(this)" class="p-3.5 rounded-2xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 transition flex-shrink-0" title="Xóa link này">
           <i data-lucide="trash-2" class="w-4 h-4"></i>
         </button>
       `;
@@ -401,6 +491,98 @@
       return links;
     }
 
+    // IMAGE UPLOAD & COMPRESSION ENGINE (CANVAS)
+    function handleImageFiles(files) {
+      if (!files || files.length === 0) return;
+
+      Array.from(files).forEach(file => {
+        if (!file.type.startsWith('image/')) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            // Compress image to max 1200px
+            const canvas = document.createElement('canvas');
+            const MAX_WIDTH = 1200;
+            const MAX_HEIGHT = 1200;
+            let width = img.width;
+            let height = img.height;
+
+            if (width > height) {
+              if (width > MAX_WIDTH) {
+                height *= MAX_WIDTH / width;
+                width = MAX_WIDTH;
+              }
+            } else {
+              if (height > MAX_HEIGHT) {
+                width *= MAX_HEIGHT / height;
+                height = MAX_HEIGHT;
+              }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            const compressedBase64 = canvas.toDataURL('image/jpeg', 0.75);
+            uploadedImages.push({
+              name: file.name,
+              size: Math.round(compressedBase64.length * 3 / 4 / 1024) + ' KB',
+              data: compressedBase64
+            });
+
+            renderImagePreviews();
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function renderImagePreviews() {
+      const wrapper = document.getElementById('image-preview-wrapper');
+      const grid = document.getElementById('image-preview-grid');
+      const countText = document.getElementById('image-count-text');
+
+      if (uploadedImages.length === 0) {
+        wrapper.classList.add('hidden');
+        return;
+      }
+
+      wrapper.classList.remove('hidden');
+      countText.textContent = `Đã chọn ${uploadedImages.length} ảnh`;
+      grid.innerHTML = '';
+
+      uploadedImages.forEach((imgObj, idx) => {
+        const item = document.createElement('div');
+        item.className = 'relative group rounded-2xl overflow-hidden border border-slate-700 bg-slate-900 aspect-square';
+        item.innerHTML = `
+          <img src="${imgObj.data}" alt="${imgObj.name}" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center p-2">
+            <button type="button" onclick="removeImage(${idx})" class="p-2 rounded-xl bg-rose-600 text-white shadow-lg hover:scale-110 transition">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+          </div>
+          <span class="absolute bottom-1 right-1 bg-black/70 px-1.5 py-0.5 rounded text-[10px] text-slate-300 font-mono">${imgObj.size}</span>
+        `;
+        grid.appendChild(item);
+      });
+      lucide.createIcons();
+    }
+
+    function removeImage(idx) {
+      uploadedImages.splice(idx, 1);
+      renderImagePreviews();
+    }
+
+    function clearAllImages() {
+      uploadedImages = [];
+      renderImagePreviews();
+    }
+
+    // Save & Restore Draft
     function saveDraft() {
       const data = {
         fullName: document.getElementById('fullName').value,
@@ -465,6 +647,7 @@
       closeCourseSelector();
     }
 
+    // FORM SUBMIT HANDLER
     async function handleFormSubmit(e) {
       e.preventDefault();
 
@@ -483,6 +666,8 @@
         channelLink: allLinks || 'Chưa gửi link',
         journeyStory: document.getElementById('impressedVideo').value.trim(),
         feedbackAll: document.getElementById('feedbackAll').value.trim(),
+        photoCount: uploadedImages.length,
+        photos: uploadedImages.map(img => ({ name: img.name, data: img.data })),
         submittedAt: new Date().toISOString()
       };
 
@@ -495,9 +680,9 @@
             body: JSON.stringify(payload)
           });
         } else {
-          const arr = JSON.parse(localStorage.getItem('TRADA_SAVED_SUBMISSIONS_V3') || '[]');
+          const arr = JSON.parse(localStorage.getItem('TRADA_SAVED_SUBMISSIONS_V4') || '[]');
           arr.push(payload);
-          localStorage.setItem('TRADA_SAVED_SUBMISSIONS_V3', JSON.stringify(arr));
+          localStorage.setItem('TRADA_SAVED_SUBMISSIONS_V4', JSON.stringify(arr));
         }
 
         localStorage.removeItem(STORAGE_KEY);
@@ -515,6 +700,7 @@
     window.addEventListener('DOMContentLoaded', () => {
       initCourse();
       restoreDraft();
+      initScrollReveal();
       lucide.createIcons();
     });
   </script>
