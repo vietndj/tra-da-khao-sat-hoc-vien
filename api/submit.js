@@ -2,7 +2,7 @@
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "8964853536:AAHuRNm_hY-YQtveBD1HlmthN4I5xpVzM8U";
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID || "2050406425";
 const GOOGLE_DRIVE_SHEET_ID = "1J9ZrjLxTba9R-wuet1n_J_hKcL0PVtQDD_ag65Ewx04";
-const GOOGLE_SCRIPT_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbySRHwz7V7G6j2c0gs9I6eXH3vyrFoId-8UpJvYkgGKVv2LNYxvzsdDm3sInPdMPcB6/exec";
+const GOOGLE_SCRIPT_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyPqCpstlLIv3usitssJP9YSEGfUyADUMSK4v36gRgKQelK3K18sZHt329BjfOYfqE/exec";
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN || Buffer.from("Z2hvXzZxd2NkOHZUUzhEZEo2NWp0a1FWekY0eExmZUxzYTFlSmd4Sw==", "base64").toString("utf-8") + "";
 const GITHUB_REPO = "vietndj/tra-da-khao-sat-hoc-vien";
 const GITHUB_PATH = "data/submissions.json";
