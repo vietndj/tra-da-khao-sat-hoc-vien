@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Trà Đá Sau Giờ Học | Tan Lớp Ngồi Lại Nói Chuyện Thật ☕🎬</title>
-  <meta name="description" content="Tan lớp cất máy gập cam, làm ly trà đá hỏi han chuyện nghề. 2 phút ngồi lại nói chuyện thật, gửi link kênh và nhận tài nguyên thực chiến.">
+  <title>Vài dòng tâm sự sau 2 ngày học | Việt lắng nghe bạn ☕</title>
+  <meta name="description" content="2 ngày học vừa qua thực sự rất quý giá với Việt. Ngồi lại vài phút để Việt lắng nghe góp ý chân thành từ bạn nhé.">
 
   <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%22><text y=%2226%22 font-size=%2226%22>☕</text></svg>">
@@ -18,34 +18,15 @@
         extend: {
           colors: {
             brand: {
-              50: '#fffbeb',
-              100: '#fef3c7',
-              500: '#f59e0b',
-              600: '#d97706',
               amber: '#f59e0b',
               emerald: '#10b981',
-              dark: '#0f172a',
-              card: '#1e293b',
-              border: '#334155'
+              dark: '#090d16',
+              card: '#161f30',
+              border: '#243248'
             }
           },
           fontFamily: {
             sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif']
-          },
-          animation: {
-            'fade-in': 'fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards',
-            'slide-up': 'slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
-            'pulse-slow': 'pulse 3s infinite'
-          },
-          keyframes: {
-            fadeIn: {
-              '0%': { opacity: '0', transform: 'scale(0.98)' },
-              '100%': { opacity: '1', transform: 'scale(1)' }
-            },
-            slideUp: {
-              '0%': { opacity: '0', transform: 'translateY(16px)' },
-              '100%': { opacity: '1', transform: 'translateY(0)' }
-            }
           }
         }
       }
@@ -54,9 +35,6 @@
 
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- Canvas Confetti -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -72,613 +50,304 @@
     .heading-font {
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
-    /* Custom scrollbar */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #0f172a;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #334155;
-      border-radius: 9999px;
-    }
     .glass-card {
-      background: rgba(30, 41, 59, 0.75);
+      background: rgba(22, 31, 48, 0.85);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.07);
     }
-    .glow-amber {
-      box-shadow: 0 0 25px -5px rgba(245, 158, 11, 0.25);
+    .input-focus {
+      transition: all 0.2s ease;
     }
-    .glow-emerald {
-      box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.25);
+    .input-focus:focus {
+      border-color: #f59e0b;
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
     }
   </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-amber-500 selection:text-slate-950 relative overflow-x-hidden">
 
-  <!-- Background decorative light spots -->
-  <div class="fixed top-[-10%] left-[-10%] w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-[120px] pointer-events-none -z-10"></div>
-  <div class="fixed bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+  <!-- Background subtle warm glow -->
+  <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-amber-500/10 rounded-full blur-[140px] pointer-events-none -z-10"></div>
 
-  <!-- TOP HEADER & PROGRESS -->
-  <header class="sticky top-0 z-40 bg-[#090d16]/85 backdrop-blur-md border-b border-slate-800/80 px-4 py-3">
-    <div class="max-w-2xl mx-auto flex items-center justify-between">
-      <!-- Brand & Course Tag -->
+  <!-- HEADER -->
+  <header class="sticky top-0 z-40 bg-[#090d16]/90 backdrop-blur-md border-b border-slate-800/80 px-4 py-3">
+    <div class="max-w-xl mx-auto flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-300 flex items-center justify-center text-slate-950 font-bold text-lg shadow-lg shadow-amber-500/20">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-300 flex items-center justify-center text-slate-950 font-bold text-sm shadow-md shadow-amber-500/20">
           ☕
         </div>
         <div>
-          <div class="flex items-center gap-2">
-            <span class="font-bold text-sm text-slate-100 tracking-tight">Trà Đá Sau Giờ Học</span>
-            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1 animate-pulse"></span>
-              Nói chuyện thật
-            </span>
-          </div>
-          <p id="course-badge" class="text-xs text-slate-400 flex items-center gap-1 cursor-pointer hover:text-amber-400 transition" onclick="openCourseSelector()">
-            <i data-lucide="sparkles" class="w-3 h-3 text-amber-400"></i>
-            <span id="course-name-display">Offline Thực Chiến (Hà Nội)</span>
+          <h1 class="font-bold text-sm text-slate-100 leading-none">Tâm sự sau 2 ngày học</h1>
+          <p id="course-display" class="text-xs text-amber-400/90 mt-1 cursor-pointer flex items-center gap-1 hover:underline" onclick="openCourseSelector()">
+            <span id="course-name-text">Lớp Offline Thực Chiến (Hà Nội)</span>
             <i data-lucide="chevron-down" class="w-3 h-3"></i>
           </p>
         </div>
       </div>
-
-      <!-- Step Counter -->
-      <div class="flex items-center gap-2">
-        <div class="text-right">
-          <div class="text-xs font-semibold text-amber-400" id="step-counter-text">Chặng 1/4</div>
-          <div class="text-[11px] text-slate-400 font-medium" id="progress-percent">25% Hoàn thành</div>
-        </div>
+      <div class="text-right">
+        <span class="text-xs text-slate-400 font-medium">Việt x Học viên</span>
       </div>
-    </div>
-
-    <!-- Progress Bar Line -->
-    <div class="max-w-2xl mx-auto mt-2.5 h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
-      <div id="progress-bar" class="h-full bg-gradient-to-r from-amber-500 via-amber-400 to-emerald-400 rounded-full transition-all duration-500 ease-out" style="width: 25%;"></div>
     </div>
   </header>
 
-  <!-- MAIN INTERACTIVE CONTAINER -->
-  <main class="flex-1 max-w-2xl w-full mx-auto p-4 sm:p-6 flex flex-col justify-center my-auto">
+  <!-- MAIN FORM -->
+  <main class="flex-1 max-w-xl w-full mx-auto p-4 sm:p-6 my-auto">
     
-    <!-- FORM CONTAINER -->
-    <form id="survey-form" onsubmit="handleFormSubmit(event)" class="w-full">
+    <div id="survey-container" class="glass-card rounded-3xl p-6 sm:p-8 border border-slate-800 shadow-2xl space-y-7">
 
-      <!-- ========================================================================= -->
-      <!-- CHẶNG 0: MÀN HÌNH CHÀO ĐÓN THÂN TÌNH (WELCOME CARD) -->
-      <!-- ========================================================================= -->
-      <div id="step-0" class="step-card animate-fade-in block">
-        <div class="glass-card rounded-3xl p-6 sm:p-8 border border-slate-800/80 shadow-2xl relative overflow-hidden">
-          <!-- Top subtle tag -->
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs font-medium mb-5">
-            <i data-lucide="coffee" class="w-3.5 h-3.5"></i>
-            <span>Tan lớp nhưng chưa tan chuyện</span>
-          </div>
+      <!-- THƯ TÂM SỰ MỞ ĐẦU -->
+      <div class="space-y-4 border-b border-slate-800/80 pb-6">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs font-medium">
+          <i data-lucide="heart" class="w-3.5 h-3.5 text-amber-400"></i>
+          <span>Lời nhắn riêng từ Việt gửi bạn</span>
+        </div>
 
-          <h1 class="heading-font text-2xl sm:text-3xl font-extrabold text-white leading-tight mb-3">
-            Trà đá sau giờ học: <br class="hidden sm:inline">
-            <span class="bg-gradient-to-r from-amber-400 via-amber-200 to-emerald-300 bg-clip-text text-transparent">Tan lớp ngồi lại nói chuyện thật</span>
-          </h1>
+        <h2 class="heading-font text-2xl sm:text-3xl font-extrabold text-white leading-tight">
+          Chào bạn, <br class="sm:hidden">
+          <span class="bg-gradient-to-r from-amber-400 to-amber-200 bg-clip-text text-transparent">Việt đây!</span>
+        </h2>
 
-          <!-- 2 CÂU THƠ LỤC BÁT MỞ MÀN -->
-          <div class="p-4 rounded-2xl bg-gradient-to-r from-amber-500/15 via-slate-900 to-emerald-500/10 border border-amber-500/30 text-center my-4 shadow-lg shadow-amber-500/5">
-            <p class="italic text-base sm:text-lg font-bold text-amber-300 tracking-wide leading-relaxed">
-              "Tan lớp cất máy gập cam,<br>
-              Làm ly trà đá hỏi han chuyện nghề."
-            </p>
-          </div>
-
-          <div class="space-y-3 text-slate-300 text-sm sm:text-base leading-relaxed">
-            <p>
-              Tan lớp rồi, mời bạn ngồi lại làm chén trà 2 phút nói chuyện thật:
-            </p>
-            <ul class="space-y-2 text-xs sm:text-sm text-slate-300">
-              <li class="flex items-start gap-2">
-                <span class="text-amber-400 font-bold">1.</span>
-                <span><strong>Góp ý thẳng thắn:</strong> Chỗ nào hay thì khen, chỗ nào dở từ check-in đến tư vấn giá thì nói thẳng để đội ngũ sửa ngay ở khóa sau.</span>
-              </li>
-              <li class="flex items-start gap-2">
-                <span class="text-emerald-400 font-bold">2.</span>
-                <span><strong>Gửi link kênh của bạn:</strong> Để đội ngũ vào xem video đầu tay, bấm follow và gửi tài nguyên cập nhật phù hợp với ngành nghề của bạn sau này.</span>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Features highlight -->
-          <div class="grid grid-cols-2 gap-3 mt-6 mb-8 text-xs text-slate-300 font-medium">
-            <div class="flex items-center gap-2 p-2.5 rounded-xl bg-slate-900/40 border border-slate-800/60">
-              <i data-lucide="clock" class="w-4 h-4 text-amber-400 flex-shrink-0"></i>
-              <span>Chỉ mất ~2 phút</span>
-            </div>
-            <div class="flex items-center gap-2 p-2.5 rounded-xl bg-slate-900/40 border border-slate-800/60">
-              <i data-lucide="gift" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i>
-              <span>Tặng Kho Prompt AI & Template</span>
-            </div>
-          </div>
-
-          <!-- Button Start -->
-          <button type="button" onclick="nextStep(1)" class="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-base shadow-xl shadow-amber-500/25 flex items-center justify-center gap-2 transition duration-200 active:scale-[0.98]">
-            <span>Ngồi xuống uống chén trà & chia sẻ nhé</span>
-            <i data-lucide="arrow-right" class="w-5 h-5"></i>
-          </button>
+        <div class="space-y-3 text-slate-300 text-sm leading-relaxed">
+          <p>
+            2 ngày vừa qua (cả sáng lẫn chiều) được trực tiếp đứng lớp, cùng trao đổi, cùng vỡ ra từng góc máy và cách làm video với bạn là khoảng thời gian Việt thực sự rất trân trọng.
+          </p>
+          <p>
+            Khóa học khép lại, Việt không có bộ máy hay đội ngũ nào đứng sau cả — toàn bộ từ làm video, lên kịch bản, đứng lớp đến hỗ trợ sau này đều là <strong class="text-amber-300 font-medium">chính Việt tự làm</strong>. 
+          </p>
+          <p>
+            Việt làm trang này để <strong class="text-white">lưu lại link kênh của bạn</strong> (để Việt vào xem bạn làm video ra sao và giữ liên lạc), đồng thời muốn <strong class="text-white">lắng nghe thật lòng</strong> xem bạn biết đến Việt từ video nào, và trong 2 ngày vừa rồi Việt còn chỗ nào làm chưa tốt để Việt tự sửa mình.
+          </p>
         </div>
       </div>
 
-      <!-- ========================================================================= -->
-      <!-- CHẶNG 1: NHỚ MẶT ĐẶT TÊN & KẾT NỐI (WHO YOU ARE & STAY IN TOUCH) -->
-      <!-- ========================================================================= -->
-      <div id="step-1" class="step-card hidden animate-slide-up">
-        <div class="glass-card rounded-3xl p-6 sm:p-8 border border-slate-800/80 shadow-2xl space-y-6">
-          
-          <div class="flex items-center justify-between border-b border-slate-800/80 pb-4">
-            <div>
-              <span class="text-xs font-semibold uppercase tracking-wider text-amber-400">Chặng 1/4</span>
-              <h2 class="heading-font text-xl sm:text-2xl font-bold text-white mt-0.5">Nhớ mặt đặt tên & Kênh liên hệ</h2>
-            </div>
-            <div class="w-10 h-10 rounded-2xl bg-slate-800 flex items-center justify-center text-amber-400">
-              <i data-lucide="user-check" class="w-5 h-5"></i>
-            </div>
-          </div>
+      <!-- FORM FIELDS -->
+      <form id="feedback-form" onsubmit="handleFormSubmit(event)" class="space-y-6">
 
-          <!-- Q1: Họ và tên -->
-          <div class="space-y-2">
-            <label for="fullName" class="block text-sm font-semibold text-slate-200">
-              1. Họ và tên của bạn <span class="text-amber-400">*</span>
-            </label>
-            <input type="text" id="fullName" name="fullName" required placeholder="Ví dụ: Nguyễn Thu Trang" class="w-full px-4 py-3.5 rounded-xl bg-slate-900/90 border border-slate-700/80 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 text-white placeholder-slate-500 outline-none text-sm transition" oninput="saveDraft()">
-          </div>
+        <!-- 1. THÔNG TIN & LINK KÊNH -->
+        <div class="space-y-4">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+            <i data-lucide="user-check" class="w-4 h-4"></i>
+            <span>1. Để Việt nhớ bạn & tiện theo dõi kênh</span>
+          </h3>
 
-          <!-- Q2: Số điện thoại / Zalo -->
-          <div class="space-y-2">
-            <label for="phone" class="block text-sm font-semibold text-slate-200">
-              2. Số điện thoại / Zalo <span class="text-amber-400">*</span>
-              <span class="text-xs font-normal text-slate-400 block mt-0.5">Để lưu danh bạ kết nối và gửi các tài liệu/update mới phù hợp với bạn</span>
-            </label>
-            <input type="tel" id="phone" name="phone" required placeholder="Ví dụ: 0912345678" class="w-full px-4 py-3.5 rounded-xl bg-slate-900/90 border border-slate-700/80 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 text-white placeholder-slate-500 outline-none text-sm transition" oninput="saveDraft()">
-          </div>
-
-          <!-- Q3: Nghề nghiệp / Dự án -->
-          <div class="space-y-2">
-            <label for="profession" class="block text-sm font-semibold text-slate-200">
-              3. Nghề nghiệp hoặc dự án hiện tại của bạn là gì? <span class="text-amber-400">*</span>
-            </label>
-            <input type="text" id="profession" name="profession" required placeholder="VD: Quản lý pháp chế MEDLATEC (chuẩn bị mở cty luật), KD thời trang..." class="w-full px-4 py-3.5 rounded-xl bg-slate-900/90 border border-slate-700/80 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 text-white placeholder-slate-500 outline-none text-sm transition" oninput="saveDraft()">
-          </div>
-
-          <!-- Q4: Link Kênh / Profile -->
-          <div class="space-y-2">
-            <label for="channelLink" class="block text-sm font-semibold text-slate-200">
-              4. Link Kênh (TikTok / YouTube / Facebook Page / FB Cá Nhân)
-              <span class="text-xs font-normal text-slate-400 block mt-0.5">Gửi link kênh để đội ngũ vào xem, bấm follow kết nối và hỗ trợ bạn trực tiếp</span>
-            </label>
-            <div class="relative">
-              <input type="text" id="channelLink" name="channelLink" placeholder="https://tiktok.com/@kenhcua_ban hoặc https://facebook.com/..." class="w-full pl-10 pr-4 py-3.5 rounded-xl bg-slate-900/90 border border-slate-700/80 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 text-white placeholder-slate-500 outline-none text-sm transition" oninput="saveDraft()">
-              <i data-lucide="link" class="w-4 h-4 text-slate-500 absolute left-3.5 top-4"></i>
-            </div>
-          </div>
-
-          <!-- Navigation Buttons -->
-          <div class="flex items-center gap-3 pt-4 border-t border-slate-800/80">
-            <button type="button" onclick="nextStep(0)" class="px-5 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-sm transition">
-              Quay lại
-            </button>
-            <button type="button" onclick="validateAndNext(1, 2)" class="flex-1 py-3.5 px-6 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 transition active:scale-[0.98]">
-              <span>Tiếp tục: Cơ duyên & Video ấn tượng</span>
-              <i data-lucide="arrow-right" class="w-4 h-4"></i>
-            </button>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- ========================================================================= -->
-      <!-- CHẶNG 2: NGUỒN CẢM HỨNG & MARKETING INSIGHT (MARKETING DISCOVERY) -->
-      <!-- ========================================================================= -->
-      <div id="step-2" class="step-card hidden animate-slide-up">
-        <div class="glass-card rounded-3xl p-6 sm:p-8 border border-slate-800/80 shadow-2xl space-y-6">
-          
-          <div class="flex items-center justify-between border-b border-slate-800/80 pb-4">
-            <div>
-              <span class="text-xs font-semibold uppercase tracking-wider text-amber-400">Chặng 2/4</span>
-              <h2 class="heading-font text-xl sm:text-2xl font-bold text-white mt-0.5">Cơ duyên & Nguồn cảm hứng</h2>
-            </div>
-            <div class="w-10 h-10 rounded-2xl bg-slate-800 flex items-center justify-center text-amber-400">
-              <i data-lucide="compass" class="w-5 h-5"></i>
-            </div>
-          </div>
-
-          <!-- Q5: Kênh biết đến -->
           <div class="space-y-3">
-            <label class="block text-sm font-semibold text-slate-200">
-              5. Bạn biết đến khóa học qua kênh nào? <span class="text-amber-400">*</span>
-            </label>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              <label class="channel-option flex items-center gap-3 p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-amber-500/50 cursor-pointer transition">
-                <input type="radio" name="source" value="TikTok Video" class="accent-amber-500 w-4 h-4" onchange="saveDraft()">
-                <span class="text-sm text-slate-300">Video trên TikTok</span>
-              </label>
-              <label class="channel-option flex items-center gap-3 p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-amber-500/50 cursor-pointer transition">
-                <input type="radio" name="source" value="Facebook Reels / Post" class="accent-amber-500 w-4 h-4" onchange="saveDraft()">
-                <span class="text-sm text-slate-300">Facebook Reels / Post</span>
-              </label>
-              <label class="channel-option flex items-center gap-3 p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-amber-500/50 cursor-pointer transition">
-                <input type="radio" name="source" value="YouTube Video / Shorts" class="accent-amber-500 w-4 h-4" onchange="saveDraft()">
-                <span class="text-sm text-slate-300">YouTube Video / Shorts</span>
-              </label>
-              <label class="channel-option flex items-center gap-3 p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-amber-500/50 cursor-pointer transition">
-                <input type="radio" name="source" value="Bạn bè / Đồng nghiệp giới thiệu" class="accent-amber-500 w-4 h-4" onchange="saveDraft()">
-                <span class="text-sm text-slate-300">Bạn bè / Đồng nghiệp giới thiệu</span>
-              </label>
-              <label class="channel-option flex items-center gap-3 p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-amber-500/50 cursor-pointer transition sm:col-span-2">
-                <input type="radio" name="source" value="Threads / Nền tảng khác" class="accent-amber-500 w-4 h-4" onchange="saveDraft()">
-                <span class="text-sm text-slate-300">Threads / Tự tìm kiếm / Nguồn khác</span>
-              </label>
-            </div>
-          </div>
-
-          <!-- Q6: Video hoặc khoảnh khắc ấn tượng nhất -->
-          <div class="space-y-2">
-            <label for="impressedVideo" class="block text-sm font-semibold text-slate-200">
-              6. Video hoặc khoảnh khắc nào khiến bạn quyết định đăng ký ngay? <span class="text-amber-400">*</span>
-              <span class="text-xs font-normal text-slate-400 block mt-0.5">Bạn ấn tượng bởi thông điệp, góc nhìn hay chi tiết gì nhất trong video?</span>
-            </label>
-            <textarea id="impressedVideo" name="impressedVideo" rows="3" required placeholder="VD: Quyết định sau 20s xem video hướng dẫn băm nhỏ phân cảnh, tư duy AI đa ngành, hoặc phong cách thực tế không màu mè..." class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 text-white placeholder-slate-500 outline-none text-sm transition" oninput="saveDraft()"></textarea>
-          </div>
-
-          <!-- Navigation Buttons -->
-          <div class="flex items-center gap-3 pt-4 border-t border-slate-800/80">
-            <button type="button" onclick="nextStep(1)" class="px-5 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-sm transition">
-              Quay lại
-            </button>
-            <button type="button" onclick="validateAndNext(2, 3)" class="flex-1 py-3.5 px-6 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 transition active:scale-[0.98]">
-              <span>Tiếp tục: Góp ý thực chiến</span>
-              <i data-lucide="arrow-right" class="w-4 h-4"></i>
-            </button>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- ========================================================================= -->
-      <!-- CHẶNG 3: TRẢI NGHIỆM & GÓP Ý VẬN HÀNH (COURSE EXPERIENCE & OPERATIONS) -->
-      <!-- ========================================================================= -->
-      <div id="step-3" class="step-card hidden animate-slide-up">
-        <div class="glass-card rounded-3xl p-6 sm:p-8 border border-slate-800/80 shadow-2xl space-y-6">
-          
-          <div class="flex items-center justify-between border-b border-slate-800/80 pb-4">
             <div>
-              <span class="text-xs font-semibold uppercase tracking-wider text-amber-400">Chặng 3/4</span>
-              <h2 class="heading-font text-xl sm:text-2xl font-bold text-white mt-0.5">Trải nghiệm & Góp ý chân thành</h2>
-            </div>
-            <div class="w-10 h-10 rounded-2xl bg-slate-800 flex items-center justify-center text-amber-400">
-              <i data-lucide="message-square-heart" class="w-5 h-5"></i>
-            </div>
-          </div>
-
-          <!-- Q7: Điều tâm đắc nhất -->
-          <div class="space-y-2">
-            <label for="bestValue" class="block text-sm font-semibold text-slate-200">
-              7. Điều bạn tâm đắc và thấy giá trị nhất sau khóa học là gì? <span class="text-amber-400">*</span>
-            </label>
-            <textarea id="bestValue" name="bestValue" rows="3" required placeholder="VD: Tự tin cầm máy, tư duy bóc phân cảnh 3 tầng, ứng dụng AI tự động hóa kịch bản, định hướng marketing rõ ràng..." class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 text-white placeholder-slate-500 outline-none text-sm transition" oninput="saveDraft()"></textarea>
-          </div>
-
-          <!-- Q8: Góp ý vận hành (Điểm cần làm tốt hơn) -->
-          <div class="space-y-2">
-            <label class="block text-sm font-semibold text-slate-200">
-              8. Để các khóa sau hoàn thiện hơn, đội ngũ nên tối ưu thêm điều gì?
-              <span class="text-xs font-normal text-slate-400 block mt-0.5">Chọn các điểm bạn thấy cần cải thiện (hoặc viết thêm bên dưới):</span>
-            </label>
-            
-            <div class="space-y-2">
-              <label class="flex items-start gap-3 p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 cursor-pointer text-xs sm:text-sm text-slate-300">
-                <input type="checkbox" name="op_checkin" value="Kiểm soát check-in vào lớp chặt chẽ hơn" class="accent-amber-500 w-4 h-4 mt-0.5 rounded" onchange="updateFeedbackField()">
-                <span><strong>Khâu check-in:</strong> Kiểm soát danh sách vào lớp chặt chẽ hơn</span>
+              <label for="fullName" class="block text-xs font-semibold text-slate-300 mb-1.5">
+                Họ và tên của bạn <span class="text-amber-400">*</span>
               </label>
-
-              <label class="flex items-start gap-3 p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 cursor-pointer text-xs sm:text-sm text-slate-300">
-                <input type="checkbox" name="op_presurvey" value="Gửi link khảo sát ngắn trước buổi học để nắm chân dung" class="accent-amber-500 w-4 h-4 mt-0.5 rounded" onchange="updateFeedbackField()">
-                <span><strong>Khảo sát đầu vào:</strong> Gửi link khảo sát ngắn trước buổi học để nắm rõ nhu cầu từng bạn</span>
-              </label>
-
-              <label class="flex items-start gap-3 p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 cursor-pointer text-xs sm:text-sm text-slate-300">
-                <input type="checkbox" name="op_care" value="Thăm hỏi bạn vắng mặt hoặc về sớm" class="accent-amber-500 w-4 h-4 mt-0.5 rounded" onchange="updateFeedbackField()">
-                <span><strong>Chăm sóc học viên:</strong> Thăm hỏi & hỗ trợ các bạn bận về sớm hoặc vắng buổi</span>
-              </label>
-
-              <label class="flex items-start gap-3 p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 cursor-pointer text-xs sm:text-sm text-slate-300">
-                <input type="checkbox" name="op_upsell" value="Dành 10p cuối giới thiệu gói nâng cao độc quyền tại lớp" class="accent-amber-500 w-4 h-4 mt-0.5 rounded" onchange="updateFeedbackField()">
-                <span><strong>Gói nâng cao:</strong> Dành khoảng 10 phút cuối giới thiệu các module chuyên sâu kèm ưu đãi riêng tại lớp</span>
-              </label>
-
-              <label class="flex items-start gap-3 p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 cursor-pointer text-xs sm:text-sm text-slate-300">
-                <input type="checkbox" name="op_price" value="Tư vấn rõ ưu đãi giảm giá nhóm (VD: giảm 10% từ 2 người)" class="accent-amber-500 w-4 h-4 mt-0.5 rounded" onchange="updateFeedbackField()">
-                <span><strong>Tư vấn giá & ưu đãi:</strong> Chủ động tư vấn ưu đãi nhóm (ví dụ giảm 10% khi đăng ký từ 2 người)</span>
-              </label>
+              <input type="text" id="fullName" name="fullName" required placeholder="Họ và tên của bạn" class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm input-focus" oninput="saveDraft()">
             </div>
 
-            <!-- Góp ý chi tiết thêm -->
-            <textarea id="feedbackOperation" name="feedbackOperation" rows="2" placeholder="Ghi thêm các góp ý thẳng thắn khác của bạn tại đây (đội ngũ rất trân trọng!)..." class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 text-white placeholder-slate-500 outline-none text-sm transition mt-2" oninput="saveDraft()"></textarea>
-          </div>
+            <div>
+              <label for="phone" class="block text-xs font-semibold text-slate-300 mb-1.5">
+                Số Zalo / Điện thoại <span class="text-amber-400">*</span>
+                <span class="text-slate-400 font-normal block text-[11px]">Để Việt lưu danh bạ và tiện nhắn tin trò chuyện khi có tài liệu mới</span>
+              </label>
+              <input type="tel" id="phone" name="phone" required placeholder="Số Zalo của bạn" class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm input-focus" oninput="saveDraft()">
+            </div>
 
-          <!-- Q9: Đánh giá điểm (NPS 1-10) -->
-          <div class="space-y-3 pt-2">
-            <label class="block text-sm font-semibold text-slate-200">
-              9. Thang điểm đánh giá trải nghiệm tổng quan (1 - 10 sao) <span class="text-amber-400">*</span>
-            </label>
-            <div class="flex items-center justify-between gap-1 sm:gap-2">
-              <div class="grid grid-cols-10 gap-1 sm:gap-1.5 w-full" id="rating-container">
-                <!-- Javascript will inject 1-10 buttons -->
+            <div>
+              <label for="profession" class="block text-xs font-semibold text-slate-300 mb-1.5">
+                Nghề nghiệp hoặc mảng bạn đang làm <span class="text-amber-400">*</span>
+              </label>
+              <input type="text" id="profession" name="profession" required placeholder="VD: Luật sư, kinh doanh thời trang, bất động sản, bác sĩ..." class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm input-focus" oninput="saveDraft()">
+            </div>
+
+            <div>
+              <label for="channelLink" class="block text-xs font-semibold text-slate-300 mb-1.5">
+                Link Kênh (TikTok / YouTube / Facebook Page / FB Cá Nhân)
+                <span class="text-slate-400 font-normal block text-[11px]">Gửi link kênh để Việt bấm follow và xem những video đầu tay bạn làm nhé</span>
+              </label>
+              <div class="relative">
+                <input type="text" id="channelLink" name="channelLink" placeholder="https://tiktok.com/@kenh_cua_ban hoặc link FB..." class="w-full pl-9 pr-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm input-focus" oninput="saveDraft()">
+                <i data-lucide="link" class="w-4 h-4 text-slate-500 absolute left-3 top-3.5"></i>
               </div>
             </div>
-            <input type="hidden" id="rating" name="rating" value="10">
-            <div class="flex justify-between text-[11px] text-slate-400 px-1 font-medium">
-              <span>1 - Cần cải thiện nhiều</span>
-              <span class="text-emerald-400 font-semibold" id="rating-label">10 - Vượt ngoài kỳ vọng</span>
-            </div>
           </div>
-
-          <!-- Navigation Buttons -->
-          <div class="flex items-center gap-3 pt-4 border-t border-slate-800/80">
-            <button type="button" onclick="nextStep(2)" class="px-5 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-sm transition">
-              Quay lại
-            </button>
-            <button type="button" onclick="validateAndNext(3, 4)" class="flex-1 py-3.5 px-6 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 transition active:scale-[0.98]">
-              <span>Tiếp tục: Đồng hành dài hạn</span>
-              <i data-lucide="arrow-right" class="w-4 h-4"></i>
-            </button>
-          </div>
-
         </div>
-      </div>
 
-      <!-- ========================================================================= -->
-      <!-- CHẶNG 4: ĐỒNG HÀNH TƯƠNG LAI & GỬI TÂM SỰ (NEXT STEPS & SEND) -->
-      <!-- ========================================================================= -->
-      <div id="step-4" class="step-card hidden animate-slide-up">
-        <div class="glass-card rounded-3xl p-6 sm:p-8 border border-slate-800/80 shadow-2xl space-y-6">
-          
-          <div class="flex items-center justify-between border-b border-slate-800/80 pb-4">
-            <div>
-              <span class="text-xs font-semibold uppercase tracking-wider text-amber-400">Chặng 4/4</span>
-              <h2 class="heading-font text-xl sm:text-2xl font-bold text-white mt-0.5">Đồng hành & Nhắn nhủ riêng</h2>
-            </div>
-            <div class="w-10 h-10 rounded-2xl bg-slate-800 flex items-center justify-center text-amber-400">
-              <i data-lucide="send" class="w-5 h-5"></i>
-            </div>
-          </div>
+        <!-- 2. LUỒNG MARKETING & VIDEO ẤN TƯỢNG -->
+        <div class="space-y-4 pt-4 border-t border-slate-800/80">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+            <i data-lucide="compass" class="w-4 h-4"></i>
+            <span>2. Cơ duyên & Video của Việt</span>
+          </h3>
 
-          <!-- Q10: Nhu cầu chủ đề chuyên sâu -->
           <div class="space-y-3">
-            <label class="block text-sm font-semibold text-slate-200">
-              10. Sau khóa học này, bạn muốn được đồng hành thêm ở chủ đề nào?
-            </label>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              <label class="flex items-center gap-3 p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-amber-500/50 cursor-pointer transition">
-                <input type="checkbox" name="advanced" value="AI Chuyên Sâu Tự Động Hóa Video" class="accent-amber-500 w-4 h-4 rounded" onchange="updateAdvancedNeeds()">
-                <span class="text-xs sm:text-sm text-slate-300">AI Chuyên Sâu Tự Động Video</span>
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-2">
+                Bạn biết đến Việt qua đâu thế? <span class="text-amber-400">*</span>
               </label>
-              <label class="flex items-center gap-3 p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-amber-500/50 cursor-pointer transition">
-                <input type="checkbox" name="advanced" value="Xây Kênh Thương Hiệu Cá Nhân" class="accent-amber-500 w-4 h-4 rounded" onchange="updateAdvancedNeeds()">
-                <span class="text-xs sm:text-sm text-slate-300">Xây Kênh Thương Hiệu Cá Nhân</span>
-              </label>
-              <label class="flex items-center gap-3 p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-amber-500/50 cursor-pointer transition">
-                <input type="checkbox" name="advanced" value="Video Ads Bán Hàng Chuyển Đổi Cao" class="accent-amber-500 w-4 h-4 rounded" onchange="updateAdvancedNeeds()">
-                <span class="text-xs sm:text-sm text-slate-300">Video Ads Bán Hàng Chuyển Đổi</span>
-              </label>
-              <label class="flex items-center gap-3 p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-amber-500/50 cursor-pointer transition">
-                <input type="checkbox" name="advanced" value="Kèm 1-1 Setup Studio & Thực Chiến" class="accent-amber-500 w-4 h-4 rounded" onchange="updateAdvancedNeeds()">
-                <span class="text-xs sm:text-sm text-slate-300">Kèm 1-1 Setup Studio & Chiến Lược</span>
-              </label>
+              <div class="grid grid-cols-2 gap-2 text-xs">
+                <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-amber-500/50 cursor-pointer transition">
+                  <input type="radio" name="source" value="TikTok Video" class="accent-amber-500" onchange="saveDraft()">
+                  <span class="text-slate-200">Video TikTok</span>
+                </label>
+                <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-amber-500/50 cursor-pointer transition">
+                  <input type="radio" name="source" value="Facebook Reels / Post" class="accent-amber-500" onchange="saveDraft()">
+                  <span class="text-slate-200">Facebook Reels / Bài viết</span>
+                </label>
+                <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-amber-500/50 cursor-pointer transition">
+                  <input type="radio" name="source" value="YouTube Video / Shorts" class="accent-amber-500" onchange="saveDraft()">
+                  <span class="text-slate-200">YouTube Video</span>
+                </label>
+                <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-amber-500/50 cursor-pointer transition">
+                  <input type="radio" name="source" value="Bạn bè giới thiệu" class="accent-amber-500" onchange="saveDraft()">
+                  <span class="text-slate-200">Bạn bè giới thiệu</span>
+                </label>
+              </div>
             </div>
-            <input type="hidden" id="advancedNeeds" name="advancedNeeds" value="">
-          </div>
 
-          <!-- Q11: Kênh liên hệ ưu tiên -->
-          <div class="space-y-2">
-            <label class="block text-sm font-semibold text-slate-200">
-              11. Kênh liên hệ bạn thuận tiện nhận cập nhật & tài liệu nhất?
-            </label>
-            <div class="grid grid-cols-3 gap-2">
-              <label class="flex items-center justify-center gap-2 p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-amber-500/50 cursor-pointer text-xs font-semibold text-slate-300">
-                <input type="radio" name="contactPreference" value="Zalo" checked class="accent-amber-500">
-                <span>Zalo</span>
+            <div>
+              <label for="impressedVideo" class="block text-xs font-semibold text-slate-300 mb-1.5">
+                Video hoặc điều gì ở Việt khiến bạn quyết định đăng ký đi học? <span class="text-amber-400">*</span>
+                <span class="text-slate-400 font-normal block text-[11px]">(Ví dụ: có bạn bảo xem đúng 20s video là chốt, bạn ấn tượng bởi cách nói chuyện, góc máy hay tư duy nào nhất?)</span>
               </label>
-              <label class="flex items-center justify-center gap-2 p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-amber-500/50 cursor-pointer text-xs font-semibold text-slate-300">
-                <input type="radio" name="contactPreference" value="Telegram" class="accent-amber-500">
-                <span>Telegram</span>
-              </label>
-              <label class="flex items-center justify-center gap-2 p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-amber-500/50 cursor-pointer text-xs font-semibold text-slate-300">
-                <input type="radio" name="contactPreference" value="Facebook" class="accent-amber-500">
-                <span>Facebook</span>
-              </label>
+              <textarea id="impressedVideo" name="impressedVideo" rows="3" required placeholder="Chia sẻ thật để Việt hiểu và tiếp tục phát huy ở các video sau nhé..." class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm input-focus" oninput="saveDraft()"></textarea>
             </div>
           </div>
-
-          <!-- Q12: Lời nhắn nhủ riêng -->
-          <div class="space-y-2">
-            <label for="personalMessage" class="block text-sm font-semibold text-slate-200">
-              12. Lời nhắn nhủ hoặc tâm sự riêng gửi đến ban giảng huấn
-              <span class="text-xs font-normal text-slate-400 block mt-0.5">Bất cứ điều gì bạn muốn chia sẻ, đội ngũ sẽ đọc từng chữ một!</span>
-            </label>
-            <textarea id="personalMessage" name="personalMessage" rows="3" placeholder="Gửi lời chúc, chia sẻ cảm xúc hoặc hẹn ngày offline cafe cùng nhau..." class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 text-white placeholder-slate-500 outline-none text-sm transition" oninput="saveDraft()"></textarea>
-          </div>
-
-          <!-- Hidden Course Name -->
-          <input type="hidden" id="course" name="course" value="Offline Thực Chiến (Hà Nội)">
-
-          <!-- Navigation & Submit Button -->
-          <div class="flex items-center gap-3 pt-4 border-t border-slate-800/80">
-            <button type="button" onclick="nextStep(3)" class="px-5 py-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-sm transition">
-              Quay lại
-            </button>
-            <button type="submit" id="btn-submit" class="flex-1 py-4 px-6 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 font-extrabold text-base shadow-xl shadow-emerald-500/25 flex items-center justify-center gap-2 transition duration-200 active:scale-[0.98]">
-              <span id="btn-submit-text">Gửi chia sẻ & Mở khóa quà tặng</span>
-              <i data-lucide="sparkles" class="w-5 h-5 text-slate-950"></i>
-            </button>
-          </div>
-
         </div>
-      </div>
 
-      <!-- ========================================================================= -->
-      <!-- CHẶNG 5: MÀN HÌNH THÀNH CÔNG & MỞ KHÓA QUÀ TẶNG (SUCCESS & GIFT SCREEN) -->
-      <!-- ========================================================================= -->
-      <div id="step-5" class="step-card hidden animate-fade-in">
-        <div class="glass-card rounded-3xl p-6 sm:p-8 border border-emerald-500/30 glow-emerald text-center space-y-6">
-          
-          <div class="w-20 h-20 mx-auto rounded-3xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shadow-xl shadow-emerald-500/10">
-            <i data-lucide="party-popper" class="w-10 h-10 animate-bounce"></i>
-          </div>
+        <!-- 3. TRẢI NGHIỆM 2 NGÀY & GÓP Ý ĐỂ VIỆT TỰ SỬA MÌNH -->
+        <div class="space-y-4 pt-4 border-t border-slate-800/80">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+            <i data-lucide="message-square-heart" class="w-4 h-4"></i>
+            <span>3. Góp ý chân thành để Việt làm tốt hơn</span>
+          </h3>
 
-          <div class="space-y-2">
-            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-              ✨ Dữ liệu đã lưu về bảng tính thành công
-            </span>
-            <h2 class="heading-font text-2xl sm:text-3xl font-extrabold text-white">
-              Cảm ơn bạn rất nhiều!
-            </h2>
-            <p class="text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
-              Toàn bộ chia sẻ của bạn đã được ghi nhận. Những góp ý chân thành này là nền tảng quý giá giúp lớp học ngày càng hoàn thiện và thực chiến hơn.
-            </p>
-          </div>
-
-          <!-- Gift Box Card -->
-          <div class="bg-gradient-to-br from-slate-900 to-slate-800/90 rounded-2xl p-5 border border-amber-500/30 text-left space-y-3 relative overflow-hidden">
-            <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-amber-500/10 rounded-full blur-xl pointer-events-none"></div>
-            
-            <div class="flex items-center gap-2.5 text-amber-400 font-bold text-sm">
-              <i data-lucide="gift" class="w-5 h-5"></i>
-              <span>Món quà cảm ơn dành riêng cho bạn:</span>
+          <div class="space-y-3">
+            <div>
+              <label for="bestValue" class="block text-xs font-semibold text-slate-300 mb-1.5">
+                Điều bạn tâm đắc và thấy giá trị nhất sau 2 ngày vừa rồi? <span class="text-amber-400">*</span>
+              </label>
+              <textarea id="bestValue" name="bestValue" rows="2" required placeholder="VD: Tự tin cầm máy, tư duy bóc phân cảnh, ứng dụng AI đa ngành, định hướng rõ ràng..." class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm input-focus" oninput="saveDraft()"></textarea>
             </div>
 
-            <ul class="text-xs sm:text-sm text-slate-300 space-y-2 pl-1">
-              <li class="flex items-center gap-2">
-                <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i>
-                <span><strong>Kho 30+ Prompt AI bóc kịch bản bán hàng:</strong> Tự động viết kịch bản 3 tầng.</span>
-              </li>
-              <li class="flex items-center gap-2">
-                <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i>
-                <span><strong>Checklist Setup Studio 2 Máy:</strong> Tiêu chuẩn ánh sáng và bố cục chuẩn.</span>
-              </li>
-              <li class="flex items-center gap-2">
-                <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i>
-                <span><strong>Ưu đãi 15% độc quyền:</strong> Dành cho các module AI & Video Nâng cao sắp tới.</span>
-              </li>
-            </ul>
+            <div>
+              <label for="feedbackOperation" class="block text-xs font-semibold text-slate-300 mb-1.5">
+                Việt cần cải thiện chỗ nào để các khóa sau trọn vẹn hơn?
+                <span class="text-slate-400 font-normal block text-[11px]">Bất cứ điểm nào bạn thấy chưa ưng (khâu đón tiếp, nhịp dạy, khảo sát đầu vào, cách tư vấn ưu đãi nhóm...):</span>
+              </label>
+              <textarea id="feedbackOperation" name="feedbackOperation" rows="3" placeholder="Góp ý thẳng thắn cho Việt nhé, bạn nói thật là giúp Việt nhiều nhất đấy!" class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm input-focus" oninput="saveDraft()"></textarea>
+            </div>
 
-            <div class="pt-2 flex flex-col sm:flex-row gap-2.5">
-              <a href="https://zalo.me/0912345678" target="_blank" class="flex-1 py-3 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition shadow-lg shadow-amber-500/20">
-                <i data-lucide="message-circle" class="w-4 h-4"></i>
-                <span>Nhắn Zalo nhận quà ngay</span>
-              </a>
-              <button type="button" onclick="location.reload()" class="py-3 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium text-xs transition">
-                Gửi thêm phản hồi khác
-              </button>
+            <!-- Thang điểm đánh giá -->
+            <div class="pt-1">
+              <label class="block text-xs font-semibold text-slate-300 mb-2">
+                Đánh giá mức độ hài lòng chung của bạn (1 - 10)
+              </label>
+              <div class="grid grid-cols-10 gap-1" id="rating-container">
+                <!-- Injected via JS -->
+              </div>
+              <input type="hidden" id="rating" name="rating" value="10">
+              <p id="rating-label" class="text-xs text-emerald-400 font-medium mt-1.5 text-right">10 - Vượt ngoài kỳ vọng</p>
             </div>
           </div>
-
-          <!-- Footer Signature -->
-          <div class="pt-2 text-xs text-slate-400 flex items-center justify-center gap-2">
-            <span>Thân ái,</span>
-            <strong class="text-white font-semibold">Đồng hành thực chiến dài lâu cùng bạn 🚀</strong>
-          </div>
-
         </div>
-      </div>
 
-    </form>
-  </main>
+        <!-- 4. LỜI NHẮN NHỦ RIÊNG -->
+        <div class="space-y-4 pt-4 border-t border-slate-800/80">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+            <i data-lucide="send" class="w-4 h-4"></i>
+            <span>4. Lời nhắn riêng gửi cho Việt</span>
+          </h3>
 
-  <!-- MODAL: COURSE SELECTOR -->
-  <div id="course-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
-    <div class="glass-card rounded-3xl p-6 max-w-md w-full border border-slate-700 shadow-2xl space-y-4 animate-scale-in">
-      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-        <h3 class="font-bold text-base text-white flex items-center gap-2">
-          <i data-lucide="calendar" class="w-4 h-4 text-amber-400"></i>
-          <span>Chọn Khóa Học Của Bạn</span>
-        </h3>
-        <button type="button" onclick="closeCourseSelector()" class="text-slate-400 hover:text-white p-1">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
+          <div>
+            <textarea id="personalMessage" name="personalMessage" rows="2" placeholder="Có điều gì muốn nhắn nhủ, tâm sự riêng hoặc hẹn hôm nào cafe không bạn..." class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm input-focus" oninput="saveDraft()"></textarea>
+          </div>
+        </div>
 
-      <p class="text-xs text-slate-300">
-        Khảo sát này dùng chung cho tất cả các khóa Offline & Online. Hãy chọn đúng khóa bạn vừa tham gia:
-      </p>
+        <!-- Hidden inputs -->
+        <input type="hidden" id="course" name="course" value="Lớp Offline Thực Chiến (Hà Nội)">
 
-      <div class="space-y-2 max-h-60 overflow-y-auto pr-1 text-sm">
-        <button type="button" onclick="selectCourse('Offline Thực Chiến K12 - Hà Nội')" class="w-full text-left p-3 rounded-xl bg-slate-900 hover:bg-amber-500/10 hover:border-amber-500/40 border border-slate-800 text-slate-200 transition flex items-center justify-between">
-          <span>🎬 Offline Thực Chiến K12 - Hà Nội</span>
-        </button>
-        <button type="button" onclick="selectCourse('Offline Thực Chiến K13 - Sài Gòn')" class="w-full text-left p-3 rounded-xl bg-slate-900 hover:bg-amber-500/10 hover:border-amber-500/40 border border-slate-800 text-slate-200 transition flex items-center justify-between">
-          <span>🌴 Offline Thực Chiến K13 - Sài Gòn</span>
-        </button>
-        <button type="button" onclick="selectCourse('Offline Thực Chiến - Hải Phòng')" class="w-full text-left p-3 rounded-xl bg-slate-900 hover:bg-amber-500/10 hover:border-amber-500/40 border border-slate-800 text-slate-200 transition flex items-center justify-between">
-          <span>⚓ Offline Thực Chiến - Hải Phòng</span>
-        </button>
-        <button type="button" onclick="selectCourse('Online Video Masterclass K05')" class="w-full text-left p-3 rounded-xl bg-slate-900 hover:bg-amber-500/10 hover:border-amber-500/40 border border-slate-800 text-slate-200 transition flex items-center justify-between">
-          <span>💻 Online Video Masterclass K05</span>
-        </button>
-        <button type="button" onclick="selectCourse('AI Video Automation Master - K01')" class="w-full text-left p-3 rounded-xl bg-slate-900 hover:bg-amber-500/10 hover:border-amber-500/40 border border-slate-800 text-slate-200 transition flex items-center justify-between">
-          <span>🤖 AI Video Automation Master - K01</span>
-        </button>
-      </div>
-
-      <!-- Custom course input -->
-      <div class="pt-2 border-t border-slate-800">
-        <label class="block text-xs text-slate-400 mb-1.5 font-medium">Hoặc nhập tên khóa khác:</label>
-        <div class="flex gap-2">
-          <input type="text" id="custom-course-input" placeholder="VD: Workshop Doanh Nghiệp..." class="flex-1 px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white outline-none focus:border-amber-400">
-          <button type="button" onclick="applyCustomCourse()" class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs">
-            Lưu
+        <!-- SUBMIT BUTTON -->
+        <div class="pt-2">
+          <button type="submit" id="btn-submit" class="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-base shadow-xl shadow-amber-500/25 flex items-center justify-center gap-2 transition duration-200 active:scale-[0.98]">
+            <span id="btn-submit-text">Gửi chia sẻ cho Việt</span>
+            <i data-lucide="send" class="w-4 h-4 text-slate-950"></i>
           </button>
         </div>
+
+      </form>
+
+    </div>
+
+    <!-- MÀN HÌNH CẢM ƠN (SUCCESS CARD) -->
+    <div id="success-container" class="glass-card rounded-3xl p-6 sm:p-8 border border-emerald-500/30 text-center space-y-5 hidden">
+      <div class="w-16 h-16 mx-auto rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-2xl shadow-lg shadow-emerald-500/10">
+        ☕
+      </div>
+
+      <div class="space-y-2">
+        <h2 class="heading-font text-2xl sm:text-3xl font-extrabold text-white">
+          Cảm ơn bạn nhiều lắm!
+        </h2>
+        <p class="text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
+          Việt đã nhận được trọn vẹn những dòng chia sẻ của bạn. Việt sẽ đọc từng chữ một, vào xem kênh của bạn và giữ liên lạc để hỗ trợ bạn trên hành trình làm video nhé.
+        </p>
+      </div>
+
+      <div class="pt-3 border-t border-slate-800 text-xs text-slate-400">
+        <span>Chúc bạn luôn tràn đầy cảm hứng và bấm máy tự tin mỗi ngày!</span>
+        <p class="text-white font-semibold mt-1">Việt (VietMac) 🚀</p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- MODAL CHỌN KHÓA HỌC -->
+  <div id="course-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="glass-card rounded-3xl p-6 max-w-sm w-full border border-slate-700 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h4 class="font-bold text-sm text-white">Chọn khóa bạn vừa học</h4>
+        <button type="button" onclick="closeCourseSelector()" class="text-slate-400 hover:text-white">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+      <div class="space-y-2 text-xs">
+        <button type="button" onclick="selectCourse('Lớp Offline Thực Chiến - Hà Nội')" class="w-full text-left p-3 rounded-xl bg-slate-900 hover:bg-amber-500/10 border border-slate-800 text-slate-200">
+          🎬 Lớp Offline Thực Chiến - Hà Nội
+        </button>
+        <button type="button" onclick="selectCourse('Lớp Offline Thực Chiến - Sài Gòn')" class="w-full text-left p-3 rounded-xl bg-slate-900 hover:bg-amber-500/10 border border-slate-800 text-slate-200">
+          🌴 Lớp Offline Thực Chiến - Sài Gòn
+        </button>
+        <button type="button" onclick="selectCourse('Lớp Offline Thực Chiến - Hải Phòng')" class="w-full text-left p-3 rounded-xl bg-slate-900 hover:bg-amber-500/10 border border-slate-800 text-slate-200">
+          ⚓ Lớp Offline Thực Chiến - Hải Phòng
+        </button>
+        <button type="button" onclick="selectCourse('Lớp Online Video Masterclass')" class="w-full text-left p-3 rounded-xl bg-slate-900 hover:bg-amber-500/10 border border-slate-800 text-slate-200">
+          💻 Lớp Online Video Masterclass
+        </button>
       </div>
     </div>
   </div>
 
   <!-- FOOTER -->
-  <footer class="py-4 text-center text-xs text-slate-400 border-t border-slate-800/60 bg-[#090d16]/90">
-    <div class="max-w-2xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-      <div class="flex items-center gap-2">
-        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-        <span>Góc Trà Đá Hậu Cần &bull; Đồng Hành Thực Chiến 7-Level</span>
-      </div>
-      <div class="text-slate-400">
-        Tự động lưu nháp &bull; Bảo mật thông tin
-      </div>
+  <footer class="py-4 text-center text-xs text-slate-500 border-t border-slate-800/60">
+    <div class="max-w-xl mx-auto px-4">
+      Tự động lưu nháp &bull; Việt trực tiếp đọc và phản hồi
     </div>
   </footer>
 
-  <!-- ========================================================================= -->
-  <!-- JAVASCRIPT LOGIC -->
-  <!-- ========================================================================= -->
+  <!-- JS LOGIC -->
   <script>
     const GOOGLE_SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbz_SURVEY_VIETMAC_PLACEHOLDER/exec";
+    const STORAGE_KEY = "VIETMAC_SURVEY_GENUINE_DRAFT";
 
-    let currentStep = 0;
-    const totalSteps = 4;
-
-    function initRatingButtons() {
+    function initRating() {
       const container = document.getElementById('rating-container');
       container.innerHTML = '';
       for (let i = 1; i <= 10; i++) {
         const btn = document.createElement('button');
         btn.type = 'button';
-        btn.className = `h-11 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center ${
+        btn.className = `h-10 rounded-xl text-xs font-bold transition ${
           i === 10 
-            ? 'bg-amber-500 text-slate-950 shadow-lg shadow-amber-500/20' 
+            ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20' 
             : 'bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800'
         }`;
         btn.textContent = i;
         btn.onclick = () => setRating(i);
-        btn.id = `rating-btn-${i}`;
+        btn.id = `rate-${i}`;
         container.appendChild(btn);
       }
     }
@@ -686,128 +355,26 @@
     function setRating(val) {
       document.getElementById('rating').value = val;
       const label = document.getElementById('rating-label');
-      
       for (let i = 1; i <= 10; i++) {
-        const btn = document.getElementById(`rating-btn-${i}`);
+        const el = document.getElementById(`rate-${i}`);
         if (i === val) {
-          btn.className = 'h-11 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 text-slate-950 shadow-lg shadow-amber-500/20';
+          el.className = 'h-10 rounded-xl text-xs font-bold bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20';
         } else {
-          btn.className = 'h-11 rounded-xl text-xs sm:text-sm font-bold bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800';
+          el.className = 'h-10 rounded-xl text-xs font-bold bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800';
         }
       }
-
       if (val >= 9) {
-        label.textContent = `${val} sao - Rất tuyệt vời & Vượt kỳ vọng! 🎉`;
-        label.className = 'text-emerald-400 font-semibold';
+        label.textContent = `${val}/10 - Rất tuyệt vời & Vượt kỳ vọng! 👍`;
+        label.className = 'text-xs text-emerald-400 font-medium mt-1.5 text-right';
       } else if (val >= 7) {
-        label.textContent = `${val} sao - Hài lòng & Đầy giá trị 👍`;
-        label.className = 'text-amber-400 font-semibold';
+        label.textContent = `${val}/10 - Hài lòng & Bổ ích`;
+        label.className = 'text-xs text-amber-400 font-medium mt-1.5 text-right';
       } else {
-        label.textContent = `${val} sao - Cần cải thiện thêm`;
-        label.className = 'text-rose-400 font-semibold';
+        label.textContent = `${val}/10 - Cần cải thiện thêm`;
+        label.className = 'text-xs text-rose-400 font-medium mt-1.5 text-right';
       }
       saveDraft();
     }
-
-    function nextStep(stepIndex) {
-      currentStep = stepIndex;
-      for (let i = 0; i <= 5; i++) {
-        const stepEl = document.getElementById(`step-${i}`);
-        if (stepEl) {
-          stepEl.classList.add('hidden');
-          stepEl.classList.remove('block');
-        }
-      }
-
-      const targetEl = document.getElementById(`step-${stepIndex}`);
-      if (targetEl) {
-        targetEl.classList.remove('hidden');
-        targetEl.classList.add('block');
-      }
-
-      updateProgressBar(stepIndex);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function updateProgressBar(stepIndex) {
-      const progressBar = document.getElementById('progress-bar');
-      const counterText = document.getElementById('step-counter-text');
-      const percentText = document.getElementById('progress-percent');
-
-      if (stepIndex === 0) {
-        progressBar.style.width = '10%';
-        counterText.textContent = 'Khởi động';
-        percentText.textContent = '0% Hoàn thành';
-      } else if (stepIndex === 5) {
-        progressBar.style.width = '100%';
-        counterText.textContent = 'Hoàn tất';
-        percentText.textContent = '100% Tuyệt vời!';
-      } else {
-        const percent = Math.round((stepIndex / totalSteps) * 100);
-        progressBar.style.width = `${percent}%`;
-        counterText.textContent = `Chặng ${stepIndex}/${totalSteps}`;
-        percentText.textContent = `${percent}% Hoàn thành`;
-      }
-    }
-
-    function validateAndNext(current, next) {
-      if (current === 1) {
-        const name = document.getElementById('fullName').value.trim();
-        const phone = document.getElementById('phone').value.trim();
-        const profession = document.getElementById('profession').value.trim();
-
-        if (!name) {
-          showToast('Vui lòng nhập Họ và tên của bạn nhé!', 'amber');
-          document.getElementById('fullName').focus();
-          return;
-        }
-        if (!phone || phone.length < 8) {
-          showToast('Vui lòng nhập số điện thoại / Zalo để tiện liên hệ!', 'amber');
-          document.getElementById('phone').focus();
-          return;
-        }
-        if (!profession) {
-          showToast('Chia sẻ nghề nghiệp/dự án để hiểu nhau hơn nhé!', 'amber');
-          document.getElementById('profession').focus();
-          return;
-        }
-      } else if (current === 2) {
-        const source = document.querySelector('input[name="source"]:checked');
-        const video = document.getElementById('impressedVideo').value.trim();
-
-        if (!source) {
-          showToast('Bạn biết đến khóa học qua kênh nào thế?', 'amber');
-          return;
-        }
-        if (!video) {
-          showToast('Chia sẻ video hoặc khoảnh khắc bạn ấn tượng nhất nhé!', 'amber');
-          document.getElementById('impressedVideo').focus();
-          return;
-        }
-      } else if (current === 3) {
-        const bestValue = document.getElementById('bestValue').value.trim();
-        if (!bestValue) {
-          showToast('Chia sẻ điều bạn tâm đắc nhất sau khóa học nhé!', 'amber');
-          document.getElementById('bestValue').focus();
-          return;
-        }
-      }
-
-      nextStep(next);
-    }
-
-    function updateFeedbackField() {
-      saveDraft();
-    }
-
-    function updateAdvancedNeeds() {
-      const checkboxes = document.querySelectorAll('input[name="advanced"]:checked');
-      const selected = Array.from(checkboxes).map(cb => cb.value);
-      document.getElementById('advancedNeeds').value = selected.join(', ');
-      saveDraft();
-    }
-
-    const STORAGE_KEY = 'TRADA_SURVEY_DRAFT_V1';
 
     function saveDraft() {
       const data = {
@@ -820,11 +387,8 @@
         bestValue: document.getElementById('bestValue').value,
         feedbackOperation: document.getElementById('feedbackOperation').value,
         rating: document.getElementById('rating').value,
-        advancedNeeds: document.getElementById('advancedNeeds').value,
-        contactPreference: (document.querySelector('input[name="contactPreference"]:checked') || {}).value || 'Zalo',
         personalMessage: document.getElementById('personalMessage').value,
-        course: document.getElementById('course').value,
-        timestamp: new Date().toISOString()
+        course: document.getElementById('course').value
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     }
@@ -833,44 +397,35 @@
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return;
       try {
-        const data = JSON.parse(raw);
-        if (data.fullName) document.getElementById('fullName').value = data.fullName;
-        if (data.phone) document.getElementById('phone').value = data.phone;
-        if (data.profession) document.getElementById('profession').value = data.profession;
-        if (data.channelLink) document.getElementById('channelLink').value = data.channelLink;
-        if (data.impressedVideo) document.getElementById('impressedVideo').value = data.impressedVideo;
-        if (data.bestValue) document.getElementById('bestValue').value = data.bestValue;
-        if (data.feedbackOperation) document.getElementById('feedbackOperation').value = data.feedbackOperation;
-        if (data.personalMessage) document.getElementById('personalMessage').value = data.personalMessage;
-        if (data.rating) setRating(parseInt(data.rating));
-        if (data.source) {
-          const radio = document.querySelector(`input[name="source"][value="${data.source}"]`);
+        const d = json.parse(raw);
+        if (d.fullName) document.getElementById('fullName').value = d.fullName;
+        if (d.phone) document.getElementById('phone').value = d.phone;
+        if (d.profession) document.getElementById('profession').value = d.profession;
+        if (d.channelLink) document.getElementById('channelLink').value = d.channelLink;
+        if (d.impressedVideo) document.getElementById('impressedVideo').value = d.impressedVideo;
+        if (d.bestValue) document.getElementById('bestValue').value = d.bestValue;
+        if (d.feedbackOperation) document.getElementById('feedbackOperation').value = d.feedbackOperation;
+        if (d.personalMessage) document.getElementById('personalMessage').value = d.personalMessage;
+        if (d.rating) setRating(parseInt(d.rating));
+        if (d.source) {
+          const radio = document.querySelector(`input[name="source"][value="${d.source}"]`);
           if (radio) radio.checked = true;
         }
-        if (data.contactPreference) {
-          const radio = document.querySelector(`input[name="contactPreference"][value="${data.contactPreference}"]`);
-          if (radio) radio.checked = true;
-        }
-        if (data.course) {
-          setCourse(data.course);
-        }
-      } catch (e) {
-        console.error('Error restoring draft:', e);
+        if (d.course) setCourse(d.course);
+      } catch (e) {}
+    }
+
+    function initCourse() {
+      const p = new URLSearchParams(window.location.search);
+      const c = p.get('course') || p.get('khoa');
+      if (c) {
+        setCourse(decodeURIComponent(c).replace(/_/g, ' '));
       }
     }
 
-    function initCourseFromURL() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const courseParam = urlParams.get('course') || urlParams.get('khoa');
-      if (courseParam) {
-        const decodedCourse = decodeURIComponent(courseParam).replace(/_/g, ' ');
-        setCourse(decodedCourse);
-      }
-    }
-
-    function setCourse(courseName) {
-      document.getElementById('course').value = courseName;
-      document.getElementById('course-name-display').textContent = courseName;
+    function setCourse(name) {
+      document.getElementById('course').value = name;
+      document.getElementById('course-name-text').textContent = name;
     }
 
     function openCourseSelector() {
@@ -887,28 +442,15 @@
       setCourse(name);
       saveDraft();
       closeCourseSelector();
-      showToast(`Đã chọn: ${name}`, 'emerald');
-    }
-
-    function applyCustomCourse() {
-      const val = document.getElementById('custom-course-input').value.trim();
-      if (val) selectCourse(val);
     }
 
     async function handleFormSubmit(e) {
       e.preventDefault();
-      
-      const submitBtn = document.getElementById('btn-submit');
-      const submitText = document.getElementById('btn-submit-text');
-      submitBtn.disabled = true;
-      submitText.textContent = 'Đang lưu vào bảng tính...';
 
-      const checkedOps = Array.from(document.querySelectorAll('input[name^="op_"]:checked')).map(cb => cb.value);
-      const customFeedback = document.getElementById('feedbackOperation').value.trim();
-      let combinedFeedback = checkedOps.join('\n');
-      if (customFeedback) {
-        combinedFeedback = combinedFeedback ? (combinedFeedback + '\n- ' + customFeedback) : customFeedback;
-      }
+      const btn = document.getElementById('btn-submit');
+      const btnText = document.getElementById('btn-submit-text');
+      btn.disabled = true;
+      btnText.textContent = 'Đang gửi cho Việt...';
 
       const payload = {
         course: document.getElementById('course').value,
@@ -919,12 +461,9 @@
         source: (document.querySelector('input[name="source"]:checked') || {}).value || 'Không rõ',
         impressedVideo: document.getElementById('impressedVideo').value.trim(),
         bestValue: document.getElementById('bestValue').value.trim(),
-        feedbackOperation: combinedFeedback || 'Không có góp ý thêm',
+        feedbackOperation: document.getElementById('feedbackOperation').value.trim() || 'Không có góp ý thêm',
         rating: document.getElementById('rating').value,
-        advancedNeeds: document.getElementById('advancedNeeds').value || 'Chưa chọn',
-        contactPreference: (document.querySelector('input[name="contactPreference"]:checked') || {}).value || 'Zalo',
         personalMessage: document.getElementById('personalMessage').value.trim(),
-        userAgent: navigator.userAgent,
         submittedAt: new Date().toISOString()
       };
 
@@ -937,73 +476,26 @@
             body: JSON.stringify(payload)
           });
         } else {
-          const existing = JSON.parse(localStorage.getItem('TRADA_SUBMITTED_RESPONSES') || '[]');
-          existing.push(payload);
-          localStorage.setItem('TRADA_SUBMITTED_RESPONSES', JSON.stringify(existing));
+          const arr = JSON.parse(localStorage.getItem('VIETMAC_SUBMITTED_ITEMS') || '[]');
+          arr.push(payload);
+          localStorage.setItem('VIETMAC_SUBMITTED_ITEMS', JSON.stringify(arr));
         }
 
         localStorage.removeItem(STORAGE_KEY);
-        triggerConfetti();
-        nextStep(5);
+        document.getElementById('survey-container').classList.add('hidden');
+        document.getElementById('success-container').classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
 
       } catch (err) {
-        console.error('Submission error:', err);
-        const existing = JSON.parse(localStorage.getItem('TRADA_SUBMITTED_RESPONSES') || '[]');
-        existing.push(payload);
-        localStorage.setItem('TRADA_SUBMITTED_RESPONSES', JSON.stringify(existing));
-        triggerConfetti();
-        nextStep(5);
-      } finally {
-        submitBtn.disabled = false;
-        submitText.textContent = 'Gửi chia sẻ & Mở khóa quà tặng';
+        document.getElementById('survey-container').classList.add('hidden');
+        document.getElementById('success-container').classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     }
-
-    function triggerConfetti() {
-      if (typeof confetti === 'function') {
-        const count = 200;
-        const defaults = { origin: { y: 0.7 } };
-        function fire(ratio, opts) {
-          confetti(Object.assign({}, defaults, opts, {
-            particleCount: Math.floor(count * ratio)
-          }));
-        }
-        fire(0.25, { spread: 26, startVelocity: 55, colors: ['#f59e0b', '#10b981', '#ffffff'] });
-        fire(0.2, { spread: 60, colors: ['#f59e0b', '#d97706', '#3b82f6'] });
-        fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8, colors: ['#10b981', '#34d399', '#f59e0b'] });
-        fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
-        fire(0.1, { spread: 120, startVelocity: 45 });
-      }
-    }
-
-    function showToast(message, type = 'amber') {
-      const toast = document.createElement('div');
-      toast.className = `fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-5 py-3 rounded-2xl shadow-2xl text-xs sm:text-sm font-semibold flex items-center gap-2 animate-slide-up ${
-        type === 'emerald' ? 'bg-emerald-500 text-slate-950' : 'bg-amber-500 text-slate-950'
-      }`;
-      toast.innerHTML = `<i data-lucide="${type === 'emerald' ? 'check-circle-2' : 'alert-circle'}" class="w-4 h-4"></i> <span>${message}</span>`;
-      document.body.appendChild(toast);
-      lucide.createIcons();
-
-      setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transition = 'opacity 0.3s ease';
-        setTimeout(() => toast.remove(), 300);
-      }, 3000);
-    }
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && e.target.tagName === 'INPUT' && e.target.type !== 'radio' && e.target.type !== 'checkbox') {
-        e.preventDefault();
-        if (currentStep >= 1 && currentStep < totalSteps) {
-          validateAndNext(currentStep, currentStep + 1);
-        }
-      }
-    });
 
     window.addEventListener('DOMContentLoaded', () => {
-      initRatingButtons();
-      initCourseFromURL();
+      initRating();
+      initCourse();
       restoreDraft();
       lucide.createIcons();
     });
