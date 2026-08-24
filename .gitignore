@@ -1,1 +1,3 @@
 .vercel
+cloudflare_credentials.json
+*.env*
