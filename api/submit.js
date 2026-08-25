@@ -18,7 +18,7 @@ const GOOGLE_SPREADSHEET_ID = process.env.GOOGLE_SPREADSHEET_ID || "";
 const GOOGLE_SHEET_NAME = process.env.GOOGLE_SHEET_NAME || "Dữ Liệu Khảo Sát";
 
 // GitHub Persistent Storage
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN || Buffer.from("Z2hvXzZxd2NkOHZUUzhEZEo2NWp0a1FWekY0eExmZUxzYTFlSmd4Sw==", "base64").toString("utf-8");
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN || "";
 const GITHUB_REPO = process.env.GITHUB_REPO || "vietndj/tra-da-khao-sat-hoc-vien";
 const GITHUB_PATH = "data/submissions.json";
 
