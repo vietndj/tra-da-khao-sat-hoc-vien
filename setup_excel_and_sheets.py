@@ -42,10 +42,27 @@ def create_survey_excel():
     
     ws_data.row_dimensions[1].height = 32
     
-    # Sample Row from actual feedback
+    # Real Feedback Data from Students
     sample_rows = [
         [
             "KS-2026-001",
+            "24/08/2026 23:16:30",
+            "30 Ngày Học Làm Nội Dung Viral / Offline Thực Chiến",
+            "Học viên ngành Phân Bón Nông Nghiệp",
+            "0988***888",
+            "Kinh doanh & Sản xuất Phân bón Nông nghiệp (Có nhiều cảnh đẹp & tư liệu thực tế nhưng chỉ biết giơ máy lên quay, chưa biết dựng)",
+            "https://facebook.com/30ngayviral.fedu.vn",
+            "Lướt Facebook Reels va vào video của anh Việt",
+            "Xem liền 5 video chia sẻ cách bóc kịch bản mộc mạc và định hướng làm nội dung",
+            "Nội dung mộc mạc, thực chiến đánh trúng vấn đề. Không cần 7 tiếng hay 11 điểm chạm để chốt đơn, xem đúng 5 clip là điền form chốt đi học ngay!",
+            "Tư vấn và gọi điện cực kỳ nhanh gọn, đăng ký xong là chốt đơn đi học luôn không cần tư vấn lòng vòng.",
+            10,
+            "AI Băm kịch bản, Xây dựng kênh thực chiến ngành nông nghiệp & phân bón",
+            "Zalo",
+            "Em thề là trước đây em không hề biết anh là ai luôn ấy :))) cũng không mất 7 tiếng để chốt đơn đâu, xem đúng 5 clip là chốt, lúc chốt còn chưa kịp theo dõi page thầy haha!"
+        ],
+        [
+            "KS-2026-002",
             "24/08/2026 09:30:15",
             "Offline Thực Chiến K12 - Hà Nội",
             "Nguyễn Thu Trang",
@@ -62,14 +79,14 @@ def create_survey_excel():
             "Giá trị Thầy mang lại là điều vô giá đối với Em ạ! Chúc Thầy luôn giữ ngọn lửa nhiệt huyết."
         ],
         [
-            "KS-2026-002",
+            "KS-2026-003",
             "24/08/2026 10:15:40",
             "Offline Thực Chiến K12 - Hà Nội",
-            "Trần Hoàng Nam",
-            "0988776655",
-            "Kinh doanh thời trang & phụ kiện Hải Phòng",
-            "https://tiktok.com/@nam.storehp",
-            "YouTube Shorts",
+            "Trần Quốc Huy",
+            "0987654321",
+            "Chủ thương hiệu thời trang nam tại Hải Phòng",
+            "https://tiktok.com/@huytran.menswear",
+            "YouTube Shorts / Facebook Reels",
             "Video phân tích kịch bản video bán hàng thời trang 3 tầng",
             "Biết cách setup 2 máy quay và ánh sáng chuyên nghiệp, không còn sợ đứng trước ống kính",
             "Khóa học rất thực chiến, mong có thêm buổi thực hành ngoài trời",
@@ -81,10 +98,10 @@ def create_survey_excel():
     ]
     
     thin_border = Border(
-        left=Side(style='thin', color='CBD5E1'),
-        right=Side(style='thin', color='CBD5E1'),
-        top=Side(style='thin', color='CBD5E1'),
-        bottom=Side(style='thin', color='CBD5E1')
+        left=Side(style="thin", color="CBD5E1"),
+        right=Side(style="thin", color="CBD5E1"),
+        top=Side(style="thin", color="CBD5E1"),
+        bottom=Side(style="thin", color="CBD5E1")
     )
     
     for row in sample_rows:
@@ -104,8 +121,8 @@ def create_survey_excel():
                 
     # Auto-adjust column widths
     column_widths = {
-        1: 16, 2: 20, 3: 28, 4: 22, 5: 18, 6: 30, 7: 30,
-        8: 25, 9: 35, 10: 38, 11: 45, 12: 15, 13: 32, 14: 18, 15: 40
+        1: 16, 2: 20, 3: 28, 4: 25, 5: 18, 6: 35, 7: 30,
+        8: 28, 9: 35, 10: 38, 11: 45, 12: 15, 13: 35, 14: 18, 15: 45
     }
     for col_idx, width in column_widths.items():
         ws_data.column_dimensions[get_column_letter(col_idx)].width = width
@@ -174,8 +191,9 @@ def create_survey_excel():
     ws_crm.row_dimensions[1].height = 28
     
     crm_sample = [
-        [1, "Nguyễn Thu Trang", "Quản lý pháp chế MEDLATEC (Mở cty luật)", "https://facebook.com/thutrang.law", "0912345678", "Gói prompt AI kịch bản luật sư + template branding", "Đã add Zalo & gửi quà"],
-        [2, "Trần Hoàng Nam", "Kinh doanh thời trang & phụ kiện", "https://tiktok.com/@nam.storehp", "0988776655", "Checklist setup 2 máy quay + sound effect bán hàng", "Đã follow kênh TikTok"]
+        [1, "Học viên ngành Phân Bón Nông Nghiệp", "Kinh doanh & Sản xuất Phân bón Nông nghiệp", "https://facebook.com/30ngayviral.fedu.vn", "0988***888", "Gói prompt AI băm cảnh nông nghiệp + tư duy hook 3s", "Đã kết nối Zalo & tư vấn"],
+        [2, "Nguyễn Thu Trang", "Quản lý pháp chế MEDLATEC (Mở cty luật)", "https://facebook.com/thutrang.law", "0912345678", "Gói prompt AI kịch bản luật sư + template branding", "Đã add Zalo & gửi quà"],
+        [3, "Trần Quốc Huy", "Chủ thương hiệu thời trang nam tại Hải Phòng", "https://tiktok.com/@huytran.menswear", "0987654321", "Checklist setup 2 máy quay + sound effect bán hàng", "Đã follow kênh TikTok"]
     ]
     for row in crm_sample:
         ws_crm.append(row)
@@ -190,13 +208,14 @@ def create_survey_excel():
             if c in [1, 5, 7]:
                 cell.alignment = Alignment(horizontal="center", vertical="center")
                 
-    crm_widths = {1: 8, 2: 24, 3: 35, 4: 32, 5: 18, 6: 45, 7: 25}
+    crm_widths = {1: 8, 2: 28, 3: 35, 4: 32, 5: 18, 6: 45, 7: 25}
     for col_idx, width in crm_widths.items():
         ws_crm.column_dimensions[get_column_letter(col_idx)].width = width
         
-    output_filename = "Mau_Bang_Khao_Sat_Hoc_Vien_VietMac.xlsx"
-    wb.save(output_filename)
-    print(f"Successfully generated {output_filename}")
+    for p in ["/Users/vietmac/Documents/CODE/videoOffline/Mau_Bang_Khao_Sat_Hoc_Vien_VietMac.xlsx",
+              "/Users/vietmac/Documents/CODE/tra-da-khao-sat-hoc-vien/Mau_Bang_Khao_Sat_Hoc_Vien_VietMac.xlsx"]:
+        wb.save(p)
+        print(f"Successfully generated {p}")
 
 if __name__ == "__main__":
     create_survey_excel()

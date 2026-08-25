@@ -1,26 +1,110 @@
-// Vercel Serverless Function: Real-time Survey & Photo Storage + Cloudflare R2 CDN + GitHub Persistent Database + NOVA Telegram Dispatcher
+// ============================================================================
+// Vercel Serverless Function v2.0
+// Google Sheets API (Service Account) + Cloudflare R2 CDN + Telegram NOVA
+// Không cần Google Apps Script, không cần thao tác thủ công
+// ============================================================================
 const crypto = require('crypto');
 const https = require('https');
+const { google } = require('googleapis');
 
+// === CẤU HÌNH ===
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "8964853536:AAHuRNm_hY-YQtveBD1HlmthN4I5xpVzM8U";
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID || "2050406425";
-const GOOGLE_DRIVE_SHEET_ID = "1J9ZrjLxTba9R-wuet1n_J_hKcL0PVtQDD_ag65Ewx04";
-const GOOGLE_SCRIPT_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxrjySQCpWC64oZontcirk5MBqY7RMoMoNAw9Ejrd7bi9rIVMR3500mAGgvWWu3uStH/exec";
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN || Buffer.from("Z2hvXzZxd2NkOHZUUzhEZEo2NWp0a1FWekY0eExmZUxzYTFlSmd4Sw==", "base64").toString("utf-8") + "";
-const GITHUB_REPO = "vietndj/tra-da-khao-sat-hoc-vien";
+
+// Google Sheets API - Service Account (tự động, không cần Apps Script)
+const GOOGLE_CLIENT_EMAIL = process.env.GOOGLE_CLIENT_EMAIL || "form-feedback-offline@vietndj-git-cms.iam.gserviceaccount.com";
+const GOOGLE_PRIVATE_KEY = (process.env.GOOGLE_PRIVATE_KEY || "").replace(/\\n/g, '\n');
+const GOOGLE_SPREADSHEET_ID = process.env.GOOGLE_SPREADSHEET_ID || "";
+const GOOGLE_SHEET_NAME = process.env.GOOGLE_SHEET_NAME || "Dữ Liệu Khảo Sát";
+
+// GitHub Persistent Storage
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN || Buffer.from("Z2hvXzZxd2NkOHZUUzhEZEo2NWp0a1FWekY0eExmZUxzYTFlSmd4Sw==", "base64").toString("utf-8");
+const GITHUB_REPO = process.env.GITHUB_REPO || "vietndj/tra-da-khao-sat-hoc-vien";
 const GITHUB_PATH = "data/submissions.json";
 
-// Cloudflare R2 Credentials
+// Cloudflare R2 CDN
 const R2_ACCOUNT_ID = "2dae0527b790faa880c1cfb57247640a";
 const R2_ACCESS_KEY_ID = "ef3e4fbcd874fb204ed9c291608f9d75";
 const R2_SECRET_ACCESS_KEY = "2426f986845501c6d30416a312a69e4be6cc478dc6a861c3aa7dad5dce9a436a";
 const R2_BUCKET = "vietndjmedia";
 const R2_PUBLIC_BASE = "https://pub-447bd44dfdac4938912655c855b8631c.r2.dev";
 
+// ============================================================================
+// GOOGLE SHEETS API — Ghi trực tiếp qua Service Account, không cần Apps Script
+// ============================================================================
+let _sheetsClient = null;
+function getGoogleSheetsClient() {
+  if (_sheetsClient) return _sheetsClient;
+  if (!GOOGLE_CLIENT_EMAIL || !GOOGLE_PRIVATE_KEY) return null;
+  try {
+    const auth = new google.auth.JWT({
+      email: GOOGLE_CLIENT_EMAIL,
+      key: GOOGLE_PRIVATE_KEY,
+      scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+    });
+    _sheetsClient = google.sheets({ version: 'v4', auth });
+    return _sheetsClient;
+  } catch (e) {
+    console.error('Google Sheets auth error:', e.message);
+    return null;
+  }
+}
+
+async function appendToGoogleSheet(submission) {
+  const sheets = getGoogleSheetsClient();
+  if (!sheets || !GOOGLE_SPREADSHEET_ID) {
+    console.warn('Google Sheets not configured, skipping');
+    return { success: false, reason: 'not_configured' };
+  }
+
+  try {
+    // Chuẩn bị dữ liệu 12 cột giống cấu trúc cũ
+    const photoUrls = (submission.photos || []).map(p => p.url).filter(Boolean);
+    const photoLinksText = photoUrls.length > 0
+      ? photoUrls.map((u, i) => `Ảnh ${i + 1}: ${u}`).join('\n')
+      : 'Không có ảnh';
+    
+    // Công thức IMAGE() cho ảnh đầu tiên (hiển thị thumbnail trong Google Sheet)
+    const imageFormula = photoUrls.length > 0
+      ? `=IMAGE("${photoUrls[0]}")`
+      : '';
+
+    const rowValues = [
+      submission.responseId,                                  // Cột A: Mã Phản Hồi
+      submission.submittedAt,                                 // Cột B: Thời Gian Gửi
+      submission.course,                                      // Cột C: Khóa Học
+      submission.fullName,                                    // Cột D: Họ Và Tên
+      submission.phone,                                       // Cột E: Số Zalo
+      submission.profession,                                  // Cột F: Mảng KD & Định Hướng AI
+      submission.channelLink,                                 // Cột G: Link Kênh
+      submission.journeyStory,                                // Cột H: Hành Trình Biết Đến
+      submission.feedbackAll,                                 // Cột I: Góp Ý Thẳng Thắn
+      `${submission.photoCount || 0} ảnh`,                    // Cột J: Số Lượng Ảnh
+      photoLinksText,                                         // Cột K: Link Ảnh HD (R2 CDN)
+      imageFormula                                            // Cột L: Ảnh Preview
+    ];
+
+    await sheets.spreadsheets.values.append({
+      spreadsheetId: GOOGLE_SPREADSHEET_ID,
+      range: `${GOOGLE_SHEET_NAME}!A:L`,
+      valueInputOption: 'USER_ENTERED',
+      insertDataOption: 'INSERT_ROWS',
+      requestBody: { values: [rowValues] }
+    });
+
+    return { success: true };
+  } catch (e) {
+    console.error('Google Sheets append error:', e.message);
+    return { success: false, reason: e.message };
+  }
+}
+
+// ============================================================================
+// CLOUDFLARE R2 CDN — Upload ảnh qua AWS SigV4 thuần crypto
+// ============================================================================
 function hmac(key, string) {
   return crypto.createHmac("sha256", key).update(string).digest();
 }
-
 function sha256(string) {
   return crypto.createHash("sha256").update(string).digest("hex");
 }
@@ -33,35 +117,26 @@ async function uploadToR2(keyPath, buffer, contentType = "image/jpeg") {
   const ymd = dateStr.slice(0, 8);
   const region = "auto";
   const service = "s3";
-
   const payloadHash = sha256(buffer);
   const canonicalHeaders = `content-type:${contentType}\nhost:${host}\nx-amz-content-sha256:${payloadHash}\nx-amz-date:${dateStr}\n`;
   const signedHeaders = "content-type;host;x-amz-content-sha256;x-amz-date";
-
   const canonicalRequest = `PUT\n${endpoint}\n\n${canonicalHeaders}\n${signedHeaders}\n${payloadHash}`;
   const credentialScope = `${ymd}/${region}/${service}/aws4_request`;
   const stringToSign = `AWS4-HMAC-SHA256\n${dateStr}\n${credentialScope}\n${sha256(canonicalRequest)}`;
-
   const kDate = hmac("AWS4" + R2_SECRET_ACCESS_KEY, ymd);
   const kRegion = hmac(kDate, region);
   const kService = hmac(kRegion, service);
   const kSigning = hmac(kService, "aws4_request");
   const signature = crypto.createHmac("sha256", kSigning).update(stringToSign).digest("hex");
-
   const authorization = `AWS4-HMAC-SHA256 Credential=${R2_ACCESS_KEY_ID}/${credentialScope}, SignedHeaders=${signedHeaders}, Signature=${signature}`;
 
   return new Promise((resolve, reject) => {
     const req = https.request({
-      hostname: host,
-      path: endpoint,
-      method: "PUT",
+      hostname: host, path: endpoint, method: "PUT",
       headers: {
-        "Content-Type": contentType,
-        "Host": host,
-        "x-amz-date": dateStr,
-        "x-amz-content-sha256": payloadHash,
-        "Authorization": authorization,
-        "Content-Length": buffer.length
+        "Content-Type": contentType, "Host": host,
+        "x-amz-date": dateStr, "x-amz-content-sha256": payloadHash,
+        "Authorization": authorization, "Content-Length": buffer.length
       }
     }, (res) => {
       if (res.statusCode >= 200 && res.statusCode < 300) {
@@ -69,7 +144,7 @@ async function uploadToR2(keyPath, buffer, contentType = "image/jpeg") {
       } else {
         let errData = "";
         res.on("data", chunk => errData += chunk);
-        res.on("end", () => reject(new Error(`R2 upload status ${res.statusCode}: ${errData}`)));
+        res.on("end", () => reject(new Error(`R2 ${res.statusCode}: ${errData}`)));
       }
     });
     req.on("error", reject);
@@ -78,62 +153,11 @@ async function uploadToR2(keyPath, buffer, contentType = "image/jpeg") {
   });
 }
 
-// Default Fallback Data
-let fallbackSubmissions = [
-  {
-    responseId: "KS-2026-0003",
-    submittedAt: "24/08/2026 18:04:24",
-    course: "Lớp Offline Thực Chiến - Hà Nội",
-    fullName: "Trần Tuấn Anh",
-    phone: "0912888999",
-    profession: "Giám đốc công ty du lịch. Muốn quay video review tour trải nghiệm và chia sẻ mẹo du lịch.",
-    channelLink: "https://tiktok.com/@tuananh_travel\nhttps://facebook.com/tuananhtravel",
-    journeyStory: "Xem video băm kịch bản 3 tầng, thấy thực tế quá nên nhắn tin và đăng ký.",
-    feedbackAll: "2 ngày học cực kỳ đáng giá, vỡ ra cách tư duy kịch bản và cách cầm máy tự tin.",
-    photoCount: 2,
-    photos: [
-      { name: "anh_lop_hoc_1.jpg", size: "195 KB", url: "https://pub-447bd44dfdac4938912655c855b8631c.r2.dev/tra-da-hoc-vien/test/anh_chup_lop_hoc_test.jpg" },
-      { name: "anh_lop_hoc_2.jpg", size: "210 KB", url: "https://pub-447bd44dfdac4938912655c855b8631c.r2.dev/tra-da-hoc-vien/test/anh_chup_lop_hoc_test.jpg" }
-    ],
-    driveUrl: `https://pub-447bd44dfdac4938912655c855b8631c.r2.dev/tra-da-hoc-vien/test/anh_chup_lop_hoc_test.jpg`
-  },
-  {
-    responseId: "KS-2026-0001",
-    submittedAt: "24/08/2026 08:15:20",
-    course: "Lớp Offline Thực Chiến - Hà Nội",
-    fullName: "Nguyễn Thu Trang",
-    phone: "0912345678",
-    profession: "Luật sư pháp chế (Chuẩn bị mở văn phòng luật riêng). Muốn làm case 45s như kênh tiktok.com/@luatsucuocsong. Cần AI bóc kịch bản và setup 2 góc máy.",
-    channelLink: "https://facebook.com/thutrang.law\nhttps://tiktok.com/@thutrang_legal",
-    journeyStory: "Lướt thấy video chia sẻ băm phân cảnh 3 tầng và góc nhìn AI thực chiến. Xem đúng 20s thấy nói quá mộc mạc nên đăng ký chuyển khoản luôn.",
-    feedbackAll: "• Khâu tư vấn: Các bạn nên báo rõ giảm 10% nhóm 2 người từ đầu.\n• 2 ngày học rất đã, tự tin cầm máy.\n• Hôm nào rảnh em mời anh ly cafe!",
-    photoCount: 2,
-    photos: [
-      { name: "lop_hoc_thuc_hanh_quay_2_may.jpg", size: "185 KB", url: "https://pub-447bd44dfdac4938912655c855b8631c.r2.dev/tra-da-hoc-vien/test/anh_chup_lop_hoc_test.jpg" },
-      { name: "anh_chup_chung_anh_viet.jpg", size: "210 KB", url: "https://pub-447bd44dfdac4938912655c855b8631c.r2.dev/tra-da-hoc-vien/test/anh_chup_lop_hoc_test.jpg" }
-    ],
-    driveUrl: `https://pub-447bd44dfdac4938912655c855b8631c.r2.dev/tra-da-hoc-vien/test/anh_chup_lop_hoc_test.jpg`
-  },
-  {
-    responseId: "KS-2026-0002",
-    submittedAt: "24/08/2026 08:20:45",
-    course: "Lớp Offline Thực Chiến - Hà Nội",
-    fullName: "Trần Quốc Huy",
-    phone: "0987654321",
-    profession: "Chủ thương hiệu thời trang nam tại Hải Phòng. Muốn làm kênh chia sẻ cách phối đồ và video ads chuyển đổi cao.",
-    channelLink: "https://tiktok.com/@huytran.menswear\nhttps://youtube.com/@huytranstyle",
-    journeyStory: "Thấy video Facebook Reels anh bóc tách kịch bản 3 tầng bán quần áo. Thấy chuẩn bài quá nên tìm kênh xem thêm 3 video nữa rồi bấm đăng ký luôn.",
-    feedbackAll: "• 2 ngày học rất đã, vỡ ra cách setup ánh sáng và cách bóc video đối thủ.\n• Góp ý: Khâu check-in buổi sáng nên gửi link khảo sát trước để anh nắm nhu cầu từng người sớm hơn.\n• Về Hải Phòng em quay loạt video đầu gửi anh xem nhé!",
-    photoCount: 2,
-    photos: [
-      { name: "khong_khi_thuc_hanh_setup_den.jpg", size: "192 KB", url: "https://pub-447bd44dfdac4938912655c855b8631c.r2.dev/tra-da-hoc-vien/test/anh_chup_lop_hoc_test.jpg" },
-      { name: "chup_ky_niem_ca_lop_ha_noi.jpg", size: "245 KB", url: "https://pub-447bd44dfdac4938912655c855b8631c.r2.dev/tra-da-hoc-vien/test/anh_chup_lop_hoc_test.jpg" }
-    ],
-    driveUrl: `https://pub-447bd44dfdac4938912655c855b8631c.r2.dev/tra-da-hoc-vien/test/anh_chup_lop_hoc_test.jpg`
-  }
-];
+// ============================================================================
+// GITHUB PERSISTENT DATABASE — Lưu trữ JSON vĩnh cửu trong repo
+// ============================================================================
+let fallbackSubmissions = [];
 
-// Helper: Fetch from GitHub Repo Database
 async function getPersistentSubmissions() {
   if (!GITHUB_TOKEN) return { list: fallbackSubmissions, sha: null };
   try {
@@ -150,19 +174,17 @@ async function getPersistentSubmissions() {
       return { list: JSON.parse(content), sha: data.sha };
     }
   } catch (e) {
-    console.error("GitHub fetch error:", e);
+    console.error("GitHub fetch error:", e.message);
   }
   return { list: fallbackSubmissions, sha: null };
 }
 
-// Helper: Save to GitHub Repo Database
 async function saveSubmissionToGithub(newSubmission) {
   if (!GITHUB_TOKEN) return;
   try {
     const { list, sha } = await getPersistentSubmissions();
     const updatedList = [newSubmission, ...list.filter(item => item.responseId !== newSubmission.responseId)];
     const content = Buffer.from(JSON.stringify(updatedList, null, 2)).toString('base64');
-    
     await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_PATH}`, {
       method: 'PUT',
       headers: {
@@ -178,11 +200,13 @@ async function saveSubmissionToGithub(newSubmission) {
       })
     });
   } catch (e) {
-    console.error("GitHub save error:", e);
+    console.error("GitHub save error:", e.message);
   }
 }
 
-// Helper: Bắn tin nhắn qua Bot Telegram NOVA-CORE cho anh Việt
+// ============================================================================
+// TELEGRAM NOVA-CORE — Bắn tin nhắn (CHỈ từ server, không trùng lặp)
+// ============================================================================
 async function dispatchToTelegramNova(item) {
   if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) return;
   try {
@@ -192,7 +216,11 @@ async function dispatchToTelegramNova(item) {
       ? photoUrls.map((u, idx) => `🖼️ <a href="${u}">Xem ảnh ${idx + 1} (HD)</a>`).join(' | ')
       : '';
 
-    const text = 
+    const sheetUrl = GOOGLE_SPREADSHEET_ID
+      ? `https://docs.google.com/spreadsheets/d/${GOOGLE_SPREADSHEET_ID}/edit`
+      : '';
+
+    const text =
       `☕ <b>HỌC VIÊN VỪA GỬI PHẢN HỒI TRÀ ĐÁ!</b>\n` +
       `━━━━━━━━━━━━━━━━━━━━\n` +
       `👤 <b>Họ tên:</b> <b>${item.fullName || 'Ẩn danh'}</b>\n` +
@@ -204,8 +232,9 @@ async function dispatchToTelegramNova(item) {
       `💬 <b>Góp ý & Lời nhắn:</b>\n${item.feedbackAll || 'Không có'}\n\n` +
       `📸 <b>Ảnh kỷ niệm:</b> <b>${item.photoCount || 0} ảnh</b> ${photoLinksStr ? `\n${photoLinksStr}` : ''}\n` +
       `━━━━━━━━━━━━━━━━━━━━\n` +
-      `👉 <a href="https://trada.fedu.vn/excel"><b>Xem Bảng Quản Lý Trực Quan</b></a> | <a href="https://docs.google.com/spreadsheets/d/${GOOGLE_DRIVE_SHEET_ID}/edit"><b>Mở Google Sheet</b></a>\n` +
-      `⏰ <i>${item.submittedAt || new Date().toLocaleString('vi-VN')}</i>`;
+      `👉 <a href="https://trada.fedu.vn/excel"><b>Bảng Quản Lý</b></a>` +
+      (sheetUrl ? ` | <a href="${sheetUrl}"><b>Google Sheet</b></a>` : '') +
+      `\n⏰ <i>${item.submittedAt || new Date().toLocaleString('vi-VN')}</i>`;
 
     await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
       method: 'POST',
@@ -218,41 +247,47 @@ async function dispatchToTelegramNova(item) {
       })
     });
   } catch (e) {
-    console.error('Telegram dispatch error:', e);
+    console.error('Telegram dispatch error:', e.message);
   }
 }
 
+// ============================================================================
+// MAIN HANDLER
+// ============================================================================
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
-  }
+  if (req.method === 'OPTIONS') return res.status(200).end();
 
+  // === GET: Trả danh sách submissions ===
   if (req.method === 'GET') {
     const { list } = await getPersistentSubmissions();
-    res.status(200).json({
+    const sheetUrl = GOOGLE_SPREADSHEET_ID
+      ? `https://docs.google.com/spreadsheets/d/${GOOGLE_SPREADSHEET_ID}/edit`
+      : '';
+    return res.status(200).json({
       success: true,
       totalCount: list.length,
-      googleSheetUrl: `https://docs.google.com/spreadsheets/d/${GOOGLE_DRIVE_SHEET_ID}/edit`,
+      googleSheetUrl: sheetUrl,
       data: list
     });
-    return;
   }
 
+  // === POST: Nhận submission mới ===
   if (req.method === 'POST') {
     try {
       const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
       const { list } = await getPersistentSubmissions();
       const count = list.length + 1;
       const responseId = `KS-2026-${String(count).padStart(4, '0')}`;
-      
-      // Upload từng ảnh lên Cloudflare R2 CDN để có link xem HD trực tiếp
+
+      // 1. Upload ảnh lên Cloudflare R2 CDN
       const uploadedPhotos = [];
-      const studentSlug = (body.fullName || 'hocvien').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, '_').replace(/_+/g, '_');
+      const studentSlug = (body.fullName || 'hocvien').toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]/g, '_').replace(/_+/g, '_');
       const timeStampSlug = new Date().toISOString().replace(/[^0-9]/g, '').slice(0, 14);
 
       if (body.photos && Array.isArray(body.photos)) {
@@ -262,22 +297,17 @@ module.exports = async (req, res) => {
             try {
               const base64Content = p.data.split('base64,')[1];
               const buf = Buffer.from(base64Content, 'base64');
-              const fileName = `anh_${i + 1}_${p.name || 'ky_niem.jpg'}`.replace(/[^a-zA-Z0-9._-]/g, '_');
+              const fileName = `anh_${i + 1}_${(p.name || 'ky_niem.jpg').replace(/[^a-zA-Z0-9._-]/g, '_')}`;
               const keyPath = `tra-da-hoc-vien/${studentSlug}_${timeStampSlug}/${fileName}`;
               const cdnUrl = await uploadToR2(keyPath, buf, 'image/jpeg');
               uploadedPhotos.push({
                 name: p.name || `photo_${i + 1}.jpg`,
                 size: `${Math.round(buf.length / 1024)} KB`,
-                url: cdnUrl,
-                data: p.data
+                url: cdnUrl
               });
             } catch (err) {
-              console.error('R2 upload err:', err);
-              uploadedPhotos.push({
-                name: p.name || `photo_${i + 1}.jpg`,
-                size: p.size || 'Ảnh đính kèm',
-                data: p.data
-              });
+              console.error('R2 upload err:', err.message);
+              uploadedPhotos.push({ name: p.name || `photo_${i + 1}.jpg`, size: p.size || '?' });
             }
           } else {
             uploadedPhotos.push(p);
@@ -285,13 +315,8 @@ module.exports = async (req, res) => {
         }
       }
 
-      const photoUrlsList = uploadedPhotos.map(p => p.url).filter(Boolean);
-      const photoLinksText = photoUrlsList.length > 0
-        ? photoUrlsList.map((u, i) => `${i + 1}. Xem ảnh: ${u}`).join('\n')
-        : (uploadedPhotos.length > 0 ? `${uploadedPhotos.length} ảnh đã lưu` : 'Không có ảnh');
-
       const newSub = {
-        responseId: responseId,
+        responseId,
         submittedAt: new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' }),
         course: body.course || 'Khóa Offline Thực Chiến',
         fullName: body.fullName || 'Ẩn danh',
@@ -302,39 +327,33 @@ module.exports = async (req, res) => {
         feedbackAll: body.feedbackAll || '',
         photoCount: uploadedPhotos.length,
         photos: uploadedPhotos,
-        driveUrl: photoLinksText
+        driveUrl: uploadedPhotos.map(p => p.url).filter(Boolean).join('\n') || 'Không có ảnh'
       };
 
-      // 1. Lưu vĩnh cửu vào GitHub Repository Database
-      await saveSubmissionToGithub(newSub);
+      // 2. Lưu vào GitHub (fire-and-forget, không block response)
+      const githubPromise = saveSubmissionToGithub(newSub).catch(e => console.error('GitHub:', e.message));
 
-      // 2. Chuyển tiếp tới Google Apps Script Webhook để tự động ghi vào Google Sheet của anh Việt
-      if (GOOGLE_SCRIPT_WEBHOOK_URL) {
-        try {
-          fetch(GOOGLE_SCRIPT_WEBHOOK_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(newSub)
-          }).catch(e => console.warn('Google Sheet Webhook sync:', e));
-        } catch (e) {}
-      }
+      // 3. Ghi vào Google Sheet (Service Account, tự động, không cần Apps Script!)
+      const sheetsPromise = appendToGoogleSheet(newSub).catch(e => console.error('Sheets:', e.message));
 
-      // 3. Bắn tin nhắn và ảnh sang Bot Telegram NOVA-CORE cho anh Việt
-      await dispatchToTelegramNova(newSub);
+      // 4. Bắn Telegram (CHỈ 1 LẦN từ server, không bắn từ client nữa)
+      const telegramPromise = dispatchToTelegramNova(newSub).catch(e => console.error('TG:', e.message));
 
-      const updatedList = [newSub, ...list];
+      // Chờ tất cả hoàn thành song song
+      await Promise.allSettled([githubPromise, sheetsPromise, telegramPromise]);
 
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
-        message: 'Đã lưu vĩnh cửu và bắn tin nhắn Telegram thành công!',
+        message: 'Đã lưu thành công vào Google Sheet + GitHub + Telegram!',
         item: newSub,
-        totalCount: updatedList.length,
-        googleSheetUrl: `https://docs.google.com/spreadsheets/d/${GOOGLE_DRIVE_SHEET_ID}/edit`,
-        data: updatedList
+        totalCount: list.length + 1,
+        googleSheetUrl: GOOGLE_SPREADSHEET_ID
+          ? `https://docs.google.com/spreadsheets/d/${GOOGLE_SPREADSHEET_ID}/edit`
+          : ''
       });
     } catch (e) {
       console.error("Submit API error:", e);
-      res.status(500).json({ success: false, error: e.message });
+      return res.status(500).json({ success: false, error: e.message });
     }
   }
 };

@@ -1,0 +1,9 @@
+{
+  "name": "tra-da-khao-sat-hoc-vien",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Form khảo sát học viên Trà Đá VietMac - Google Sheets API + R2 CDN",
+  "dependencies": {
+    "googleapis": "^144.0.0"
+  }
+}
