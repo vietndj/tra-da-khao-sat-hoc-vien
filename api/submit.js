@@ -14,7 +14,7 @@ const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID || "2050406425";
 // Google Sheets API - Service Account (tự động, không cần Apps Script)
 const GOOGLE_CLIENT_EMAIL = process.env.GOOGLE_CLIENT_EMAIL || "form-feedback-offline@vietndj-git-cms.iam.gserviceaccount.com";
 const GOOGLE_PRIVATE_KEY = (process.env.GOOGLE_PRIVATE_KEY || "").replace(/\\n/g, '\n');
-const GOOGLE_SPREADSHEET_ID = process.env.GOOGLE_SPREADSHEET_ID || "";
+const GOOGLE_SPREADSHEET_ID = process.env.GOOGLE_SPREADSHEET_ID || "1J9ZrjLxTba9R-wuet1n_J_hKcL0PVtQDD_ag65Ewx04";
 const GOOGLE_SHEET_NAME = process.env.GOOGLE_SHEET_NAME || "Dữ Liệu Khảo Sát";
 
 // GitHub Persistent Storage
