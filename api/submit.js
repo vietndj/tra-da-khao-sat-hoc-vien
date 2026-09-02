@@ -8,7 +8,7 @@ const https = require('https');
 const { google } = require('googleapis');
 
 // === CẤU HÌNH ===
-const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "8964853536:AAHuRNm_hY-YQtveBD1HlmthN4I5xpVzM8U";
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "8392893959:AAF79Uc6dI4rliweE0BvhnBJ06eV5EJdi-Y";
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID || "2050406425";
 
 // Google Sheets API - Service Account (tự động, không cần Apps Script)
@@ -236,6 +236,17 @@ async function dispatchToTelegramNova(item) {
       (sheetUrl ? ` | <a href="${sheetUrl}"><b>Google Sheet</b></a>` : '') +
       `\n⏰ <i>${item.submittedAt || new Date().toLocaleString('vi-VN')}</i>`;
 
+    const cleanPhone = (item.phone || '').replace(/[^0-9]/g, '');
+    const inlineKeyboard = [
+      [
+        ...(cleanPhone ? [{ text: "💬 Nhắn Zalo", url: `https://zalo.me/${cleanPhone}` }] : []),
+        { text: "🌐 Xem Bảng Live", url: "https://trada.fedu.vn/excel" }
+      ]
+    ];
+    if (sheetUrl) {
+      inlineKeyboard.push([{ text: "📊 Mở Google Sheet (Drive)", url: sheetUrl }]);
+    }
+
     await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -243,7 +254,10 @@ async function dispatchToTelegramNova(item) {
         chat_id: TELEGRAM_CHAT_ID,
         text: text,
         parse_mode: 'HTML',
-        disable_web_page_preview: false
+        disable_web_page_preview: false,
+        reply_markup: {
+          inline_keyboard: inlineKeyboard
+        }
       })
     });
   } catch (e) {
