@@ -304,7 +304,18 @@ async function syncToStu(submission) {
       if ((student.name || "").trim().toLowerCase() === subName || (subPhone && stuPhone && subPhone === stuPhone)) {
         if (submission.phone) student.phone = submission.phone;
         
+        const feedbackText = `\n\n[PHẢN HỒI TRÀ ĐÁ]\n- Hành trình: ${submission.journeyStory || "Không có"}\n- Góp ý: ${submission.feedbackAll || "Không có"}`;
+        
+        if (!student.notes) student.notes = "";
+        if (!student.notes.includes("[PHẢN HỒI TRÀ ĐÁ]")) {
+            student.notes += feedbackText;
+        } else {
+            // Replace the old one if it exists? Or just leave it?
+            // Actually, if it exists, maybe don't duplicate.
+        }
+        
         student.post_course_survey = {
+          journeyStory: submission.journeyStory || "",
           journeyStory: submission.journeyStory || "",
           feedbackAll: submission.feedbackAll || "",
           photos: submission.photos || []
@@ -348,7 +359,7 @@ async function syncToStu(submission) {
         reference_channels: [],
         completeness_score: 50,
         health_status: "healthy",
-        notes: `[Tạo tự động từ Form Trà Đá]\nNghề nghiệp/Mảng KD: ${submission.profession || ""}`,
+        notes: `[Tạo tự động từ Form Trà Đá]\nNghề nghiệp/Mảng KD: ${submission.profession || ""}\n\n[PHẢN HỒI TRÀ ĐÁ]\n- Hành trình: ${submission.journeyStory || "Không có"}\n- Góp ý: ${submission.feedbackAll || "Không có"}`,
         post_course_survey: {
           journeyStory: submission.journeyStory || "",
           feedbackAll: submission.feedbackAll || "",
