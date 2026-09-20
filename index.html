@@ -604,6 +604,7 @@
       const data = {
         fullName: document.getElementById('fullName').value,
         phone: document.getElementById('phone').value,
+        email: document.getElementById('email').value,
         profession: document.getElementById('profession').value,
         channelLinks: getAllChannelLinks(),
         impressedVideo: document.getElementById('impressedVideo').value,
@@ -620,6 +621,7 @@
         const d = JSON.parse(raw);
         if (d.fullName) document.getElementById('fullName').value = d.fullName;
         if (d.phone) document.getElementById('phone').value = d.phone;
+        if (d.email) document.getElementById('email').value = d.email;
         if (d.profession) document.getElementById('profession').value = d.profession;
         if (d.impressedVideo) document.getElementById('impressedVideo').value = d.impressedVideo;
         if (d.feedbackAll) document.getElementById('feedbackAll').value = d.feedbackAll;
@@ -679,6 +681,7 @@
         course: document.getElementById('course').value,
         fullName: document.getElementById('fullName').value.trim(),
         phone: document.getElementById('phone').value.trim(),
+        email: document.getElementById('email').value.trim(),
         profession: document.getElementById('profession').value.trim(),
         channelLink: allLinks || 'Chưa gửi link',
         journeyStory: document.getElementById('impressedVideo').value.trim(),
