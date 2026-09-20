@@ -261,7 +261,7 @@
       <!-- ========================================================================= -->
       <!-- KHỐI 2: HÀNH TRÌNH BIẾT ĐẾN & MUA HÀNG -->
       <!-- ========================================================================= -->
-      <div class="card-shell rounded-3xl p-7 sm:p-10 space-y-6 reveal-on-scroll">
+      <div class="card-shell rounded-3xl p-7 sm:p-10 space-y-6 reveal-on-scroll hidden">
         <div class="flex items-center gap-3.5 border-b border-slate-800 pb-5">
           <div class="w-9 h-9 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center font-bold text-base flex-shrink-0">
             2
@@ -287,7 +287,7 @@
         </div>
 
         <div class="space-y-2.5">
-          <textarea id="impressedVideo" name="impressedVideo" rows="4" required placeholder="Kể cho em nghe quá trình của mình: bắt đầu từ video nào, lướt thấy ở đâu, chi tiết nào làm mình ấn tượng và ra quyết định chuyển khoản đăng ký nhé..." class="w-full p-4 sm:p-5 rounded-2xl bg-[#090e17] border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm sm:text-base focus:border-amber-500 transition leading-relaxed shadow-inner" oninput="saveDraft()"></textarea>
+          <textarea id="impressedVideo" name="impressedVideo" rows="4" placeholder="Kể cho em nghe quá trình của mình: bắt đầu từ video nào, lướt thấy ở đâu, chi tiết nào làm mình ấn tượng và ra quyết định chuyển khoản đăng ký nhé..." class="w-full p-4 sm:p-5 rounded-2xl bg-[#090e17] border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm sm:text-base focus:border-amber-500 transition leading-relaxed shadow-inner" oninput="saveDraft()"></textarea>
         </div>
       </div>
 
@@ -321,18 +321,21 @@
       <!-- ========================================================================= -->
       <!-- KHỐI 4: GỬI TẶNG ẢNH KỶ NIỆM Ở LỚP HỌC (UPLOAD MULTIPLE IMAGES) -->
       <!-- ========================================================================= -->
-      <div class="card-shell rounded-3xl p-7 sm:p-10 space-y-6 reveal-on-scroll">
-        <div class="flex items-center gap-3.5 border-b border-slate-800 pb-5">
-          <div class="w-9 h-9 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center font-bold text-base flex-shrink-0">
-            4
+      <details class="card-shell rounded-3xl p-5 sm:p-7 reveal-on-scroll group cursor-pointer [&::-webkit-details-marker]:hidden">
+        <summary class="flex items-center gap-3.5 outline-none select-none list-none">
+          <div class="w-9 h-9 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center font-bold text-base flex-shrink-0 group-open:bg-amber-500/20 transition">
+            <i data-lucide="image" class="w-4 h-4"></i>
           </div>
-          <div>
-            <h3 class="font-bold text-lg sm:text-xl text-white">Cho em xin mấy kiểu ảnh kỷ niệm ở lớp nhé&nbsp;📸</h3>
-            <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Ảnh chụp ở chỗ học, lúc thực hành, hoặc ảnh chụp chung cùng nhau</p>
+          <div class="flex-1">
+            <h3 class="font-bold text-base sm:text-lg text-white">Nếu có ảnh thì gửi tặng em nhé (Không bắt buộc) 📸</h3>
+            <p class="text-xs sm:text-sm text-slate-400 mt-0.5 group-open:hidden">Bấm vào đây để tải ảnh kỷ niệm ở lớp học</p>
           </div>
-        </div>
+          <div class="text-slate-400 group-open:rotate-180 transition-transform duration-300">
+            <i data-lucide="chevron-down" class="w-5 h-5"></i>
+          </div>
+        </summary>
 
-        <div class="space-y-4">
+        <div class="space-y-4 pt-5 mt-5 border-t border-slate-800 cursor-default">
           <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
             Mọi người có chụp được ảnh nào ở chỗ học, lúc thực hành cầm máy quay, hay ảnh chụp chung cùng nhau thì gửi tặng em với nhé! Em nhờ AI đóng gói lại kỷ niệm để nhớ về mọi người ạ.
           </p>
@@ -365,7 +368,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </details>
 
       <!-- Hidden Course Input -->
       <input type="hidden" id="course" name="course" value="Khóa Offline Thực Chiến">
