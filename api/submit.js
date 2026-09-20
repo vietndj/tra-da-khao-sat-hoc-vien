@@ -62,7 +62,7 @@ async function appendToGoogleSheet(submission) {
     // Chuẩn bị dữ liệu 12 cột giống cấu trúc cũ
     const photoUrls = (submission.photos || []).map(p => p.url).filter(Boolean);
     const photoLinksText = photoUrls.length > 0
-      ? photoUrls.map((u, i) => `Ảnh ${i + 1}: ${u}`).join('\n')
+      ? photoUrls.join('\n')
       : 'Không có ảnh';
     
     // Công thức IMAGE() cho ảnh đầu tiên (hiển thị thumbnail trong Google Sheet)
