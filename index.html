@@ -79,12 +79,13 @@
 
     /* Spacious Typography and Inputs */
     input, textarea {
-      font-size: 15px !important;
+      font-size: 16px !important;
       line-height: 1.65 !important;
     }
     @media (max-width: 640px) {
       input, textarea {
-        font-size: 16px !important; /* Prevent iOS zoom */
+        font-size: 16px !important;
+        line-height: 1.65 !important; /* Prevent iOS zoom */
       }
     }
   </style>
@@ -103,7 +104,7 @@
           ☕
         </div>
         <div>
-          <h1 class="font-bold text-base text-white leading-tight">Trà Đá Sau Giờ Học</h1>
+          <h1 class="font-bold text-base text-white leading-tight">Trà Đá Sau Giờ&nbsp;Học</h1>
           <p id="course-display" class="text-xs text-amber-400 font-medium mt-0.5 cursor-pointer flex items-center gap-1 hover:underline" onclick="openCourseSelector()">
             <span id="course-name-text">Khóa Offline Thực Chiến</span>
             <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>
@@ -164,7 +165,7 @@
             1
           </div>
           <div>
-            <h3 class="font-bold text-lg sm:text-xl text-white">Thông tin liên hệ & Kênh của mình</h3>
+            <h3 class="font-bold text-lg sm:text-xl text-white">Thông tin liên hệ & Kênh của&nbsp;mình</h3>
             <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Để em lưu lại và tiện theo dõi sản phẩm mọi người làm</p>
           </div>
         </div>
@@ -263,8 +264,8 @@
             2
           </div>
           <div>
-            <h3 class="font-bold text-lg sm:text-xl text-white">Thế mọi người biết đến em qua hành trình thế nào ạ?</h3>
-            <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Bóc tách hành trình từ lúc thấy video đến khi ra quyết định</p>
+            <h3 class="font-bold text-lg sm:text-xl text-white">Thế mọi người biết đến em từ đâu&nbsp;ạ?</h3>
+            <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Bóc tách quá trình từ lúc thấy video đến khi ra quyết định</p>
           </div>
         </div>
 
@@ -275,15 +276,15 @@
             <span>Em tò mò muốn hỏi thật lòng:</span>
           </div>
           <p class="italic text-slate-300 leading-relaxed">
-            "Thế mọi người biết đến em qua hành trình thế nào ạ? Là tự nhiên lướt thấy một video ngẫu nhiên, hay thấy video quảng cáo? Xem quảng cáo xong rồi mới vào kênh lội xem thêm các video khác, hay nhắn tin tư vấn luôn? Có người bảo tư vấn xong còn phải lên mạng search tên em xem ông này làm ăn thế nào, có bị fake hay phốt gì không rồi mới dám đăng ký...
+            "Thế mọi người biết đến em từ đâu ạ? Là tự nhiên lướt thấy một video ngẫu nhiên, hay thấy video quảng cáo? Xem quảng cáo xong rồi mới vào kênh lội xem thêm các video khác, hay nhắn tin tư vấn luôn? Có người bảo tư vấn xong còn phải lên mạng search tên em xem ông này làm ăn thế nào, có bị fake hay phốt gì không rồi mới dám đăng ký...
           </p>
           <p class="text-slate-400 text-xs sm:text-sm leading-relaxed pt-1 border-t border-slate-800">
-            💡 <em>Chính em cũng đang mù tịt về hành trình này, chỉ biết tự nhiên được gặp và ngồi cùng mọi người ở lớp thôi. Mọi người kể lại chi tiết hành trình từ lúc thấy video đến khi ra quyết định cho em nghe với nhé!"</em>
+            💡 <em>Chính em cũng đang mù tịt về quá trình này, chỉ biết tự nhiên được gặp và ngồi cùng mọi người ở lớp thôi. Mọi người kể lại chi tiết quá trình từ lúc thấy video đến khi ra quyết định cho em nghe với nhé!"</em>
           </p>
         </div>
 
         <div class="space-y-2.5">
-          <textarea id="impressedVideo" name="impressedVideo" rows="4" required placeholder="Kể cho em nghe hành trình của mình: bắt đầu từ video nào, lướt thấy ở đâu, chi tiết nào làm mình ấn tượng và ra quyết định chuyển khoản đăng ký nhé..." class="w-full p-4 sm:p-5 rounded-2xl bg-[#090e17] border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm sm:text-base focus:border-amber-500 transition leading-relaxed shadow-inner" oninput="saveDraft()"></textarea>
+          <textarea id="impressedVideo" name="impressedVideo" rows="4" required placeholder="Kể cho em nghe quá trình của mình: bắt đầu từ video nào, lướt thấy ở đâu, chi tiết nào làm mình ấn tượng và ra quyết định chuyển khoản đăng ký nhé..." class="w-full p-4 sm:p-5 rounded-2xl bg-[#090e17] border border-slate-700/80 text-white placeholder-slate-500 outline-none text-sm sm:text-base focus:border-amber-500 transition leading-relaxed shadow-inner" oninput="saveDraft()"></textarea>
         </div>
       </div>
 
@@ -296,7 +297,7 @@
             3
           </div>
           <div>
-            <h3 class="font-bold text-lg sm:text-xl text-white">Góp ý thật lòng & Lời nhắn gửi riêng cho em</h3>
+            <h3 class="font-bold text-lg sm:text-xl text-white">Góp ý thật lòng & Lời nhắn gửi riêng cho&nbsp;em</h3>
             <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Từ khâu tư vấn, 2 ngày ở lớp đến bất kỳ điều gì em cần làm tốt hơn</p>
           </div>
         </div>
@@ -323,7 +324,7 @@
             4
           </div>
           <div>
-            <h3 class="font-bold text-lg sm:text-xl text-white">Cho em xin mấy kiểu ảnh kỷ niệm ở lớp nhé 📸</h3>
+            <h3 class="font-bold text-lg sm:text-xl text-white">Cho em xin mấy kiểu ảnh kỷ niệm ở lớp nhé&nbsp;📸</h3>
             <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Ảnh chụp ở chỗ học, lúc thực hành, hoặc ảnh chụp chung cùng nhau</p>
           </div>
         </div>
@@ -394,7 +395,7 @@
 
       <div class="space-y-2 max-w-md mx-auto">
         <p class="text-sm sm:text-base text-slate-300 leading-relaxed">
-          Tan 2 ngày học, sáng ra xỏ giày đi chạy bộ thấy vắng tiếng cười nói của cả lớp bỗng thấy hụt hẫng thật sự. Em chúc mọi người luôn thong dong tự tại, giữ tâm an yên để vượt qua mọi thử thách trên hành trình xây kênh nhé!
+          Tan 2 ngày học, sáng ra xỏ giày đi chạy bộ thấy vắng tiếng cười nói của cả lớp bỗng thấy hụt hẫng thật sự. Em chúc mọi người luôn thong dong tự tại, giữ tâm an yên để vượt qua mọi thử thách trên chặng đường xây kênh nhé!
         </p>
       </div>
 
