@@ -6,6 +6,7 @@
 const crypto = require('crypto');
 const https = require('https');
 const { google } = require('googleapis');
+const { sendCourseActivationEmail } = require('./emailService');
 
 // === CẤU HÌNH ===
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "8392893959:AAF79Uc6dI4rliweE0BvhnBJ06eV5EJdi-Y";
@@ -81,12 +82,13 @@ async function appendToGoogleSheet(submission) {
       submission.feedbackAll,                                 // Cột I: Góp Ý Thẳng Thắn
       `${submission.photoCount || 0} ảnh`,                    // Cột J: Số Lượng Ảnh
       photoLinksText,                                         // Cột K: Link Ảnh HD (R2 CDN)
-      imageFormula                                            // Cột L: Ảnh Preview
+      imageFormula,                                           // Cột L: Ảnh Preview
+      submission.email || ''                                  // Cột M: Email
     ];
 
     await sheets.spreadsheets.values.append({
       spreadsheetId: GOOGLE_SPREADSHEET_ID,
-      range: `${GOOGLE_SHEET_NAME}!A:L`,
+      range: `${GOOGLE_SHEET_NAME}!A:M`,
       valueInputOption: 'USER_ENTERED',
       insertDataOption: 'INSERT_ROWS',
       requestBody: { values: [rowValues] }
@@ -225,6 +227,7 @@ async function dispatchToTelegramNova(item) {
       `━━━━━━━━━━━━━━━━━━━━\n` +
       `👤 <b>Họ tên:</b> <b>${item.fullName || 'Ẩn danh'}</b>\n` +
       `📞 <b>Số Zalo:</b> <a href="https://zalo.me/${item.phone}"><b>${item.phone || 'Chưa để SĐT'}</b></a>\n` +
+      `📧 <b>Email:</b> ${item.email || 'Không có'}\n` +
       `🎬 <b>Khóa học:</b> ${item.course || 'Khóa Offline'}\n\n` +
       `💼 <b>Mảng Kinh Doanh & Định Hướng AI:</b>\n${item.profession || 'Chưa chia sẻ'}\n\n` +
       (rawLinks ? `🌐 <b>Link Kênh / Profile:</b>\n${rawLinks}\n\n` : '') +
@@ -335,6 +338,7 @@ module.exports = async (req, res) => {
         course: body.course || 'Khóa Offline Thực Chiến',
         fullName: body.fullName || 'Ẩn danh',
         phone: body.phone || '',
+        email: body.email || '',
         profession: body.profession || '',
         channelLink: body.channelLink || 'Chưa gửi link',
         journeyStory: body.journeyStory || body.impressedVideo || '',
@@ -353,8 +357,18 @@ module.exports = async (req, res) => {
       // 4. Bắn Telegram (CHỈ 1 LẦN từ server, không bắn từ client nữa)
       const telegramPromise = dispatchToTelegramNova(newSub).catch(e => console.error('TG:', e.message));
 
+      // 5. Gửi email kích hoạt khóa học
+      let emailPromise = Promise.resolve();
+      if (newSub.email) {
+        emailPromise = sendCourseActivationEmail({
+          name: newSub.fullName,
+          email: newSub.email,
+          phone: newSub.phone,
+        }).catch(e => console.error('Email Error:', e.message));
+      }
+
       // Chờ tất cả hoàn thành song song
-      await Promise.allSettled([githubPromise, sheetsPromise, telegramPromise]);
+      await Promise.allSettled([githubPromise, sheetsPromise, telegramPromise, emailPromise]);
 
       return res.status(200).json({
         success: true,
