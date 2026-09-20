@@ -310,6 +310,7 @@ https://youtube.com/@huytranstyle",
         currentFilteredList = currentLiveList.filter(s => 
           (s.fullName || '').toLowerCase().includes(q) ||
           (s.phone || '').toLowerCase().includes(q) ||
+          (s.email || '').toLowerCase().includes(q) ||
           (s.profession || '').toLowerCase().includes(q) ||
           (s.course || '').toLowerCase().includes(q)
         );
@@ -405,11 +406,20 @@ https://youtube.com/@huytranstyle",
                 </div>
               </div>
               
-              <!-- Nút chat Zalo -->
-              <a href="https://zalo.me/${sub.phone}" target="_blank" class="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 text-blue-300 font-semibold text-xs transition flex-shrink-0" title="Nhắn Zalo">
-                <i data-lucide="message-circle" class="w-3.5 h-3.5 text-blue-400"></i>
-                <span>${sub.phone || 'Zalo'}</span>
-              </a>
+              <!-- Nút chat Zalo & Email -->
+              <div class="flex flex-col gap-1.5 items-end flex-shrink-0">
+                <a href="https://zalo.me/${sub.phone}" target="_blank" class="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 text-blue-300 font-semibold text-xs transition" title="Nhắn Zalo">
+                  <i data-lucide="message-circle" class="w-3.5 h-3.5 text-blue-400"></i>
+                  <span>${sub.phone || 'Zalo'}</span>
+                </a>
+                
+                ${sub.email ? `
+                <a href="mailto:${sub.email}" class="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-xl bg-rose-600/20 hover:bg-rose-600/30 border border-rose-500/30 text-rose-300 font-semibold text-xs transition" title="Gửi Email">
+                  <i data-lucide="mail" class="w-3.5 h-3.5 text-rose-400"></i>
+                  <span>${sub.email}</span>
+                </a>
+                ` : ''}
+              </div>
             </div>
 
             <!-- Mảng kinh doanh & Định hướng AI -->
