@@ -1,0 +1,50 @@
+{
+  "site_id": "tra-da",
+  "generated_at": "2026-10-26T06:27:27.578780+07:00",
+  "total_posts": 3,
+  "cover_stats": {
+    "mapped": 3,
+    "local_asset": 0,
+    "embedded": 0,
+    "fallback": 0
+  },
+  "unmapped_count": 0,
+  "posts": [
+    {
+      "filename": "tra-da-sau-gio-hoc.html",
+      "title": "Trà Đá Sau Giờ Học",
+      "excerpt": "Tan lớp cất máy gập cam, làm ly trà đá hỏi han chuyện nghề. Em ngồi lại lắng nghe góp ý chân thành từ mọi người.",
+      "category_key": "other",
+      "category_label": "📌 Tài Liệu Chuyên Đề",
+      "cover_image": "https://media.fedu.vn/k_covers/lol_xianxia_trada_wukong_radiant.webp",
+      "cover_source": "mapped",
+      "updated_at": "2026-09-20T21:16:51+07:00",
+      "read_time": "5 phút đọc",
+      "file_size_kb": 40.2
+    },
+    {
+      "filename": "bang-khao-sat.html",
+      "title": "Bảng Quản Lý Khảo Sát & Ảnh Học Viên",
+      "excerpt": "Đồng bộ tức thì từ Form Trà Đá Sau Giờ Học • Xem ảnh HD & Tải Excel",
+      "category_key": "casestudy",
+      "category_label": "🏆 Case Study & Kênh Mẫu",
+      "cover_image": "https://media.fedu.vn/k_covers/poster_284_1789612900428.webp",
+      "cover_source": "mapped",
+      "updated_at": "2026-09-20T21:10:58+07:00",
+      "read_time": "2 phút đọc",
+      "file_size_kb": 31.4
+    },
+    {
+      "filename": "excel.html",
+      "title": "Bảng Quản Lý Khảo Sát & Ảnh Học Viên",
+      "excerpt": "Đồng bộ tức thì từ Form Trà Đá Sau Giờ Học • Xem ảnh HD & Tải Excel",
+      "category_key": "casestudy",
+      "category_label": "🏆 Case Study & Kênh Mẫu",
+      "cover_image": "https://media.fedu.vn/k_covers/co-the-ban-khong-he-ghet-ban-no-chi-dang-lam-xuat-sac-nhiem-vu-sinh-ton-bang-cach-bat-che-do-khang-cu-lai-su-sut-giam-calo-trong-mot-the.webp",
+      "cover_source": "mapped",
+      "updated_at": "2026-09-20T21:10:58+07:00",
+      "read_time": "2 phút đọc",
+      "file_size_kb": 31.4
+    }
+  ]
+}
