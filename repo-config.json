@@ -1,0 +1,17 @@
+{
+  "site_id": "tra-da",
+  "title": "TRÀ ĐÁ SAU GIỜ HỌC • Kho Khảo Sát & Chia Sẻ Học Viên",
+  "brand_badge": "TĐ",
+  "brand_name": "TRÀ ĐÁ",
+  "github_repo": "vietndj/tra-da-khao-sat-hoc-vien",
+  "allow_embedded_cover": false,
+  "live_discovery": false,
+  "cover_base_url": "https://media.fedu.vn/k_covers",
+  "exclude_files": [
+    "index.html",
+    "hub.html",
+    "404.html",
+    "fix-url.html",
+    "admin.html"
+  ]
+}
